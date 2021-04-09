@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Main from "./pages/Main/MainPresenter.js";
 import Header from "./components/Header/HeaderContainer";
 import MainMenu from "./components/MainMenu/MainMenuContainer";
+import WriteButton from './components/WriteButton/WriteButtonContainer'
 const FixedWidth = styled.div`
   margin: 0 auto;
   z-index: 1;
@@ -18,6 +19,7 @@ const Body = styled.div`
   background-color: white;
   position:relative;
   top:130px;
+  height:100vh;
 `;
 
 function App() {
@@ -30,6 +32,7 @@ function App() {
           <Body>
             <Main></Main>
           </Body>
+          <WriteButton></WriteButton>
         </FixedWidth>
       </Background>
     </div>
