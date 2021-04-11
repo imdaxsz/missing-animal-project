@@ -5,10 +5,8 @@ import HeaderIcon from '../../assets/img/logo.png'
 const HeaderContainer = styled.div`
   background-color:white;
   height:65px;
-  max-width:520px;
   right:0;
   left:0;
-  margin:0 auto;
   display:flex;
   justify-content:space-between;
   align-items:center;

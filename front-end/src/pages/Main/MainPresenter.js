@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const TestComponent = styled.div`
   background-color:red;
-  height:2000px;
+  height:1000px;
 `
 
 function Main() {
