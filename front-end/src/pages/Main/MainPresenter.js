@@ -1,17 +1,39 @@
 import './Main.css';
 import styled from "styled-components";
 
-const TestComponent = styled.div`
+
+const CardContainer = styled.div`
+  width:50%;
   background-color:red;
-  height:1000px;
+  &::after{
+    content:"";
+    display:block;
+    padding-bottom:100%;
+  }
+  &.inner {
+    position:absolute;
+    width:100%;
+    height:100%;
+  }
 `
 
 function Main() {
   return (
     <div>
-      <TestComponent></TestComponent>
+      <AnimalCard></AnimalCard>
     </div>
   );
 }
+
+function AnimalCard(){
+  return (
+    <>
+      <div>
+        <CardContainer>test</CardContainer>
+      </div>
+    </>
+  )
+}
+
 
 export default Main;

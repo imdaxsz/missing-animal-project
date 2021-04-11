@@ -11,7 +11,10 @@ const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
   }
 `;
-
+const Wrapper = styled.div`
+  top:100px;
+  position:relative;
+`;
 
 function App() {
   return (
@@ -19,7 +22,10 @@ function App() {
       <GlobalStyle />
       <Header></Header>
       <MainMenu></MainMenu>
+      <Wrapper>
         <Main></Main>
+      </Wrapper>
+
       <WriteButton></WriteButton>
     </>
   );
