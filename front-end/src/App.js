@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import Main from "./pages/Main/MainContainer";
+import WritePost from './pages/WritePost/WritePostContainer'
 import Header from "./components/Header/HeaderContainer";
 import MainMenu from "./components/MainMenu/MainMenuContainer";
 import WriteButton from "./components/WriteButton/WriteButtonContainer";
 import { createGlobalStyle } from "styled-components";
-
+import {Link, Route, Switch} from 'react-router-dom'
 const GlobalStyle = createGlobalStyle`
   body{
     max-width:500px;
@@ -32,7 +33,8 @@ function App() {
       <Header></Header>
       <MainMenu></MainMenu>
       <Wrapper>
-        <Main></Main>
+        <Route exact path="/"><Main/></Route>
+        <Route path="/writePost"><WritePost></WritePost></Route>
       </Wrapper>
 
       <WriteButton></WriteButton>
