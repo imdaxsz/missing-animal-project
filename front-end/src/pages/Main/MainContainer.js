@@ -1,11 +1,12 @@
-import react from 'react'
-
+import react,{useState} from 'react'
+import MainPresenter from './MainPresenter'
 
 
 function MainContainer() {
+
   return (
     <div>
-      
+        <MainPresenter ></MainPresenter>
     </div>
   );
 }

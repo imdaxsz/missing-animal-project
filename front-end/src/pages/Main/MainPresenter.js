@@ -1,7 +1,9 @@
 import "./Main.css";
 import styled from "styled-components";
 import { Card, Row, Col } from "react-bootstrap";
-
+import data from "../../data/data.json";
+import {useState} from 'react'
+import {BiMap} from 'react-icons/bi'
 const CardContainer = styled.div`
   width: 50%;
   background-color: red;
@@ -21,45 +23,34 @@ function Main() {
   return (
     <div>
       <Row md={2} xs={2} xl={2} lg={2}>
-        <Col>
-          <AnimalCard></AnimalCard>
-        </Col>
-        <Col>
-          <AnimalCard></AnimalCard>
-        </Col>
-        <Col>
-          <AnimalCard></AnimalCard>
-        </Col>
-        <Col>
-          <AnimalCard></AnimalCard>
-        </Col>
-        <Col>
-          <AnimalCard></AnimalCard>
-        </Col>
+        {data.map(function (animal, index) {
+          return (
+            <Col key={index}>
+              <AnimalCard animal={animal} index={index}></AnimalCard>
+            </Col>
+          );
+        })}
       </Row>
     </div>
   );
 }
 
-function AnimalCard() {
+function AnimalCard({animal,index}) {
+
   return (
     <>
-      <Card style={{ marginBottom: '10px' }}>
-        <Card.Img
-          variant="top"
-          src="https://file.mk.co.kr/meet/neds/2020/07/image_readtop_2020_676504_15936496204262518.jpg"
-        />
+      <Card style={{ marginBottom: "10px" }}>
+        <Card.Img variant="top" src={require(`../../assets/images/animal${index+1}.JPG`).default} />
         <Card.Body>
-          <Card.Title><strong>[목격]</strong>코리안 숏헤어</Card.Title>
+          <Card.Title>
+            <strong>[{animal.type}]</strong>
+            {animal.species}
+          </Card.Title>
           <Card.Text>
-            미확인/5살/4kg
+            {animal.sex} | {animal.age}{animal.age==="모름" ? null : "살"} | {animal.weight}{animal.weight==="모름" ? null : "kg"}
           </Card.Text>
-          <Card.Text>
-            2021-03-13
-          </Card.Text>
-          <Card.Text>
-            경북 구미시
-          </Card.Text>
+          <Card.Text>{animal.missingDate}</Card.Text>
+          <BiMap/><Card.Text>{animal.missingLocate}</Card.Text>
         </Card.Body>
       </Card>
     </>

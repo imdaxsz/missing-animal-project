@@ -1,13 +1,42 @@
-{
-  "animals": [
-    {
-      "species": "코리안숏헤어",
-      "sex": "미확인",
-      "age": 5,
-      "weight": 4,
-      "missingDate": "2021-03-13",
-      "missingLocate": "경북 구미시",
-      "img":"./img/animal1.JPG"
-    }
-  ]
-}
+[
+  {
+    "type": "목격",
+    "species": "코리안숏헤어",
+    "sex": "미확인",
+    "age": 5,
+    "weight": 4,
+    "missingDate": "2021-03-13",
+    "missingLocate": "경북 구미시",
+    "img": "../../assets/images/animal1.JPG"
+  },
+  {
+    "type": "임시보호",
+    "species": "말티즈",
+    "sex": "수컷",
+    "age": 8,
+    "weight": 5,
+    "missingDate": "2021-03-12",
+    "missingLocate": "광주 광역시",
+    "img": "../../assets/images/animal2.JPG"
+  },
+  {
+    "type": "임시보호",
+    "species": "말티즈",
+    "sex": "미확인",
+    "age": "모름",
+    "weight": "모름",
+    "missingDate": "2021-03-17",
+    "missingLocate": "생목동",
+    "img": "../../assets/images/animal3.JPG"
+  },
+  {
+    "type": "목격",
+    "species": "코리안숏헤어",
+    "sex": "수컷",
+    "age": "모름",
+    "weight": "모름",
+    "missingDate": "2021-03-17",
+    "missingLocate": "제주시 노연로",
+    "img": "../../assets/images/animal4.JPG"
+  }
+]
