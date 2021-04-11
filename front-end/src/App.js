@@ -12,8 +12,9 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 const Wrapper = styled.div`
-  top:100px;
+  top:140px;
   position:relative;
+  padding-bottom:100px;
 `;
 
 function App() {

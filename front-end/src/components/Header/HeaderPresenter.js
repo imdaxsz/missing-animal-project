@@ -14,6 +14,8 @@ const HeaderContainer = styled.div`
   z-index:99;
   border-bottom:2px solid #e8e8e8;
   position:fixed;
+  max-width:500px;
+  margin:0 auto;
 `
 
 const HeaderImg = styled.img`

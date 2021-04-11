@@ -11,8 +11,8 @@ const MenuContainer = styled.div`
   align-items: center;
   z-index: 1;
   position: fixed;
-  top: 67px;
-  max-width: 470px;
+  top: 65px;
+  max-width: 500px;
   padding: 0 15px 0 15px;
   margin: 0 auto;
 `;
