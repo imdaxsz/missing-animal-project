@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import {BsThreeDotsVertical} from 'react-icons/bs'
+import {GiHamburgerMenu} from 'react-icons/gi'
 import HeaderIcon from '../../assets/img/logo.png'
 const HeaderContainer = styled.div`
   background-color:white;
@@ -27,7 +27,7 @@ function HeaderPresenter() {
     <div>
         <HeaderContainer>
             <HeaderImg src={HeaderIcon}></HeaderImg>
-            <BsThreeDotsVertical size="24" color="#00a059"></BsThreeDotsVertical>
+            <GiHamburgerMenu size="24" color="#00a059"></GiHamburgerMenu>
         </HeaderContainer>
     </div>
   );
