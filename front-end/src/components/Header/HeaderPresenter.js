@@ -2,6 +2,8 @@ import styled from "styled-components";
 import React from "react";
 import {GiHamburgerMenu} from 'react-icons/gi'
 import HeaderIcon from '../../assets/img/logo.png'
+import {Link} from 'react-router-dom'
+import SideBar from '../SideBar/SideBar'
 const HeaderContainer = styled.div`
   background-color:white;
   height:65px;
@@ -26,9 +28,10 @@ function HeaderPresenter() {
   return (
     <div>
         <HeaderContainer>
-            <HeaderImg src={HeaderIcon}></HeaderImg>
+            <Link to="/" ><HeaderImg src={HeaderIcon}></HeaderImg></Link>
             <GiHamburgerMenu size="24" color="#00a059"></GiHamburgerMenu>
         </HeaderContainer>
+        <SideBar></SideBar>
     </div>
   );
 }

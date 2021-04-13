@@ -8,7 +8,7 @@ const StyledContainer = styled.div`
 function WritePostPresenter() {
   return (
     <>
-      <StyledContainer></StyledContainer>
+      <StyledContainer>작성폼 예정</StyledContainer>
     </>
   );
 }

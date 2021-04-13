@@ -3,6 +3,7 @@ import data from "../../data/data.json";
 import { useState } from "react";
 import { BiMap } from "react-icons/bi";
 import SearchBar from '../../components/SearchBar/SearchBar'
+
 function MainPresenter() {
   return (
     <div>
@@ -16,6 +17,8 @@ function MainPresenter() {
           );
         })}
       </Row>
+
+      
     </div>
   );
 }

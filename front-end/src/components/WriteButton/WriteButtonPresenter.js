@@ -1,10 +1,6 @@
 import styled, { css } from "styled-components";
 import React from "react";
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  `
+import {Link} from 'react-router-dom'
 const FloatingButton = styled.button`
   color: white;
   font-weight: bold;
@@ -24,9 +20,8 @@ const FloatingButton = styled.button`
 function WriteButtonPresenter() {
   return (
     <div>
-      <Wrapper>
-        <FloatingButton>글쓰기</FloatingButton>
-      </Wrapper>
+        <Link to="/writePost"><FloatingButton>글쓰기</FloatingButton></Link>
+
     </div>
   );
 }
