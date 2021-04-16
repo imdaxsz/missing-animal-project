@@ -32,7 +32,7 @@ function AnimalCard({ animal, index }) {
       <Card style={{ marginBottom: "10px" }}>
         <Card.Img
           variant="top"
-          src={require(`../../assets/images/animal${index + 1}.JPG`).default}
+          src={require(`../../assets/images/animal${index + 1}.jpg`).default}
         />
         <Card.Body>
           <Card.Title>

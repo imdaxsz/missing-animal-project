@@ -2,6 +2,8 @@ import styled, { css } from "styled-components";
 import React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
+import { FiLogOut, FiSettings, FiMapPin, FiUser } from "react-icons/fi";
+import { BiInfoCircle } from "react-icons/bi";
 import HeaderIcon from "../../assets/img/logo.png";
 import { Link } from "react-router-dom";
 
@@ -25,29 +27,44 @@ const HeaderImg = styled.img`
   width: 150px;
 `;
 
+const IconContainer = styled.span`
+  padding-right: 10px;
+`;
 const StyledSideBar = styled.div`
   background-color: white;
   position: absolute;
   height: 100vh;
   right: 0;
   top: 0;
-  overflow:hidden;
+  overflow: hidden;
+  transition: 0.3s all;
+  width:300px;
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 65px;
+    font-weight: bold;
+    font-size: 20px;
+    li {
+      padding: 20px 10px 20px 30px;
 
-  &.ul{
-    list-style:none;
+      &:hover {
+        background-color: #00a059;
+        cursor: pointer;
+        color: white;
+        
+      }
+    }
   }
 
   ${(props) =>
     props.mode === "open"
       ? css`
-          width: 300px;
-          transition: 0.3s;
+          width:300px;
         `
       : css`
-          width: 0;
-          transition: 0.3s;
+          width:0;
         `};
-    
 `;
 function HeaderPresenter({ mode, switchMode }) {
   return (
@@ -65,11 +82,36 @@ function HeaderPresenter({ mode, switchMode }) {
         </div>
         <StyledSideBar mode={mode}>
           <ul>
-            <li>사용자정보</li>
-            <li>내 동네 설정</li>
-            <li>유기 동물 보호소 정보</li>
-            <li>실시간 키워드 알림 설정</li>
-            <li>로그아웃</li>
+            <li>
+              <IconContainer>
+                <FiUser />
+              </IconContainer>
+              사용자정보
+            </li>
+            <li>
+              <IconContainer>
+                <FiMapPin />
+              </IconContainer>
+              내 동네 설정
+            </li>
+            <li>
+              <IconContainer>
+                <BiInfoCircle />
+              </IconContainer>
+              유기 동물 보호소 정보
+            </li>
+            <li>
+              <IconContainer>
+                <FiSettings />
+              </IconContainer>
+              실시간 키워드 알림 설정
+            </li>
+            <li>
+              <IconContainer>
+                <FiLogOut />
+              </IconContainer>
+              로그아웃
+            </li>
           </ul>
         </StyledSideBar>
       </HeaderContainer>

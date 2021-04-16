@@ -24,14 +24,9 @@ const GlobalStyle = createGlobalStyle`
     padding-bottom: 100px;
     padding-left:15px;
     padding-right:15px;
+    
   }
 `;
-const Wrapper = styled.div`
-  top: 140px;
-  position: relative;
-  padding-bottom: 100px;
-`;
-
 function App() {
   return (
     <>
