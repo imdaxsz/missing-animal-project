@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const MenuContainer = styled.div`
   background-color: white;
@@ -36,13 +37,16 @@ function MainMenuPresenter() {
   return (
     <div>
       <MenuContainer>
-        <StyledButton>실종동물 찾기</StyledButton>
+        <Link to="/">
+          <StyledButton>실종동물 찾기</StyledButton>
+        </Link>
         <StyledButton>실종신고 목록</StyledButton>
-        <StyledButton>보호소</StyledButton>
+        <Link to="/shelter">
+          <StyledButton>보호소</StyledButton>
+        </Link>
       </MenuContainer>
     </div>
   );
 }
-
 
 export default MainMenuPresenter;

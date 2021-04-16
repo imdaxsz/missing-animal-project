@@ -14,7 +14,8 @@ const FloatingButton = styled.button`
   &:hover {
     background-color: #30b87b;
   }
-  width:500px;
+  max-width:500px;
+  width:100%;
   
 `;
 function WriteButtonPresenter() {

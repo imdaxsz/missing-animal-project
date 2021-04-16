@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import Main from "./pages/Main/MainContainer";
-import WritePost from './pages/WritePost/WritePostContainer'
+import WritePost from "./pages/WritePost/WritePostContainer";
 import Header from "./components/Header/HeaderContainer";
 import MainMenu from "./components/MainMenu/MainMenuContainer";
+import Shelter from "./pages/Shelter/ShelterContainer"
 import WriteButton from "./components/WriteButton/WriteButtonContainer";
 import { createGlobalStyle } from "styled-components";
-import {Link, Route, Switch} from 'react-router-dom'
+import { Link, Route, Switch } from "react-router-dom";
 const GlobalStyle = createGlobalStyle`
   body{
     max-width:500px;
@@ -17,13 +18,18 @@ const GlobalStyle = createGlobalStyle`
     }
     font-family:"NanumSquare"
   }
+  .wrapper{
+    top: 140px;
+    position: relative;
+    padding-bottom: 100px;
+    padding-left:15px;
+    padding-right:15px;
+  }
 `;
 const Wrapper = styled.div`
   top: 140px;
   position: relative;
   padding-bottom: 100px;
-  padding-right: 15px;
-  padding-left: 15px;
 `;
 
 function App() {
@@ -32,11 +38,9 @@ function App() {
       <GlobalStyle />
       <Header></Header>
       <MainMenu></MainMenu>
-      <Wrapper>
-        <Route exact path="/"><Main/></Route>
-        <Route path="/writePost"><WritePost></WritePost></Route>
-      </Wrapper>
-      <WriteButton></WriteButton>
+      <Route exact path="/"><Main /></Route>
+      <Route path="/writePost"><WritePost/> </Route>
+      <Route path="/shelter"><Shelter/> </Route>
     </>
   );
 }
