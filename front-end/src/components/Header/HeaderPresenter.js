@@ -61,6 +61,8 @@ const StyledSideBar = styled.div`
     props.mode === "open"
       ? css`
           width:300px;
+          box-shadow : rgba(0,0,0,0.5) 0 0 0 9999px;
+          z-index : 100;
         `
       : css`
           width:0;

@@ -40,7 +40,7 @@
     "img": "../../assets/images/animal4.jpg"
   },
   {
-    "type": "보호",
+    "type": "임시보호",
     "species": "퍼그",
     "sex": "수컷",
     "age": "모름",
@@ -50,7 +50,7 @@
     "img": "../../assets/images/animal5.jpg"
   },
   {
-    "type": "보호",
+    "type": "임시보호",
     "species": "믹스견",
     "sex": "암컷",
     "age": "모름",
@@ -121,7 +121,7 @@
     "img": "../../assets/images/animal12.jpg"
   },
   {
-    "type": "보호",
+    "type": "임시보호",
     "species": "코리안숏헤어",
     "sex": "미확인",
     "age": "1년미만",
@@ -131,7 +131,7 @@
     "img": "../../assets/images/animal13.jpg"
   },
   {
-    "type": "보호",
+    "type": "임시보호",
     "species": "기타축종",
     "sex": "암컷",
     "age": "모름",
@@ -151,7 +151,7 @@
     "img": "../../assets/images/animal15.jpg"
   },
   {
-    "type": "보호",
+    "type": "임시보호",
     "species": "진도견",
     "sex": "수컷",
     "age": "모름",
@@ -171,7 +171,7 @@
     "img": "../../assets/images/animal17.jpg"
   },
   {
-    "type": "보호",
+    "type": "임시보호",
     "species": "푸들",
     "sex": "수컷",
     "age": 1,
