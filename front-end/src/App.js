@@ -3,8 +3,8 @@ import Main from "./pages/Main/MainContainer";
 import WritePost from "./pages/WritePost/WritePostContainer";
 import Header from "./components/Header/HeaderContainer";
 import MainMenu from "./components/MainMenu/MainMenuContainer";
-import Shelter from "./pages/Shelter/ShelterContainer"
-import WriteButton from "./components/WriteButton/WriteButtonContainer";
+import ShelterAnimalList from "./pages/Shelter/ShelterAnimalListContainer"
+import AnimalDetailView from "./pages/AnimalDetailView/AnimalDetailViewContainer"
 import { createGlobalStyle } from "styled-components";
 import { Link, Route, Switch } from "react-router-dom";
 const GlobalStyle = createGlobalStyle`
@@ -26,6 +26,10 @@ const GlobalStyle = createGlobalStyle`
     padding-right:15px;
     
   }
+  a{
+    color:inherit;
+    text-decoration:none;
+  }
 `;
 function App() {
   return (
@@ -35,7 +39,8 @@ function App() {
       <MainMenu></MainMenu>
       <Route exact path="/"><Main /></Route>
       <Route path="/writePost"><WritePost/> </Route>
-      <Route path="/shelter"><Shelter/> </Route>
+      <Route path="/shelter"><ShelterAnimalList/> </Route>
+      <Route path="/animal_detail"><AnimalDetailView/></Route>
     </>
   );
 }

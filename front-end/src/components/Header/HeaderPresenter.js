@@ -19,7 +19,6 @@ const HeaderContainer = styled.div`
   z-index: 99;
   border-bottom: 2px solid #e8e8e8;
   position: fixed;
-  max-width: 500px;
   margin: 0 auto;
 `;
 
@@ -38,7 +37,12 @@ const StyledSideBar = styled.div`
   top: 0;
   overflow: hidden;
   transition: 0.3s all;
-  width:300px;
+  width:70%;
+
+  @media screen and (min-width: 850px) {
+   /* 데스크탑에서 사용될 스타일을 여기에 작성합니다. */
+   width:40%;
+  }
   ul {
     list-style: none;
     padding-left: 0;
@@ -60,12 +64,12 @@ const StyledSideBar = styled.div`
   ${(props) =>
     props.mode === "open"
       ? css`
-          width:300px;
+          right: 0%;
           box-shadow : rgba(0,0,0,0.5) 0 0 0 9999px;
           z-index : 100;
         `
       : css`
-          width:0;
+          right:-100%
         `};
 `;
 function HeaderPresenter({ mode, switchMode }) {

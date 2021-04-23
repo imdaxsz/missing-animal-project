@@ -4,17 +4,19 @@ import { useState } from "react";
 import { BiMap } from "react-icons/bi";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import WriteButton from "../../components/WriteButton/WriteButtonContainer";
-
+import {Link} from 'react-router-dom'
 function MainPresenter() {
   return (
     <div>
       <div className="wrapper">
+        <h3>실종동물 찾기</h3>
         <SearchBar />
         <Row md={2} xs={2} xl={2} lg={2}>
           {data.map(function (animal, index) {
             return (
               <Col key={index}>
-                <AnimalCard animal={animal} index={index}></AnimalCard>
+                <Link to="/animal_detail"><AnimalCard animal={animal} index={index}></AnimalCard></Link>
+               
               </Col>
             );
           })}
@@ -45,8 +47,8 @@ function AnimalCard({ animal, index }) {
             {animal.weight === "모름" ? null : "kg"}
           </Card.Text>
           <Card.Text>{animal.missingDate}</Card.Text>
-          <BiMap />
-          <Card.Text>{animal.missingLocate}</Card.Text>
+          
+          <Card.Text><BiMap />{animal.missingLocate}</Card.Text>
         </Card.Body>
       </Card>
     </>
