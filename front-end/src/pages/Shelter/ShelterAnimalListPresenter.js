@@ -1,51 +1,63 @@
 import React from "react";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import { Card , Row, Col } from "react-bootstrap";
+import { Card, Row, Col,Form } from "react-bootstrap";
 import { BiMap } from "react-icons/bi";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 
-function ShelterAnimalListPresenter({ShelterAnimalData}) {
-  
+function ShelterAnimalListPresenter({ ShelterAnimalData , AreaSelectChange }) {
   return (
     <div className="wrapper">
       <h3>보호소 보호 동물</h3>
-        <SearchBar/>
-        <Row md={2} xs={2} xl={2} lg={2}>
+      <Form.Group controlId="exampleForm.SelectCustomSizeLg">
+        <Form.Label>지역 설정</Form.Label>
+        <Form.Control as="select" size="lg" custom onChange={(e)=>{AreaSelectChange(e.target.value)}}>
+          <option>전체</option>
+          <option>경상북도</option>
+          <option>전라북도</option>
+          <option>강원도</option>
+          <option>서울특별시</option>
+        </Form.Control>
+      </Form.Group>
+      <SearchBar />
+      <Row md={2} xs={2} xl={2} lg={2}>
         {ShelterAnimalData.map(function (animal, index) {
-            return (
-              <Col key={index}>
-                <Link to="/animal_detail">
-                  <AnimalCard animal={animal} index={index}></AnimalCard>
-                </Link>
-              </Col>
-            );
-          })}
-
-
-        </Row>
+          return (
+            <Col key={index}>
+              <Link to="/animal_detail">
+                <AnimalCard animal={animal} index={index}></AnimalCard>
+              </Link>
+            </Col>
+          );
+        })}
+      </Row>
     </div>
   );
 }
 
-function AnimalCard({animal}) {
-
+function AnimalCard({ animal }) {
   return (
     <>
       <Card style={{ marginBottom: "10px" }}>
-        <Card.Img
-          variant="top"
-          src={animal.popfile}
-        />
+        <Card.Img variant="top" src={animal.popfile} />
         <Card.Body>
           <Card.Title>
-            <strong>[공고]</strong>{animal.kindCd.split("]")[1]}
+            <strong>[공고]</strong>
+            {animal.kindCd.split("]")[1]}
           </Card.Title>
           <Card.Text>
-            {animal.kindCd.split("[")[1].split("]")[0]} | {animal.sexCd==="F" ? "암컷" : "수컷"}
+            {animal.kindCd.split("[")[1].split("]")[0]} |{" "}
+            {animal.sexCd === "F" ? "암컷" : "수컷"}
           </Card.Text>
-          <Card.Text>{animal.happenDt.toString().replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')}</Card.Text>
-          
-          <Card.Text><BiMap/>{animal.orgNm}</Card.Text>
+          <Card.Text>
+            {animal.happenDt
+              .toString()
+              .replace(/(\d{4})(\d{2})(\d{2})/g, "$1-$2-$3")}
+          </Card.Text>
+
+          <Card.Text>
+            <BiMap />
+            {animal.orgNm}
+          </Card.Text>
         </Card.Body>
       </Card>
     </>

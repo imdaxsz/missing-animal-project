@@ -8,6 +8,7 @@ import AnimalDetailView from "./pages/AnimalDetailView/AnimalDetailViewContainer
 import UserPage from "./pages/UserPage/UserPageContainer";
 import { createGlobalStyle } from "styled-components";
 import { Link, Route, Switch } from "react-router-dom";
+import { useEffect } from "react";
 const GlobalStyle = createGlobalStyle`
   body{
     max-width:500px;
@@ -33,11 +34,16 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 function App() {
+  const exclusionArray = [
+    '/user_page',
+    '/another-path',
+  ]
+  
   return (
     <>
       <GlobalStyle />
       <Header></Header>
-      <MainMenu></MainMenu>
+      <MainMenu/>
       <Route exact path="/">
         <Main />
       </Route>

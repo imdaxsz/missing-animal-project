@@ -37,11 +37,11 @@ const StyledSideBar = styled.div`
   top: 0;
   overflow: hidden;
   transition: 0.3s all;
-  width:70%;
+  width: 70%;
 
   @media screen and (min-width: 850px) {
-   /* 데스크탑에서 사용될 스타일을 여기에 작성합니다. */
-   width:40%;
+    /* 데스크탑에서 사용될 스타일을 여기에 작성합니다. */
+    width: 40%;
   }
   ul {
     list-style: none;
@@ -56,7 +56,6 @@ const StyledSideBar = styled.div`
         background-color: #00a059;
         cursor: pointer;
         color: white;
-        
       }
     }
   }
@@ -65,12 +64,13 @@ const StyledSideBar = styled.div`
     props.mode === "open"
       ? css`
           right: 0%;
-          box-shadow : rgba(0,0,0,0.5) 0 0 0 9999px;
-          z-index : 100;
+          box-shadow: rgba(0, 0, 0, 0.5) 0 0 0 9999px;
+          z-index: 100;
         `
       : css`
-          right:-100%
+          right: -100%;
         `};
+    
 `;
 function HeaderPresenter({ mode, switchMode }) {
   return (
@@ -88,12 +88,15 @@ function HeaderPresenter({ mode, switchMode }) {
         </div>
         <StyledSideBar mode={mode}>
           <ul>
-            <li>
-              <IconContainer>
-                <FiUser />
-              </IconContainer>
-              사용자정보
-            </li>
+            <Link to="/user_page">
+              <li>
+                <IconContainer>
+                  <FiUser />
+                </IconContainer>
+                사용자정보
+              </li>
+            </Link>
+
             <li>
               <IconContainer>
                 <FiMapPin />
