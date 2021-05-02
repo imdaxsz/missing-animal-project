@@ -3,8 +3,9 @@ import Main from "./pages/Main/MainContainer";
 import WritePost from "./pages/WritePost/WritePostContainer";
 import Header from "./components/Header/HeaderContainer";
 import MainMenu from "./components/MainMenu/MainMenuContainer";
-import ShelterAnimalList from "./pages/Shelter/ShelterAnimalListContainer"
-import AnimalDetailView from "./pages/AnimalDetailView/AnimalDetailViewContainer"
+import ShelterAnimalList from "./pages/Shelter/ShelterAnimalListContainer";
+import AnimalDetailView from "./pages/AnimalDetailView/AnimalDetailViewContainer";
+import UserPage from "./pages/UserPage/UserPageContainer";
 import { createGlobalStyle } from "styled-components";
 import { Link, Route, Switch } from "react-router-dom";
 const GlobalStyle = createGlobalStyle`
@@ -37,10 +38,21 @@ function App() {
       <GlobalStyle />
       <Header></Header>
       <MainMenu></MainMenu>
-      <Route exact path="/"><Main /></Route>
-      <Route path="/writePost"><WritePost/> </Route>
-      <Route path="/shelter"><ShelterAnimalList/> </Route>
-      <Route path="/animal_detail"><AnimalDetailView/></Route>
+      <Route exact path="/">
+        <Main />
+      </Route>
+      <Route path="/writePost">
+        <WritePost />{" "}
+      </Route>
+      <Route path="/shelter">
+        <ShelterAnimalList />{" "}
+      </Route>
+      <Route path="/animal_detail">
+        <AnimalDetailView />
+      </Route>
+      <Route path="/user_page">
+        <UserPage />
+      </Route>
     </>
   );
 }
