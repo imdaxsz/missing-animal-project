@@ -3,8 +3,8 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import { Card, Row, Col,Form } from "react-bootstrap";
 import { BiMap } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import styled from 'styled-components'
-
+import Masonry from 'react-masonry-css'
+import "./ShelterAnimal.css"
 function ShelterAnimalListPresenter({ ShelterAnimalData , AreaSelectChange }) {
   return (
     <div className="wrapper">
@@ -20,17 +20,15 @@ function ShelterAnimalListPresenter({ ShelterAnimalData , AreaSelectChange }) {
         </Form.Control>
       </Form.Group>
       <SearchBar />
-      <Row md={2} xs={2} xl={2} lg={2} >
+      <Masonry breakpointCols={2} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
         {ShelterAnimalData.map(function (animal, index) {
           return (
-            <Col key={index}>
-              <Link to="/animal_detail">
+              <Link to="/animal_detail" key={index}>
                 <AnimalCard animal={animal} index={index}></AnimalCard>
               </Link>
-            </Col>
           );
         })}
-      </Row>
+      </Masonry>
     </div>
   );
 }
