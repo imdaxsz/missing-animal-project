@@ -3,6 +3,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import { Card, Row, Col,Form } from "react-bootstrap";
 import { BiMap } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import styled from 'styled-components'
 
 function ShelterAnimalListPresenter({ ShelterAnimalData , AreaSelectChange }) {
   return (
@@ -19,7 +20,7 @@ function ShelterAnimalListPresenter({ ShelterAnimalData , AreaSelectChange }) {
         </Form.Control>
       </Form.Group>
       <SearchBar />
-      <Row md={2} xs={2} xl={2} lg={2}>
+      <Row md={2} xs={2} xl={2} lg={2} >
         {ShelterAnimalData.map(function (animal, index) {
           return (
             <Col key={index}>

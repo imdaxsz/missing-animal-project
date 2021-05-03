@@ -6,7 +6,6 @@ function ShelterAnimalListContainer() {
   const serviceKey ="g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D";
   const URL = `http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?&pageNo=1&numOfRows=30&ServiceKey=${serviceKey}`
 
-  const [areaURL , setAreaURL] = useState(URL);
   function fetchData(url) {
     axios
       .get(url)
@@ -27,7 +26,6 @@ function ShelterAnimalListContainer() {
       tempURL = URL;
     }
     else{
-      console.log(select)
       if (select === "서울특별시") {
         areaCode = 6110000;
       }
@@ -42,9 +40,8 @@ function ShelterAnimalListContainer() {
       }
       tempURL = URL + `&upr_cd=${areaCode}`;
     }
-    setAreaURL(tempURL);
-    fetchData(areaURL);
-    console.log(areaURL);
+    fetchData(tempURL);
+
   }
   useEffect(() => {
     fetchData(URL);
