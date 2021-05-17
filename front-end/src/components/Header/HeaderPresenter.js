@@ -70,7 +70,6 @@ const StyledSideBar = styled.div`
       : css`
           right: -100%;
         `};
-    
 `;
 function HeaderPresenter({ mode, switchMode }) {
   return (
@@ -103,12 +102,14 @@ function HeaderPresenter({ mode, switchMode }) {
               </IconContainer>
               내 동네 설정
             </li>
-            <li>
-              <IconContainer>
-                <BiInfoCircle />
-              </IconContainer>
-              유기 동물 보호소 정보
-            </li>
+            <Link to="/shelter_info">
+              <li>
+                <IconContainer>
+                  <BiInfoCircle />
+                </IconContainer>
+                유기 동물 보호소 정보
+              </li>
+            </Link>
             <li>
               <IconContainer>
                 <FiSettings />

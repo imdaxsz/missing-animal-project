@@ -6,6 +6,7 @@ import MainMenu from "./components/MainMenu/MainMenuContainer";
 import ShelterAnimalList from "./pages/Shelter/ShelterAnimalListContainer";
 import AnimalDetailView from "./pages/AnimalDetailView/AnimalDetailViewContainer";
 import UserPage from "./pages/UserPage/UserPageContainer";
+import ShelterrInfo from "./pages/ShelterInfo/ShelterInfoContainer"
 import { createGlobalStyle } from "styled-components";
 import { Link, Route, Switch } from "react-router-dom";
 import { useEffect } from "react";
@@ -58,6 +59,9 @@ function App() {
       </Route>
       <Route path="/user_page">
         <UserPage />
+      </Route>
+      <Route path="/shelter_info">
+        <ShelterrInfo/>
       </Route>
     </>
   );
