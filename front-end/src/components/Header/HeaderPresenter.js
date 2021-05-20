@@ -123,7 +123,7 @@ function HeaderPresenter({ mode, switchMode, isLogin, googleLogin, googleLogout 
                 </IconContainer>
                 실시간 키워드 알림 설정
               </li>
-              <li onClick={googleLogin}>
+              <li onClick={googleLogout}>
                 <IconContainer>
                   <FiLogOut />
                 </IconContainer>
@@ -132,7 +132,7 @@ function HeaderPresenter({ mode, switchMode, isLogin, googleLogin, googleLogout 
             </ul>
           ) : (
             <ul>
-              <li onClick={googleLogout}>
+              <li onClick={googleLogin}>
                 <IconContainer>
                   <FiLogIn />
                 </IconContainer>

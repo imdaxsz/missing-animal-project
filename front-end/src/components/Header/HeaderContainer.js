@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import HeaderPresenter from "./HeaderPresenter";
+import firebase from "firebase";
+
 function HeaderContainer() {
   const [mode, setMode] = useState("close");
   const [isLogin, setIsLogin] = useState("logout");
@@ -17,31 +19,30 @@ function HeaderContainer() {
       .signOut()
       .then(() => {
         // Sign-out successful.
+        setIsLogin("logout");
       })
       .catch((error) => {
         // An error happened.
       });
-      setIsLogin("logout");
+
     a;
   }
   function googleLogin() {
     var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithRedirect(provider);
+    provider.setCustomParameters({
+      login_hint: "user@example.com",
+      prompt: "select_account",
+    });
     firebase
       .auth()
-      .getRedirectResult()
+      .signInWithPopup(provider)
       .then((result) => {
-        if (result.credential) {
-          /** @type {firebase.auth.OAuthCredential} */
-          var credential = result.credential;
-
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          var token = credential.accessToken;
-          // ...
-        }
-        // The signed-in user info.
+        var credential = result.credential;
+        var token = credential.accessToken;
         var user = result.user;
+        console.log(user);
         setIsLogin("login");
+        // ...
       })
       .catch((error) => {
         // Handle Errors here.
@@ -52,6 +53,7 @@ function HeaderContainer() {
         // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
         // ...
+        console.log(errorCode , "dsads",errorMessage)
       });
   }
 
