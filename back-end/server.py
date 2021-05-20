@@ -22,6 +22,17 @@ def find_sido_code(sido):
             return k
     return "There is no such Key"
 
+def find_sigungu_code(upr_cd, sigungu):
+    keylist = list(sido_code)
+    for k in keylist:
+        if upr_cd == k:
+            tempdict = sido_code[k]
+            break
+    for k in tempdict:
+        if sigungu == tempdict[k]:
+            return k
+    return "There is no such Key"
+
 def get_sigungu():
     sidokey = list(sido_code)
     sido_list = []
@@ -62,27 +73,26 @@ def hello_world():
     return "hello"
 
 
-@app.route('/shelter/animal', methods=['GET']) #유기동물 정보조회
+@app.route('/shelter/animal') #유기동물 정보조회
 def shelter_animal():
-    if request.method == 'GET':
-        # 보호소 유기동물 정보
-        url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?pageNo=1&numOfRows=10'
-        queryParams = '&' + urlencode({quote_plus(
-            'ServiceKey'): 'g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D'})
+    # 보호소 유기동물 정보
+    url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?pageNo=1&numOfRows=10'
+    queryParams = '&' + urlencode({quote_plus(
+        'ServiceKey'): 'g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D'})
 
-        request = urllib.request.Request(url + unquote(queryParams))
-        print('Your Request:\n' + url + queryParams)
-        request.get_method = lambda: 'GET'
-        response_body = urlopen(request).read()
+    request = urllib.request.Request(url + unquote(queryParams))
+    print('Your Request:\n' + url + queryParams)
+    request.get_method = lambda: 'GET'
+    response_body = urlopen(request).read()
 
-        result = xmltodict.parse(response_body)
-        dict = json.loads(json.dumps(result))
-        dict['header'] = 1
-        return dict
+    result = xmltodict.parse(response_body)
+    dict = json.loads(json.dumps(result))
+    dict['header'] = 1
+    return dict
 
 
 @app.route('/shelter/animal/<sido>') #시도별 유기동물 정보 조회
-def shelter(sido):
+def shelter_sido(sido):
     code = find_sido_code(sido)
     print("code:", code)
     url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?upr_cd=' + code + '&pageNo=1&numOfRows=10'
@@ -98,6 +108,28 @@ def shelter(sido):
     dict = json.loads(json.dumps(result))
     dict['header'] = 1
     return dict
+
+
+@app.route('/shelter/animal/<sido>/<sigungu>') #시군구별 유기동물 정보 조회
+def shelter_sigungu(sido, sigungu):
+    upr_cd = find_sido_code(sido)
+    org_cd = find_sigungu_code(upr_cd, sigungu)
+    print(upr_cd, org_cd)
+    url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?upr_cd=' + upr_cd +\
+          '&org_cd=' + org_cd + '&pageNo=1&numOfRows=10'
+    queryParams = '&' + urlencode({quote_plus(
+        'ServiceKey'): 'g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D'})
+
+    request = urllib.request.Request(url + unquote(queryParams))
+    print('Your Request:\n' + url + queryParams)
+    request.get_method = lambda: 'GET'
+    response_body = urlopen(request).read()
+
+    result = xmltodict.parse(response_body)
+    dict = json.loads(json.dumps(result))
+    dict['header'] = 1
+    return dict
+    return "hmmmm"
 
 
 @app.route('/test', methods=['POST'])
