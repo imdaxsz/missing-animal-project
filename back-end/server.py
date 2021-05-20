@@ -1,5 +1,4 @@
 from flask import Flask, request
-from flask_cors import CORS
 from urllib.request import urlopen
 from urllib.parse import urlencode, unquote, quote_plus
 import urllib
@@ -44,7 +43,7 @@ def get_sigungu():
             'ServiceKey'): 'g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D'})
 
         request = urllib.request.Request(url + unquote(queryParams))
-        print('Your Request:\n' + url + queryParams)
+        #print('Your Request:\n' + url + queryParams)
         request.get_method = lambda: 'GET'
         response_body = urlopen(request).read()
 
@@ -140,5 +139,6 @@ def test_post():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=3000, ssl_context=('cert.pem', 'key.pem'))
+    #app.run(host='0.0.0.0', port=3000)
 
