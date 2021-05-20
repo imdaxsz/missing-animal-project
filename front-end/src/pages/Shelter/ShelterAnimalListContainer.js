@@ -3,27 +3,27 @@ import ShelterAnimalListPresenter from "./ShelterAnimalListPresenter";
 import axios from "axios";
 function ShelterAnimalListContainer() {
   const [ShelterAnimalData, setShelterAnimalData] = useState([]);
-  const URL = "http://192.168.234.178:5000/shelter/animal"
+  const URL = "https://113.59.178.173:5000/shelter/animal";
 
   function fetchData(select) {
-    let tempURL=URL
-    if (select !== "전체"){
-      tempURL += ("/"+select)
-    } 
-    console.log(tempURL)
+    let tempURL = URL;
+    if (select !== "전체") {
+      tempURL += "/" + select;
+    }
+    console.log(tempURL);
     axios
-    .get(tempURL)
-    .then((res) => {
-      setShelterAnimalData(res.data.response.body.items.item);
-      console.log(res.data.response.body.items.item);
-    })
-    .catch((err) => {
-      console.log(err);
-      console.log("데이터 로드 실패");
-    });
+      .get(tempURL)
+      .then((res) => {
+        setShelterAnimalData(res.data.response.body.items.item);
+        console.log(res.data.response.body.items.item);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("데이터 로드 실패");
+      });
   }
   function AreaSelectChange(select) {
-    fetchData(select)
+    fetchData(select);
   }
   useEffect(() => {
     fetchData("전체");
