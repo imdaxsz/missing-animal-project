@@ -8,19 +8,17 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
+app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
+
 # Firebase database 인증 및 앱 초기화
 cred = credentials.Certificate('missing-animal-project-firebase-adminsdk-mcp27-1361100ab3.json')
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://missing-animal-project-default-rtdb.firebaseio.com/'
 })
 
-dir = db.reference()  # 기본 위치 지정
-dir.update({'자동차': '기아'})
 
-
-app = Flask(__name__)
-app.config['JSON_AS_ASCII'] = False
-
+# 지역 코드
 sido_code = {'6110000':{'6110000':'서울특별시'}, '6260000':{'6260000':'부산광역시'}, '6270000':{'6270000':'대구광역시'}, '6280000':{'6280000':'인천광역시'},
              '6290000':{'6290000':'광주광역시'}, '5690000':{'5690000':'세종특별자치시'}, '6300000':{'6300000':'대전광역시'}, '6310000':{'6310000':'울산광역시'},
              '6410000':{'6410000':'경기도'}, '6420000':{'6420000':'강원도'}, '6430000':{'6430000':'충청북도'}, '6440000':{'6440000':'충청남도'},
@@ -75,8 +73,8 @@ def get_sigungu():
     return sido_code
 
 get_sigungu()
-print("결과:")
-print(sido_code)
+#print("결과:")
+#print(sido_code)
 
 
 # 지역 코드 json 저장
@@ -113,6 +111,9 @@ def shelter_animal():
 def shelter_sido(sido):
     code = find_sido_code(sido)
     print("code:", code)
+    path = '지역코드/' + code + "/" + code
+    dir = db.reference(path)
+    print("db 결과:", dir.get())
     url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?upr_cd=' + code + '&pageNo=1&numOfRows=10'
     queryParams = '&' + urlencode({quote_plus(
         'ServiceKey'): 'g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D'})
@@ -133,6 +134,9 @@ def shelter_sigungu(sido, sigungu):
     upr_cd = find_sido_code(sido)
     org_cd = find_sigungu_code(upr_cd, sigungu)
     print(upr_cd, org_cd)
+    path = '지역코드/' + upr_cd + "/" + org_cd
+    dir = db.reference(path)
+    print("db 결과:", dir.get())
     url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?upr_cd=' + upr_cd +\
           '&org_cd=' + org_cd + '&pageNo=1&numOfRows=10'
     queryParams = '&' + urlencode({quote_plus(
@@ -157,6 +161,6 @@ def test_post():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, ssl_context=('cert.pem', 'key.pem'))
-    #app.run(host='0.0.0.0', port=3000)
+    #app.run(host='0.0.0.0', port=3000, ssl_context=('cert.pem', 'key.pem'))
+    app.run(host='0.0.0.0', port=3000)
 
