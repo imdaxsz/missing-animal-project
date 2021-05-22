@@ -4,6 +4,19 @@ from urllib.parse import urlencode, unquote, quote_plus
 import urllib
 import json
 import xmltodict
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+
+# Firebase database 인증 및 앱 초기화
+cred = credentials.Certificate('missing-animal-project-firebase-adminsdk-mcp27-1361100ab3.json')
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://missing-animal-project-default-rtdb.firebaseio.com/'
+})
+
+dir = db.reference()  # 기본 위치 지정
+dir.update({'자동차': '기아'})
+
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -43,7 +56,6 @@ def get_sigungu():
             'ServiceKey'): 'g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D'})
 
         request = urllib.request.Request(url + unquote(queryParams))
-        #print('Your Request:\n' + url + queryParams)
         request.get_method = lambda: 'GET'
         response_body = urlopen(request).read()
 
@@ -65,6 +77,13 @@ def get_sigungu():
 get_sigungu()
 print("결과:")
 print(sido_code)
+
+
+# 지역 코드 json 저장
+file = open("./Region.json", "w", encoding="UTF-8")
+with open('Region.json', 'w', encoding='utf-8') as file:
+    json.dump(sido_code, file, ensure_ascii=False, indent="\t")
+file.close()
 
 
 @app.route('/')
@@ -128,7 +147,6 @@ def shelter_sigungu(sido, sigungu):
     dict = json.loads(json.dumps(result))
     dict['header'] = 1
     return dict
-    return "hmmmm"
 
 
 @app.route('/test', methods=['POST'])
@@ -139,6 +157,6 @@ def test_post():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3000, ssl_context=('cert.pem', 'key.pem'))
+    app.run(host='0.0.0.0', port=5000, ssl_context=('cert.pem', 'key.pem'))
     #app.run(host='0.0.0.0', port=3000)
 
