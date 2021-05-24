@@ -35,10 +35,6 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 function App() {
-  const exclusionArray = [
-    '/user_page',
-    '/another-path',
-  ]
   
   return (
     <>

@@ -1,19 +1,22 @@
 import React from "react";
 import styled from "styled-components";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import {
   AiOutlineMan,
   AiOutlineWoman,
   AiOutlineQuestion,
 } from "react-icons/ai";
 
+const StyledLabel = styled.p`
+  margin-bottom: 0 !important;
+`;
 const StyledTextInput = styled.input`
-  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  padding-left: 10px;
+  height: 40px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
 `;
-const StyledTextLabel = styled.span`
-  padding-right: 10px;
-`;
-
 const StyledButton = styled.button`
   width: 100%;
   height: 40px;
@@ -44,56 +47,53 @@ const PostWriteButton = styled.button`
   max-width: 500px;
   width: 100%;
 `;
-function WritePostPresenter() {
+
+
+function WritePostPresenter({ createPost, selectPostType, postType}) {
   return (
     <div>
       <div className="wrapper">
         <h3>새 게시글 작성</h3>
         <hr />
         <div>
-          <Form.Group as={Row} controlId="formHorizontalEmail">
-            <Form.Label column sm={2}>
-              제목
-            </Form.Label>
+          <Row className="mb-3" style={{"alignItems":"center"}}>
+            <Col sm={2}>
+              <StyledLabel>제목</StyledLabel>
+            </Col>
             <Col sm={10}>
-              <Form.Control
+              <StyledTextInput
                 type="email"
                 placeholder="게시글 제목을 입력하세요"
-              />
+              ></StyledTextInput>
             </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label column sm={2} xs={12}>
-              게시글 종류
-            </Form.Label>
-            <Col sm={3} xs={4}>
-              <StyledButton>실종 신고</StyledButton>
+          </Row>
+          <Row className="mb-3" style={{"alignItems":"center"}}>
+            <Col sm={2}>
+              <StyledLabel>게시글 종류</StyledLabel>
             </Col>
             <Col sm={3} xs={4}>
-              <StyledButton>임시 보호</StyledButton>
+              <StyledButton value="실종신고" onClick={(e)=>{selectPostType(e.target.value)}}>실종 신고</StyledButton>
             </Col>
             <Col sm={3} xs={4}>
-              <StyledButton>목격 제보</StyledButton>
+              <StyledButton value="임시보호" onClick={(e)=>{selectPostType(e.target.value)}}>임시 보호</StyledButton>
             </Col>
-          </Form.Group>
-
-          <hr />
-          <Form.Group as={Row} controlId="formHorizontalEmail">
-            <Form.Label column sm={2}>
-              품종
-            </Form.Label>
+            <Col sm={3} xs={4}>
+              <StyledButton value="목격제보" onClick={(e)=>{selectPostType(e.target.value)}}>목격 제보</StyledButton>
+            </Col>
+          </Row>
+          <Row className="mb-3" style={{"alignItems":"center"}}>
+            <Col sm={2}>
+              <StyledLabel>품종</StyledLabel>
+            </Col>
             <Col sm={10}>
-              <Form.Control
-                type="email"
-                placeholder="ex. 코리안숏헤어, 닥스훈트, 모란앵무.."
-              />
+              <StyledTextInput placeholder="ex. 코리안숏헤어, 닥스훈트, 모란앵무.."></StyledTextInput>
             </Col>
-          </Form.Group>
-          <Form.Group as={Row}>
-            <Form.Label as="legend" column sm={2} xs={12}>
-              성별
-            </Form.Label>
+          </Row>
+          <hr />
+          <Row className="mb-3" style={{"alignItems":"center"}}>
+            <Col sm={2}>
+              <StyledLabel>게시글 종류</StyledLabel>
+            </Col>
             <Col sm={3} xs={4}>
               <StyledButton>
                 <AiOutlineMan />
@@ -112,119 +112,194 @@ function WritePostPresenter() {
                 미확인
               </StyledButton>
             </Col>
-          </Form.Group>
-          <Form.Group as={Row}>
-            <Form.Label column sm={2}>
-              나이
-            </Form.Label>
-            <Col sm={4}>
-              <Form.Control type="number" placeholder="동물의 나이" />
+          </Row>
+          <Row className="mb-3" style={{"alignItems":"center"}}>
+            <Col sm={2}>
+              <StyledLabel>나이</StyledLabel>
             </Col>
-            <Form.Label column sm={2}>
-              몸무게
-            </Form.Label>
             <Col sm={4}>
-              <Form.Control type="number" placeholder="동물의 몸무게" />
+              <StyledTextInput type="number" placeholder="동물의 나이" />
             </Col>
-          </Form.Group>
+            <Col sm={2}>몸무게</Col>
+            <Col sm={4}>
+              <StyledTextInput type="number" placeholder="동물의 몸무게" />
+            </Col>
+          </Row>
 
-          <Form.Group as={Row} controlId="formHorizontalEmail">
-            <Form.Label column sm={2}>
-              털색
-            </Form.Label>
+          <Row className="mb-3" style={{"alignItems":"center"}}>
+            <Col sm={2}>
+              <StyledLabel>털색</StyledLabel>
+            </Col>
             <Col sm={10}>
-              <Form.Control
+              <StyledTextInput
                 type="text"
                 placeholder="동물의 털색을 입력하세요"
               />
             </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} controlId="formHorizontalEmail">
-            <Form.Label column sm={2}>
-              특징
-            </Form.Label>
+          </Row>
+          <Row className="mb-3" style={{"alignItems":"center"}}>
+            <Col sm={2}>
+              <StyledLabel>특징</StyledLabel>
+            </Col>
             <Col sm={10}>
-              <Form.Control
+              <StyledTextInput
                 type="text"
                 placeholder="눈에띄는 동물의 특징을 입력하세요"
               />
             </Col>
-          </Form.Group>
-
+          </Row>
           <hr />
-
-          <div>
-            <Form.Group as={Row} controlId="formHorizontalEmail">
-              <Form.Label column sm={2}>
-                목격 일시
-              </Form.Label>
+          { postType === "목격제보"?
+          ( <div>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>목격 일시</Col>
               <Col sm={10}>
-                <Form.Control type="date" />
+                <StyledTextInput type="date" />
               </Col>
-            </Form.Group>
-
-            <Form.Group as={Row}>
-              <Form.Label column sm={2}>
-                목격 지역
-              </Form.Label>
+            </Row>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>목격 지역</Col>
               <Col sm={5}>
-                <Form.Control as="select" custom>
+                <select style={{"width":"100%"}}>
                   <option>경상북도</option>
                   <option>2</option>
                   <option>3</option>
                   <option>4</option>
                   <option>5</option>
-                </Form.Control>
+                </select>
               </Col>
               <Col sm={5}>
-                <Form.Control as="select" custom>
+                <select style={{"width":"100%"}}> 
                   <option>구미시</option>
                   <option>2</option>
                   <option>3</option>
                   <option>4</option>
                   <option>5</option>
-                </Form.Control>
+                </select>
               </Col>
-            </Form.Group>
-            <Form.Group as={Row} controlId="formHorizontalEmail">
-              <Form.Label column sm={2}>
-                상세 장소
-              </Form.Label>
+            </Row>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>상세 장소</Col>
               <Col sm={10}>
-                <Form.Control
+                <StyledTextInput
                   type="text"
                   placeholder="목격하신 장소의 상세 위치를 적어주세요"
                 />
               </Col>
-            </Form.Group>
-            <Form.Group as={Row} controlId="formHorizontalEmail">
-              <Form.Label column sm={2}>
-                연락처
-              </Form.Label>
+            </Row>
+          </div>) : null
+          }
+          {postType === "실종신고"?
+          ( <div>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>실종 일시</Col>
               <Col sm={10}>
-                <Form.Control type="text" placeholder="ex. 010-0000-0000" />
+                <StyledTextInput type="date" />
               </Col>
-            </Form.Group>
-            <hr />
-            <Form.Group as={Row} controlId="formHorizontalEmail">
-              <Form.Label column sm={2}>
-                본문
-              </Form.Label>
+            </Row>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>실종 지역</Col>
+              <Col sm={5}>
+                <select style={{"width":"100%"}}>
+                  <option>경상북도</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </Col>
+              <Col sm={5}>
+                <select style={{"width":"100%"}}> 
+                  <option>구미시</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </Col>
+            </Row>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>상세 장소</Col>
               <Col sm={10}>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  placeholder="덧붙일 본문을 적어주세요."
+                <StyledTextInput
+                  type="text"
+                  placeholder="실종된 장소의 상세 위치를 적어주세요"
                 />
               </Col>
-            </Form.Group>
-            <hr />
-            <p>사진 첨부파일 등록 칸 예정</p>
-          </div>
+            </Row>
+          </div>):null}
+          {postType === "임시보호"?
+          ( <div>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>발견 일시</Col>
+              <Col sm={10}>
+                <StyledTextInput type="date" />
+              </Col>
+            </Row>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>발견 지역</Col>
+              <Col sm={5}>
+                <select style={{"width":"100%"}}>
+                  <option>경상북도</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </Col>
+              <Col sm={5}>
+                <select style={{"width":"100%"}}> 
+                  <option>구미시</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </Col>
+            </Row>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>상세 장소</Col>
+              <Col sm={10}>
+                <StyledTextInput
+                  type="text"
+                  placeholder="발견된 장소의 상세 위치를 적어주세요"
+                />
+              </Col>
+            </Row>
+          </div>):null}
+         
+          <Row className="mb-3" style={{"alignItems":"center"}}>
+            <Col sm={2}>
+              <StyledLabel>연락처</StyledLabel>
+            </Col>
+            <Col sm={10}>
+              <StyledTextInput type="text" placeholder="ex. 010-0000-0000" />
+            </Col>
+          </Row>
+          <Row className="mb-3" style={{"alignItems":"center"}}>
+            <Col sm={2}>
+              <StyledLabel>본문</StyledLabel>
+            </Col>
+            <Col sm={10}>
+              <textarea
+                as="textarea"
+                rows={3}
+                placeholder="덧붙일 본문을 적어주세요."
+                style={{"width":"100%"}}
+              />
+            </Col>
+          </Row>
+          <Row className="mb-3" style={{"alignItems":"center"}}>
+            <Col sm={2}>
+              <StyledLabel>사진 첨부</StyledLabel>
+            </Col>
+            <Col sm={10}>
+              <input type="file" />
+            </Col>
+          </Row>
         </div>
       </div>
-      <PostWriteButton>작성완료</PostWriteButton>
+      <PostWriteButton onClick={createPost}>작성완료</PostWriteButton>
     </div>
   );
 }
