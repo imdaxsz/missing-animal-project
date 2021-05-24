@@ -7,8 +7,10 @@ import xmltodict
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r'*': {'origins': '*'}})
 app.config['JSON_AS_ASCII'] = False
 
 # Firebase database 인증 및 앱 초기화
@@ -73,9 +75,6 @@ def get_sigungu():
     return sido_code
 
 get_sigungu()
-#print("결과:")
-#print(sido_code)
-
 
 # 지역 코드 json 저장
 file = open("./Region.json", "w", encoding="UTF-8")
