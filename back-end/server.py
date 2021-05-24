@@ -27,6 +27,7 @@ sido_code = {'6110000':{'6110000':'서울특별시'}, '6260000':{'6260000':'부�
              '6450000':{'6450000':'전라북도'}, '6460000':{'6460000':'전라남도'}, '6470000':{'6470000':'경상북도'}, '6480000':{'6480000':'경상남도'},
                                                       '6500000':{'6500000':'제주특별자치도'}}
 
+# 시도 코드 검색
 def find_sido_code(sido):
     keylist = list(sido_code)
     for k in keylist:
@@ -34,6 +35,7 @@ def find_sido_code(sido):
             return k
     return "There is no such Key"
 
+# 시군구 코드 검색
 def find_sigungu_code(upr_cd, sigungu):
     keylist = list(sido_code)
     for k in keylist:
@@ -45,6 +47,8 @@ def find_sigungu_code(upr_cd, sigungu):
             return k
     return "There is no such Key"
 
+
+# api로부터 시군구 코드 가져와서 저장
 def get_sigungu():
     sidokey = list(sido_code)
     sido_list = []
