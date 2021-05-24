@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import WritePostPresenter from "./WritePostPresenter";
 import axios from "axios";
+import ip from '../../ipConfig.json'
 function WritePostContainer() {
+
   const [postType, setPostType] = useState("실종신고");
   function selectPostType(select){
-    console.log(select)
-    setPostType(select)
-    console.log(postType)
+    setPostType(select);
   }
+  useEffect(() => {
+    console.log('변경감지')
+    console.log(postType)
+  }, [postType]);
   function createPost() {
     const formdata = new FormData();
 
@@ -19,7 +23,7 @@ function WritePostContainer() {
       },
     };
     axios
-      .post("http://192.168.234.178:5000/test", formdata, config)
+      .post((ip['ip']+"/test"), formdata, config)
       .then(function (response) {
         console.log(response);
       })
@@ -33,6 +37,7 @@ function WritePostContainer() {
       <WritePostPresenter
         createPost={createPost}
         selectPostType={selectPostType}
+        postType={postType}
       ></WritePostPresenter>
     </>
   );

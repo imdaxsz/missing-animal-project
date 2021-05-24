@@ -49,7 +49,7 @@ const PostWriteButton = styled.button`
 `;
 
 
-function WritePostPresenter({ createPost, selectPostType}) {
+function WritePostPresenter({ createPost, selectPostType, postType}) {
   return (
     <div>
       <div className="wrapper">
@@ -149,7 +149,8 @@ function WritePostPresenter({ createPost, selectPostType}) {
             </Col>
           </Row>
           <hr />
-          <div>
+          { postType === "목격제보"?
+          ( <div>
             <Row className="mb-3" style={{"alignItems":"center"}}>
               <Col sm={2}>목격 일시</Col>
               <Col sm={10}>
@@ -186,7 +187,87 @@ function WritePostPresenter({ createPost, selectPostType}) {
                 />
               </Col>
             </Row>
-          </div>
+          </div>) : null
+          }
+          {postType === "실종신고"?
+          ( <div>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>실종 일시</Col>
+              <Col sm={10}>
+                <StyledTextInput type="date" />
+              </Col>
+            </Row>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>실종 지역</Col>
+              <Col sm={5}>
+                <select style={{"width":"100%"}}>
+                  <option>경상북도</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </Col>
+              <Col sm={5}>
+                <select style={{"width":"100%"}}> 
+                  <option>구미시</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </Col>
+            </Row>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>상세 장소</Col>
+              <Col sm={10}>
+                <StyledTextInput
+                  type="text"
+                  placeholder="실종된 장소의 상세 위치를 적어주세요"
+                />
+              </Col>
+            </Row>
+          </div>):null}
+          {postType === "임시보호"?
+          ( <div>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>발견 일시</Col>
+              <Col sm={10}>
+                <StyledTextInput type="date" />
+              </Col>
+            </Row>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>발견 지역</Col>
+              <Col sm={5}>
+                <select style={{"width":"100%"}}>
+                  <option>경상북도</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </Col>
+              <Col sm={5}>
+                <select style={{"width":"100%"}}> 
+                  <option>구미시</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </Col>
+            </Row>
+            <Row className="mb-3" style={{"alignItems":"center"}}>
+              <Col sm={2}>상세 장소</Col>
+              <Col sm={10}>
+                <StyledTextInput
+                  type="text"
+                  placeholder="발견된 장소의 상세 위치를 적어주세요"
+                />
+              </Col>
+            </Row>
+          </div>):null}
+         
           <Row className="mb-3" style={{"alignItems":"center"}}>
             <Col sm={2}>
               <StyledLabel>연락처</StyledLabel>

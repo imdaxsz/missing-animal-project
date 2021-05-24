@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ShelterAnimalListPresenter from "./ShelterAnimalListPresenter";
 import axios from "axios";
+import ip from '../../ipConfig.json'
 function ShelterAnimalListContainer() {
   const [ShelterAnimalData, setShelterAnimalData] = useState([]);
-  const URL = "https://113.59.178.173:5000/shelter/animal";
+  const URL = ip['ip']+"/shelter/animal";
 
   function fetchData(select) {
     let tempURL = URL;
