@@ -5,6 +5,8 @@ import requests
 from selenium import webdriver
 
 # 생성될 json파일
+from selenium.common.exceptions import NoSuchElementException
+
 file = open("./SeoulRescue.json", "w", encoding="UTF-8")
 
 # 데이터가 담길 Dictionary 및 index
@@ -15,6 +17,14 @@ chromedriver = 'C:\Webdriver\chromedriver.exe'
 driver = webdriver.Chrome(chromedriver)
 
 driver.get('http://www.karma.or.kr/human_boardA/animal_board.php?act=list&bid=animal&fid=55130&thread=AAAA&page=1&sn=0000055262')
+
+
+def uplodeData() :
+    with open('SeoulRescue.json', 'w', encoding='utf-8') as file:
+        json.dump(file_data, file, ensure_ascii=False, indent="\t")
+    file.close()
+    driver.quit()
+    exit()
 
 
 # 1page 크롤링
@@ -64,33 +74,49 @@ for i in range(1, 7):
 
 time.sleep(1)
 # 2페이지 크롤링
-for page in range(2,51):
+for page in range(2,100):
     print("page :", page)
     # 11, 21 등 다음 페이지로 넘어가야할 경우
     if page % 10 == 1:
         if page == 11:
-            nextpage = driver.find_element_by_css_selector('#pagingNav > a.img')
-            nextpage.click()
+            try:
+                nextpage = driver.find_element_by_css_selector('#pagingNav > a.img')
+                nextpage.click()
+            except NoSuchElementException:
+                uplodeData()
         else:
-            nextpage = driver.find_element_by_xpath('/html/body/div[4]/div/div[7]/a[11]')
-            nextpage.click()
+            try:
+                nextpage = driver.find_element_by_xpath('/html/body/div[4]/div/div[7]/a[11]')
+                nextpage.click()
+            except NoSuchElementException:
+                uplodeData()
 
     else:
         if page <= 10 :
-            nextpage = driver.find_element_by_css_selector('#pagingNav > a:nth-child('+ str(page)+')')
-       #elif page == 19:
-                #20페이지에 자꾸 10페이지로 돌아가는 이유는?
+            try:
+                nextpage = driver.find_element_by_css_selector('#pagingNav > a:nth-child('+ str(page)+')')
+            except NoSuchElementException:
+                uplodeData()
         elif page%10 == 0:
-            nextpage = driver.find_element_by_css_selector('#pagingNav > a:nth-child(11)')
+            try:
+                nextpage = driver.find_element_by_css_selector('#pagingNav > a:nth-child(11)')
+            except NoSuchElementException:
+                uplodeData()
         else:
             P = page
             temp = round(P%10+1)
-            nextpage = driver.find_element_by_css_selector('#pagingNav > a:nth-child('+ str(temp) +')')
+            try:
+                nextpage = driver.find_element_by_css_selector('#pagingNav > a:nth-child('+ str(temp) +')')
+            except NoSuchElementException:
+                uplodeData()
         nextpage.click()
     for i in range(1, 7):
         # 종, 성별, 나이, 몸무게, 특징, 털 색, 본문, 구조일(구조된 동물만 게시됨), 목격위치, 게시글종류코드, 지역 코드
-        type = driver.find_element_by_css_selector(
-            "body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(4)")
+        try:
+            type = driver.find_element_by_css_selector("body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(4)")
+        except NoSuchElementException:
+            uplodeData()
+
         sex = driver.find_elements_by_css_selector(
             "body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(5)")
         age = driver.find_elements_by_css_selector(
@@ -142,10 +168,3 @@ for page in range(2,51):
 
         rank = rank + 1
 
-
-with open('SeoulRescue.json', 'w', encoding='utf-8') as file:
-    json.dump(file_data, file, ensure_ascii=False, indent="\t")
-
-file.close()
-
-driver.quit()
