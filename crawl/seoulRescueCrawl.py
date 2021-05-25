@@ -7,6 +7,8 @@ from selenium import webdriver
 # 생성될 json파일
 from selenium.common.exceptions import NoSuchElementException
 
+import areaCode
+
 file = open("./SeoulRescue.json", "w", encoding="UTF-8")
 
 # 데이터가 담길 Dictionary 및 index
@@ -43,15 +45,15 @@ for i in range(1, 7):
     character = character_1[0].text + ", " + character_2[0].text + ", " + character_3[0].text
     color = driver.find_elements_by_css_selector("body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(7)")
     postCont = driver.find_elements_by_css_selector("body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(13)")
-    rescPlace = driver.find_element_by_css_selector("body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(3)")
+    detailPlace = driver.find_element_by_css_selector("body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(3)")
 
     # 구조된 동물 게시물이므로
     postCode = "resc"
-    sidoCode = "null"
-    sigungu = "null"
+    sidoCode, sigungu = areaCode.complex(detailPlace.text)
+
     # 날짜 입력이 2021-01-01 (SN:~~ 과같은 형태라 슬라이싱을 요함. 다듬기 전의 형태인 rescDateTmp
-    rescDateTmp = driver.find_elements_by_css_selector("body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(1) > i")[0].text
-    rescDate = rescDateTmp[0:4] + rescDateTmp[5:7] + rescDateTmp[8:10]
+    lostDateTmp = driver.find_elements_by_css_selector("body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(1) > i")[0].text
+    lostDate = lostDateTmp[0:4] + lostDateTmp[5:7] + lostDateTmp[8:10]
 
 
     #이미지 저장을 위한 코드
@@ -64,11 +66,23 @@ for i in range(1, 7):
     #      + postCont[0].text)
 
 
-    file_data[rank] = {'postId': rank, 'type' : type.text.split()[1], 'sex': sex[0].text.split()[1], 'age': age[0].text.split()[1],
-                       'weight': weight[0].text.split()[1], 'postImg': str("seoulRescueImg_" + str(rank)),
-                       'character': character, 'color': color[0].text.split()[1],
-                       'postCont': postCont[0].text, 'rescDate' : rescDate, 'rescPlace' : rescPlace.text, 'postCode' : postCode,
-                       'sidoCode': "null", 'sigunguCode' : "null"}
+    file_data[rank] = {'title': "보호중에 있습니다.",
+                       'postCode': postCode,
+                       'breed': type.text.split()[3],
+                       'sex': sex[0].text.split()[1],
+                       'classification' : type.text.split()[1],
+                       'age': age[0].text.split()[1],
+                       'weight': weight[0].text.split()[1],
+                       'character': character + "모색:" + color[0].text.split()[1],
+                       'lostDate': lostDate,
+                       'sidoCode': sidoCode,
+                       'sigunguCode': sigungu,
+                       'detailPlace': detailPlace.text,
+                       'postDate' : lostDate,
+                       'contact': "031-867-9119",
+                       'postCont': postCont[0].text,
+                       'postImg': str("seoulRescueImg_" + str(rank))
+                     }
     print(rank)
     rank = rank + 1
 
@@ -110,6 +124,7 @@ for page in range(2,100):
             except NoSuchElementException:
                 uplodeData()
         nextpage.click()
+
     for i in range(1, 7):
         # 종, 성별, 나이, 몸무게, 특징, 털 색, 본문, 구조일(구조된 동물만 게시됨), 목격위치, 게시글종류코드, 지역 코드
         try:
@@ -137,17 +152,17 @@ for page in range(2,100):
             "body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(7)")
         postCont = driver.find_elements_by_css_selector(
             "body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(13)")
-        rescPlace = driver.find_element_by_css_selector(
+        detailPlace = driver.find_element_by_css_selector(
             "body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(3)")
 
         # 구조된 동물 게시물이므로
         postCode = "resc"
-        sidoCode = "null"
-        sigungu = "null"
+        sidoCode, sigungu = areaCode.complex(detailPlace.text)
+
         # 날짜 입력이 2021-01-01 (SN:~~ 과같은 형태라 슬라이싱을 요함. 다듬기 전의 형태인 rescDateTmp
-        rescDateTmp = driver.find_elements_by_css_selector(
+        lostDateTmp = driver.find_elements_by_css_selector(
             "body > div.wrap_sub > div > div:nth-child(" + str(i) + ") > form > ul > li:nth-child(1) > i")[0].text
-        rescDate = rescDateTmp[0:4] + rescDateTmp[5:7] + rescDateTmp[8:10]
+        lostDate = lostDateTmp[0:4] + lostDateTmp[5:7] + lostDateTmp[8:10]
 
         # 이미지 저장을 위한 코드
         img = driver.find_elements_by_css_selector(
@@ -158,13 +173,22 @@ for page in range(2,100):
         file.close()
 
         print(rank)
-        file_data[rank] = {'postId': rank, 'type': type.text.split()[1], 'sex': sex[0].text.split()[1],
-                           'age': age[0].text.split()[1],
-                           'weight': weight[0].text.split()[1], 'postImg': str("seoulRescueImg_" + str(rank)),
-                           'character': character, 'color': color[0].text.split()[1],
-                           'postCont': postCont[0].text, 'rescDate': rescDate, 'rescPlace': rescPlace.text,
+        file_data[rank] = {'title': "보호중에 있습니다.",
                            'postCode': postCode,
-                           'sidoCode': "null", 'sigunguCode': "null"}
+                           'breed': type.text.split()[3],
+                           'sex': sex[0].text.split()[1],
+                           'classification': type.text.split()[1],
+                           'age': age[0].text.split()[1],
+                           'weight': weight[0].text.split()[1],
+                           'character': character + "모색:" + color[0].text.split()[1],
+                           'lostDate': lostDate,
+                           'sidoCode': sidoCode,
+                           'sigunguCode': sigungu,
+                           'detailPlace': detailPlace.text,
+                           'postDate': lostDate,
+                           'contact': "031-867-9119",
+                           'postCont': postCont[0].text,
+                           'postImg': str("seoulRescueImg_" + str(rank))
+                           }
 
         rank = rank + 1
-
