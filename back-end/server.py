@@ -127,7 +127,7 @@ def shelter_sido(sido):
     code = find_sido_code(sido)
     print("code:", code)
     path = '지역코드/' + code + "/" + code
-    print("db 결과:", db.child(path).get())
+    print("db 결과:", db.child(path).get().val())
     url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?upr_cd=' + code + '&pageNo=1&numOfRows=10'
     queryParams = '&' + urlencode({quote_plus(
         'ServiceKey'): 'g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D'})
@@ -149,7 +149,7 @@ def shelter_sigungu(sido, sigungu):
     org_cd = find_sigungu_code(upr_cd, sigungu)
     print(upr_cd, org_cd)
     path = '지역코드/' + upr_cd + "/" + org_cd
-    print("db 결과:", db.child(path).get())
+    print("db 결과:", db.child(path).get().val())
     url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?upr_cd=' + upr_cd +\
           '&org_cd=' + org_cd + '&pageNo=1&numOfRows=10'
     queryParams = '&' + urlencode({quote_plus(
