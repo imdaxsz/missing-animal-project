@@ -4,20 +4,31 @@ from urllib.parse import urlencode, unquote, quote_plus
 import urllib
 import json
 import xmltodict
-import firebase_admin
-from firebase_admin import credentials
+import os
+import pyrebase
 from firebase_admin import db
 from flask_cors import CORS
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 CORS(app, resources={r'*': {'origins': '*'}})
 app.config['JSON_AS_ASCII'] = False
 
-# Firebase database 인증 및 앱 초기화
-cred = credentials.Certificate('missing-animal-project-firebase-adminsdk-mcp27-1361100ab3.json')
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://missing-animal-project-default-rtdb.firebaseio.com/'
-})
+
+# Firebase database
+config = {
+  "apiKey": "AIzaSyCu2WRIIfu_o3-aHCoNWv6SJ1qnlbsS-Ic",
+  "authDomain": "missing-animal-project.firebaseapp.com",
+  "databaseURL": "https://missing-animal-project-default-rtdb.firebaseio.com",
+  "projectId": "missing-animal-project",
+  "storageBucket": "missing-animal-project.appspot.com",
+  "messagingSenderId": "327509368295",
+  "appId": "1:327509368295:web:ba84aeeede3a63d70ef142",
+  "measurementId": "G-70N5H0RJKV",
+};
+
+firebase = pyrebase.initialize_app(config)
+db = firebase.database()
 
 
 # 지역 코드
@@ -34,6 +45,7 @@ def find_sido_code(sido):
         if sido == sido_code[k][k]:
             return k
     return "There is no such Key"
+
 
 # 시군구 코드 검색
 def find_sigungu_code(upr_cd, sigungu):
@@ -115,8 +127,7 @@ def shelter_sido(sido):
     code = find_sido_code(sido)
     print("code:", code)
     path = '지역코드/' + code + "/" + code
-    dir = db.reference(path)
-    print("db 결과:", dir.get())
+    print("db 결과:", db.child(path).get())
     url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?upr_cd=' + code + '&pageNo=1&numOfRows=10'
     queryParams = '&' + urlencode({quote_plus(
         'ServiceKey'): 'g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D'})
@@ -138,8 +149,7 @@ def shelter_sigungu(sido, sigungu):
     org_cd = find_sigungu_code(upr_cd, sigungu)
     print(upr_cd, org_cd)
     path = '지역코드/' + upr_cd + "/" + org_cd
-    dir = db.reference(path)
-    print("db 결과:", dir.get())
+    print("db 결과:", db.child(path).get())
     url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?upr_cd=' + upr_cd +\
           '&org_cd=' + org_cd + '&pageNo=1&numOfRows=10'
     queryParams = '&' + urlencode({quote_plus(
@@ -163,7 +173,17 @@ def test_post():
       return value
 
 
+@app.route('/image', methods = ['POST'])
+def get_image():
+    if request.method == 'POST':
+        f = request.files['file']
+        path, ext = os.path.splitext(f.filename)
+        f.filename = "abcd"+ext
+        f.save(f'images/{secure_filename(f.filename)}')
+        return f.filename
+
+
 if __name__ == '__main__':
     #app.run(host='0.0.0.0', port=3000, ssl_context=('cert.pem', 'key.pem'))
-    app.run(host='0.0.0.0', port=3000)
+    app.run(host='0.0.0.0', port=80)
 
