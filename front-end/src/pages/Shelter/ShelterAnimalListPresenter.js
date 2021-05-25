@@ -5,18 +5,16 @@ import { BiMap } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import Masonry from 'react-masonry-css'
 import "./ShelterAnimal.css"
-function ShelterAnimalListPresenter({ ShelterAnimalData , AreaSelectChange }) {
+function ShelterAnimalListPresenter({ ShelterAnimalData , sidoList ,changeSidoCode}) {
   return (
     <div className="wrapper">
       <h3>보호소 보호 동물</h3>
       <Form.Group controlId="exampleForm.SelectCustomSizeLg">
         <Form.Label>지역 설정</Form.Label>
-        <Form.Control as="select" size="lg" custom onChange={(e)=>{AreaSelectChange(e.target.value)}}>
-          <option>전체</option>
-          <option>경상북도</option>
-          <option>전라북도</option>
-          <option>강원도</option>
-          <option>서울특별시</option>
+        <Form.Control as="select" size="lg" custom onChange={(e)=>{changeSidoCode(e.target.value)}}>
+          {sidoList.map((item,index)=>{
+            return (<option key={index}>{item}</option>)
+          })}
         </Form.Control>
       </Form.Group>
       <SearchBar />
