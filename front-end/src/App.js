@@ -6,7 +6,7 @@ import MainMenu from "./components/MainMenu/MainMenuContainer";
 import ShelterAnimalList from "./pages/Shelter/ShelterAnimalListContainer";
 import AnimalDetailView from "./pages/AnimalDetailView/AnimalDetailViewContainer";
 import UserPage from "./pages/UserPage/UserPageContainer";
-import ShelterrInfo from "./pages/ShelterInfo/ShelterInfoContainer"
+import ShelterrInfo from "./pages/ShelterInfo/ShelterInfoContainer";
 import { createGlobalStyle } from "styled-components";
 import { Link, Route, Switch } from "react-router-dom";
 import { useEffect } from "react";
@@ -35,12 +35,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 function App() {
-  
   return (
     <>
       <GlobalStyle />
       <Header></Header>
-      <MainMenu/>
+      <MainMenu />
       <Route exact path="/">
         <Main />
       </Route>
@@ -57,10 +56,9 @@ function App() {
         <UserPage />
       </Route>
       <Route path="/shelter_info">
-        <ShelterrInfo/>
+        <ShelterrInfo />
       </Route>
     </>
   );
 }
-
 export default App;

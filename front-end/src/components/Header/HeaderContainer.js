@@ -1,27 +1,50 @@
 import React, { useState, useEffect } from "react";
 import HeaderPresenter from "./HeaderPresenter";
 import firebase from "firebase";
-import { connect } from "react-redux";
+import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 
-function HeaderContainer(props) {
+import state from "../../store";
+
+function HeaderContainer() {
   const [mode, setMode] = useState("close");
-  const [isLogin, setIsLogin] = useState("logout");
+
+  const [userInfo, setUserInfo] = useRecoilState(state["userState"]);
+  const [isLogin, setIsLogin] = useRecoilState(state["loginState"]);
+  const [flag, setFlag] = useState(false);
   useEffect(() => {
+    console.log();
     firebase.auth().onAuthStateChanged((user) => {
+      setFlag(false);
       console.log("google auth 호출되었음");
       if (user) {
         console.log("로그인됨");
-        props.dispatch({ type: "setUserLogin", payload: user });
+        const userObj = {
+          email: user.email,
+          image: user.photoURL,
+          name: user.displayName,
+        };
+        setUserInfo(userObj);
+        setIsLogin("login");
       } else {
         console.log("로그인안됨");
-        props.dispatch({ type: "setUserLogout" });
-      }  
+        const initUserState = {
+          email: "test@test.com",
+          image: "tempURL",
+          name: "name",
+        };
+        setUserInfo(initUserState);
+        setIsLogin("logout");
+      }
+      setFlag(true);
     });
-  },[]);
-  useEffect(()=>{
-    setIsLogin(props.state['isLogin'])
-  },[props.state])
-  
+  }, []);
+  // 결과는 아래의 hook에서 조회 가능한듯
+  useEffect(() => {
+    if (flag === true) {
+      console.log(userInfo, isLogin);
+    }
+  }, [flag]);
+
   function switchMode() {
     if (mode === "open") {
       setMode("close");
@@ -35,7 +58,6 @@ function HeaderContainer(props) {
       .signOut()
       .then(() => {
         // Sign-out successful.\
-        
       })
       .catch((error) => {
         // An error happened.
@@ -81,10 +103,4 @@ function HeaderContainer(props) {
     </div>
   );
 }
-function stateToProps(state) {
-  return {
-    state: state,
-  };
-}
-
-export default connect(stateToProps)(HeaderContainer);
+export default HeaderContainer;

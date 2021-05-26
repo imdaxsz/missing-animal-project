@@ -1,20 +1,18 @@
-// redux store
-import { createStore,combineReducers } from "redux";
-let user_state = {user:null,isLogin:"logout"};
+// recoil store
+import {atom} from 'recoil'
 
-function loginReducer(state = user_state, action){
-    let _state = {...state}
-    if (action.type === "setUserLogin"){
-        console.log("setUserLogin 호출됨")
-        _state['user']=action.payload;
-        _state['isLogin']="login"
-    }
-    else if(action.type === "setUserLogout"){
-        console.log("setUserLogout 호출됨")
-        _state['user']={};
-        _state['isLogin']="logout"
-    }
-    return _state
+const initUserState = {
+    email:"test@test.com",
+    image:"tempURL",
+    name:"name",
 }
 
-export default createStore(loginReducer)
+const userState = atom({key:"userState",default:initUserState})
+const loginState = atom({key:"isLogin",default:"logout"})
+
+const state = {
+    userState,
+    loginState,
+};
+
+export default state;
