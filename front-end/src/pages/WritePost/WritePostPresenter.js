@@ -54,7 +54,21 @@ function WritePostPresenter({
   selectPostType,
   postType,
   setTitle,
+  setPostType,
+  setBreed,
+  setSex,
   setClassificaton,
+  setAge,
+  setWeight,
+  setCharacter,
+  setLostDate,
+  setSidoCode,
+  setSigunguCode,
+  setDetailPlace,
+  setContact,
+  setPostContent,
+  setPostImg,
+  setWriter
 }) {
   return (
     <div>
@@ -70,7 +84,7 @@ function WritePostPresenter({
               <StyledTextInput
                 type="email"
                 placeholder="게시글 제목을 입력하세요"
-                onClick={(e) => {
+                onChange={(e) => {
                   setTitle(e.target.value);
                 }}
               ></StyledTextInput>
@@ -114,7 +128,8 @@ function WritePostPresenter({
           <hr />
           <Row className="mb-3" style={{ alignItems: "center" }}>
             <Col sm={2}>
-              <StyledLabel>품종</StyledLabel>
+              <StyledLabel                 
+              onChange={(e) => {setBreed(e.target.value);}}>품종</StyledLabel>
             </Col>
             <Col sm={10}>
               <StyledTextInput placeholder="ex. 코리안숏헤어, 닥스훈트, 모란앵무.."></StyledTextInput>
@@ -125,19 +140,19 @@ function WritePostPresenter({
               <StyledLabel>성별</StyledLabel>
             </Col>
             <Col sm={3} xs={4}>
-              <StyledButton>
+              <StyledButton  value="수컷" onClick={(e) => {setSex(e.target.value);}}>
                 <AiOutlineMan />
                 수컷
               </StyledButton>
             </Col>
             <Col sm={3} xs={4}>
-              <StyledButton>
+              <StyledButton value="암컷" onClick={(e) => {setSex(e.target.value);}}>
                 <AiOutlineWoman />
                 암컷
               </StyledButton>
             </Col>
             <Col sm={3} xs={4}>
-              <StyledButton>
+              <StyledButton value="미확인" onClick={(e) => {setSex(e.target.value);}}>
                 <AiOutlineQuestion />
                 미확인
               </StyledButton>
@@ -148,18 +163,18 @@ function WritePostPresenter({
               <StyledLabel>동물 분류</StyledLabel>
             </Col>
             <Col sm={3} xs={4}>
-              <StyledButton>
+              <StyledButton value="개" onClick={(e) => {setClassificaton(e.target.value);}}>
                 <FaDog />개
               </StyledButton>
             </Col>
             <Col sm={3} xs={4}>
-              <StyledButton>
+              <StyledButton value="고양이" onClick={(e) => {setClassificaton(e.target.value);}}>
                 <FaCat />
                 고양이
               </StyledButton>
             </Col>
             <Col sm={3} xs={4}>
-              <StyledButton>
+              <StyledButton value="기타" onClick={(e) => {setClassificaton(e.target.value);}}>
                 <AiOutlineQuestion />
                 기타
               </StyledButton>
@@ -167,14 +182,14 @@ function WritePostPresenter({
           </Row>
           <Row className="mb-3" style={{ alignItems: "center" }}>
             <Col sm={2}>
-              <StyledLabel>나이</StyledLabel>
+              <StyledLabel >나이</StyledLabel>
             </Col>
             <Col sm={4}>
-              <StyledTextInput type="number" placeholder="동물의 나이" />
+              <StyledTextInput type="number" placeholder="동물의 나이" onChange={(e) => {setAge(e.target.value);}}/>
             </Col>
             <Col sm={2}>몸무게</Col>
             <Col sm={4}>
-              <StyledTextInput type="number" placeholder="동물의 몸무게" />
+              <StyledTextInput type="number" placeholder="동물의 몸무게" onChange={(e) => {setWeight(e.target.value);}}/>
             </Col>
           </Row>
 
@@ -186,6 +201,7 @@ function WritePostPresenter({
               <StyledTextInput
                 type="text"
                 placeholder="눈에띄는 동물의 특징을 입력하세요"
+                onChange={(e) => {setCharacter(e.target.value);}}
               />
             </Col>
           </Row>
@@ -195,13 +211,13 @@ function WritePostPresenter({
               <Row className="mb-3" style={{ alignItems: "center" }}>
                 <Col sm={2}>목격 일시</Col>
                 <Col sm={10}>
-                  <StyledTextInput type="date" />
+                  <StyledTextInput type="date" onChange={(e) => {setLostDate(e.target.value);}}/>
                 </Col>
               </Row>
               <Row className="mb-3" style={{ alignItems: "center" }}>
                 <Col sm={2}>목격 지역</Col>
                 <Col sm={5}>
-                  <select style={{ width: "100%" }}>
+                  <select style={{ width: "100%" }} onChange={(e) => {setSidoCode(e.target.value);}}>
                     <option>경상북도</option>
                     <option>2</option>
                     <option>3</option>
@@ -210,7 +226,7 @@ function WritePostPresenter({
                   </select>
                 </Col>
                 <Col sm={5}>
-                  <select style={{ width: "100%" }}>
+                  <select style={{ width: "100%" }} onChange={(e) => {setSigunguCode(e.target.value);}}>
                     <option>구미시</option>
                     <option>2</option>
                     <option>3</option>
@@ -225,6 +241,7 @@ function WritePostPresenter({
                   <StyledTextInput
                     type="text"
                     placeholder="목격하신 장소의 상세 위치를 적어주세요"
+                    onChange={(e) => {setDetailPlace(e.target.value);}}
                   />
                 </Col>
               </Row>
@@ -235,13 +252,13 @@ function WritePostPresenter({
               <Row className="mb-3" style={{ alignItems: "center" }}>
                 <Col sm={2}>실종 일시</Col>
                 <Col sm={10}>
-                  <StyledTextInput type="date" />
+                  <StyledTextInput type="date" onChange={(e) => {setLostDate(e.target.value);}}/>
                 </Col>
               </Row>
               <Row className="mb-3" style={{ alignItems: "center" }}>
                 <Col sm={2}>실종 지역</Col>
                 <Col sm={5}>
-                  <select style={{ width: "100%" }}>
+                  <select style={{ width: "100%" }} onChange={(e) => {setSidoCode(e.target.value);}}>
                     <option>경상북도</option>
                     <option>2</option>
                     <option>3</option>
@@ -250,7 +267,7 @@ function WritePostPresenter({
                   </select>
                 </Col>
                 <Col sm={5}>
-                  <select style={{ width: "100%" }}>
+                  <select style={{ width: "100%" }} onChange={(e) => {setSigunguCode(e.target.value);}}>
                     <option>구미시</option>
                     <option>2</option>
                     <option>3</option>
@@ -265,6 +282,7 @@ function WritePostPresenter({
                   <StyledTextInput
                     type="text"
                     placeholder="실종된 장소의 상세 위치를 적어주세요"
+                    onChange={(e) => {setDetailPlace(e.target.value);}}
                   />
                 </Col>
               </Row>
@@ -272,16 +290,16 @@ function WritePostPresenter({
           ) : null}
           {postType === "임시보호" ? (
             <div>
-              <Row className="mb-3" style={{ alignItems: "center" }}>
+              <Row className="mb-3" style={{ alignItems: "center" }} onChange={(e) => {setLostDate(e.target.value);}}>
                 <Col sm={2}>발견 일시</Col>
                 <Col sm={10}>
                   <StyledTextInput type="date" />
                 </Col>
               </Row>
-              <Row className="mb-3" style={{ alignItems: "center" }}>
+              <Row className="mb-3" style={{ alignItems: "center" }} >
                 <Col sm={2}>발견 지역</Col>
                 <Col sm={5}>
-                  <select style={{ width: "100%" }}>
+                  <select style={{ width: "100%" }} onChange={(e) => {setSidoCode(e.target.value);}}>
                     <option>경상북도</option>
                     <option>2</option>
                     <option>3</option>
@@ -290,7 +308,7 @@ function WritePostPresenter({
                   </select>
                 </Col>
                 <Col sm={5}>
-                  <select style={{ width: "100%" }}>
+                  <select style={{ width: "100%" }} onChange={(e) => {setSigunguCode(e.target.value);}}>
                     <option>구미시</option>
                     <option>2</option>
                     <option>3</option>
@@ -299,12 +317,13 @@ function WritePostPresenter({
                   </select>
                 </Col>
               </Row>
-              <Row className="mb-3" style={{ alignItems: "center" }}>
+              <Row className="mb-3" style={{ alignItems: "center" }} >
                 <Col sm={2}>상세 장소</Col>
                 <Col sm={10}>
                   <StyledTextInput
                     type="text"
                     placeholder="발견된 장소의 상세 위치를 적어주세요"
+                    onChange={(e) => {setDetailPlace(e.target.value);}}
                   />
                 </Col>
               </Row>
@@ -316,7 +335,7 @@ function WritePostPresenter({
               <StyledLabel>연락처</StyledLabel>
             </Col>
             <Col sm={10}>
-              <StyledTextInput type="text" placeholder="ex. 010-0000-0000" />
+              <StyledTextInput type="text" placeholder="ex. 010012345678" onChange={(e) => {setContact(e.target.value);}}/>
             </Col>
           </Row>
           <Row className="mb-3" style={{ alignItems: "center" }}>
@@ -329,6 +348,7 @@ function WritePostPresenter({
                 rows={3}
                 placeholder="덧붙일 본문을 적어주세요."
                 style={{ width: "100%" }}
+                onChange={(e) => {setPostContent(e.target.value);}}
               />
             </Col>
           </Row>
@@ -337,7 +357,7 @@ function WritePostPresenter({
               <StyledLabel>사진 첨부</StyledLabel>
             </Col>
             <Col sm={10}>
-              <input multiple type="file" />
+              <input multiple type="file" onChange={(e) => {setPostImg(e.target.files);}}/>
             </Col>
           </Row>
         </div>

@@ -23,18 +23,46 @@ function WritePostContainer() {
   const [postDate, setPostDate] = useState(""); // 게시글 작성 시간
   const [contact, setContact] = useState(""); // 게시글 연락처
   const [postContent, setPostContent] = useState(""); // 게시글 본문
-  const [postImg, setPostImg] = useState([]); // 게시글 첨부 이미지
-  const [writter, setWritter] = useState(""); // 게시글 작성자
+  const [postImg, setPostImg] = useState(null); // 게시글 첨부 이미지
+  const [writer, setWriter] = useState(""); // 게시글 작성자
 
   function selectPostType(select) {
     setPostType(select);
-
   }
 
   function createPost() {
     const formdata = new FormData();
 
-    formdata.append("title", "hello mehee");
+    formdata.append("title", title);
+    formdata.append("postType", postType);
+    formdata.append("breed", breed);
+    formdata.append("sex", sex);
+    formdata.append("classification", classification);
+    formdata.append("age", age);
+    formdata.append("weight", weight);
+    formdata.append("character", character);
+    formdata.append("lostDate", lostDate);
+    formdata.append("sidoCode", sidoCode);
+    formdata.append("sigunguCode", sigunguCode);
+    formdata.append("detailPlace", detailPlace);
+    formdata.append("postDate", new Date());
+    formdata.append("contact", contact);
+    formdata.append("postContent", postContent);
+    formdata.append("writer", "전하영"); // 더미데이터
+
+    if (postImg != null) {
+      for (let i = 0; i < postImg.length; i++) {
+        formdata.append("postImg[]", postImg[i]);
+      }
+    }
+
+    var object = {};
+    formdata.forEach(function(value, key){
+      object[key] = value;
+    });
+    var json = JSON.stringify(object);
+    console.log(json)
+
     var config = {
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -42,7 +70,7 @@ function WritePostContainer() {
       },
     };
     axios
-      .post(ip["ip"] + "/test", formdata, config)
+      .post(ip["ip"] + "/postok", formdata, config)
       .then(function (response) {
         console.log(response);
       })
@@ -58,7 +86,6 @@ function WritePostContainer() {
         selectPostType={selectPostType}
         postType={postType}
         setTitle={setTitle}
-        setPostCode={setPostCode}
         setBreed={setBreed}
         setSex={setSex}
         setClassificaton={setClassificaton}
@@ -69,13 +96,10 @@ function WritePostContainer() {
         setSidoCode={setSidoCode}
         setSigunguCode={setSigunguCode}
         setDetailPlace={setDetailPlace}
-        setPostDate={setPostDate}
         setContact={setContact}
         setPostContent={setPostContent}
         setPostImg={setPostImg}
-        setWritter={setWritter}
-
-
+        setWriter={setWriter}
       ></WritePostPresenter>
     </>
   );
