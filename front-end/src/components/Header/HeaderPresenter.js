@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import React from "react";
+import React,{useEffect} from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
 import {
@@ -138,7 +138,7 @@ function HeaderPresenter({ mode, switchMode, isLogin, googleLogin, googleLogout 
                 </IconContainer>
                 로그인
               </li>
-              <li>
+              <li >
                 <IconContainer>
                   <FiUser />
                 </IconContainer>

@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HeaderPresenter from "./HeaderPresenter";
 import firebase from "firebase";
+import { connect } from "react-redux";
 
-function HeaderContainer() {
+function HeaderContainer(props) {
   const [mode, setMode] = useState("close");
   const [isLogin, setIsLogin] = useState("logout");
-
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      console.log("google auth 호출되었음");
+      if (user) {
+        console.log("로그인됨");
+        props.dispatch({ type: "setUserLogin", payload: user });
+      } else {
+        console.log("로그인안됨");
+        props.dispatch({ type: "setUserLogout" });
+      }  
+    });
+  },[]);
+  useEffect(()=>{
+    setIsLogin(props.state['isLogin'])
+  },[props.state])
+  
   function switchMode() {
     if (mode === "open") {
       setMode("close");
@@ -18,14 +34,12 @@ function HeaderContainer() {
       .auth()
       .signOut()
       .then(() => {
-        // Sign-out successful.
-        setIsLogin("logout");
+        // Sign-out successful.\
+        
       })
       .catch((error) => {
         // An error happened.
       });
-
-    a;
   }
   function googleLogin() {
     var provider = new firebase.auth.GoogleAuthProvider();
@@ -40,8 +54,6 @@ function HeaderContainer() {
         var credential = result.credential;
         var token = credential.accessToken;
         var user = result.user;
-        console.log(user);
-        setIsLogin("login");
         // ...
       })
       .catch((error) => {
@@ -53,7 +65,7 @@ function HeaderContainer() {
         // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
         // ...
-        console.log(errorCode , "dsads",errorMessage)
+        console.log(errorCode, "dsads", errorMessage);
       });
   }
 
@@ -69,5 +81,10 @@ function HeaderContainer() {
     </div>
   );
 }
+function stateToProps(state) {
+  return {
+    state: state,
+  };
+}
 
-export default HeaderContainer;
+export default connect(stateToProps)(HeaderContainer);

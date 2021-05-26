@@ -45,7 +45,10 @@ function WritePostContainer() {
     formdata.append("sidoCode", sidoCode);
     formdata.append("sigunguCode", sigunguCode);
     formdata.append("detailPlace", detailPlace);
-    formdata.append("postDate", new Date());
+    formdata.append(
+      "postDate",
+      new Date().toISOString().substring(0, 10).replace(/-/g, "")
+    );
     formdata.append("contact", contact);
     formdata.append("postContent", postContent);
     formdata.append("writer", "전하영"); // 더미데이터
@@ -57,11 +60,11 @@ function WritePostContainer() {
     }
 
     var object = {};
-    formdata.forEach(function(value, key){
+    formdata.forEach(function (value, key) {
       object[key] = value;
     });
     var json = JSON.stringify(object);
-    console.log(json)
+    console.log(json);
 
     var config = {
       headers: {

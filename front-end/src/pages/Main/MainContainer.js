@@ -5,6 +5,7 @@ function MainContainer() {
   // 화면 로드 시 스크롤을 맨 위로
   useEffect(()=>{
     window.scrollTo(0,0);
+    
   },[])
   return (
     <div>
