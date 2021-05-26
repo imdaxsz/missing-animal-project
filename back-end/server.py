@@ -215,12 +215,15 @@ def postok():
 def disc_resc_list():
     resc = db.child('게시글/임시보호').get().val()
     disc = db.child('게시글/목격제보').get().val()
+
+    result = None
     if disc is not None and resc is not None:
         result = dict({**resc, **disc})
     elif disc is None and resc is not None:
         result = (resc)
     elif disc is not None and resc is None:
         result = (disc)
+
     if result is not None:
         print("임시보호/목격제보:", result.keys())
         print("임시보호/목격제보:", result)
