@@ -177,13 +177,55 @@ def test_post():
 def get_image():
     if request.method == 'POST':
         f = request.files['file']
-        path, ext = os.path.splitext(f.filename)
+        name, ext = os.path.splitext(f.filename)
         f.filename = "abcd"+ext
+        print("name:", name)
         f.save(f'images/{secure_filename(f.filename)}')
         return f.filename
+
+
+@app.route('/postok', methods=['POST']) #게시글 받아서 DB에 저장
+def postok():
+   if request.method == 'POST':
+      title = request.form['title']
+      postType = request.form['postType']
+      breed = request.form['breed']
+      sex = request.form['sex']
+      classification = request.form['classification']
+      age = request.form['age']
+      weight = request.form['weight']
+      character = request.form['character']
+      lostDate = request.form['lostDate']
+      sidoCode = request.form['sidoCode']
+      sigunguCode = request.form['sigunguCode']
+      detailPlace = request.form['detailPlace']
+      postDate = request.form['postDate']
+      contact = request.form['contact']
+      postContent = request.form['postContent']
+      writer = request.form['writer']
+
+      resultdict = {'title':title, 'postType':postType, 'writer':writer, 'breed':breed,
+        'sex':sex, 'classification':classification, 'age':age, 'weight':weight, 'character':character,
+        'lostDate':lostDate, 'sidoCode':sidoCode, 'sigunguCode':sigunguCode, 'detailPlace':detailPlace,
+        'postDate':postDate, 'contact':contact, 'postContent':postContent}
+
+      postKey = db.child('게시글/' + postType).push(resultdict)
+      print("postkey:", postKey['name'])
+
+      postImgs = request.files.getlist("postImg[]")
+      i = 0
+      for postImg in postImgs:
+          name, ext = os.path.splitext(postImg.filename)
+          print(ext)
+          i += 1
+          filename = writer + postKey['name'] + "_" + postDate + "_" + str(i)
+          postImg.filename = filename + ext
+          postImg.save(f'images/{secure_filename(postImg.filename)}')
+
+      print(resultdict)
+      return resultdict
 
 
 if __name__ == '__main__':
     #app.run(host='0.0.0.0', port=3000, ssl_context=('cert.pem', 'key.pem'))
     app.run(host='0.0.0.0', port=80)
-
