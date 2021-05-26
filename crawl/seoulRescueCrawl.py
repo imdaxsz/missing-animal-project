@@ -62,24 +62,27 @@ for i in range(1, 7):
     file = open('seoulRescueImg_' + str(i) + '.jpg', 'wb')
     file.write(r.content)
     file.close()
-    #print(rescDate, rescPlace.text, sex[0].text.split()[1], age[0].text.split()[1], character + "kg " + color[0].text.split()[1]
-    #      + postCont[0].text)
+
+    if sex[0].text.split()[1] == '미상':
+        Sex = '미확인'
+    else:
+        Sex = sex[0].text.split()[1]
 
 
     file_data[rank] = {'title': "보호중에 있습니다.",
                        'postCode': postCode,
                        'breed': type.text.split()[3],
-                       'sex': sex[0].text.split()[1],
+                       'sex': Sex,
                        'classification' : type.text.split()[1],
                        'age': age[0].text.split()[1],
                        'weight': weight[0].text.split()[1],
-                       'character': character + "모색:" + color[0].text.split()[1],
+                       'character': character + ", 모색:" + color[0].text.split()[1],
                        'lostDate': lostDate,
                        'sidoCode': sidoCode,
                        'sigunguCode': sigungu,
                        'detailPlace': detailPlace.text,
                        'postDate' : lostDate,
-                       'contact': "031-867-9119",
+                       'contact': "0318679119",
                        'postCont': postCont[0].text,
                        'postImg': str("seoulRescueImg_" + str(rank))
                      }
@@ -172,21 +175,26 @@ for page in range(2,100):
         file.write(r.content)
         file.close()
 
+        if sex[0].text.split()[1] == '미상':
+            Sex = '미확인'
+        else:
+            Sex = sex[0].text.split()[1]
+
         print(rank)
         file_data[rank] = {'title': "보호중에 있습니다.",
                            'postCode': postCode,
                            'breed': type.text.split()[3],
-                           'sex': sex[0].text.split()[1],
+                            'sex' : Sex,
                            'classification': type.text.split()[1],
                            'age': age[0].text.split()[1],
                            'weight': weight[0].text.split()[1],
-                           'character': character + "모색:" + color[0].text.split()[1],
+                           'character': character + ", 모색:" + color[0].text.split()[1],
                            'lostDate': lostDate,
                            'sidoCode': sidoCode,
                            'sigunguCode': sigungu,
                            'detailPlace': detailPlace.text,
                            'postDate': lostDate,
-                           'contact': "031-867-9119",
+                           'contact': "0318679119",
                            'postCont': postCont[0].text,
                            'postImg': str("seoulRescueImg_" + str(rank))
                            }
