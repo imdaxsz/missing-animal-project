@@ -1,15 +1,17 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from urllib.request import urlopen
 from urllib.parse import urlencode, unquote, quote_plus
 import urllib
 import json
 import xmltodict
 import os
+import os.path
 import pyrebase
 from firebase_admin import db
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
-
+import glob
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app, resources={r'*': {'origins': '*'}})
@@ -161,6 +163,8 @@ def shelter_sido(sido):
 def postok():
    if request.method == 'POST':
       title = request.form['title']
+      writer = request.form['writer']
+      uid = request.form['uid']
       postType = request.form['postType']
       breed = request.form['breed']
       sex = request.form['sex']
@@ -175,26 +179,32 @@ def postok():
       postDate = request.form['postDate']
       contact = request.form['contact']
       postContent = request.form['postContent']
-      writer = request.form['writer']
 
-      resultdict = {'title':title, 'postType':postType, 'writer':writer, 'breed':breed,
+
+      resultdict = {'title':title, 'postType':postType, 'writer':writer, 'uid':uid, 'breed':breed,
         'sex':sex, 'classification':classification, 'age':age, 'weight':weight, 'character':character,
         'lostDate':lostDate, 'sidoCode':sidoCode, 'sigunguCode':sigunguCode, 'detailPlace':detailPlace,
         'postDate':postDate, 'contact':contact, 'postContent':postContent}
 
       postKey = db.child('게시글/' + postType).push(resultdict)
       print("postkey:", postKey['name'])
-
+      postkey = postKey['name'][1:]
+      print(postkey)
+        
       postImgs = request.files.getlist("postImg[]")
+      imgList = []
       i = 0
       for postImg in postImgs:
           name, ext = os.path.splitext(postImg.filename)
           print(ext)
           i += 1
-          filename = writer + postKey['name'] + "_" + postDate + "_" + str(i)
+          filename = uid + "_" + postkey + "_" + postDate + "_" + str(i)
+          print("파일명:", filename)
           postImg.filename = filename + ext
-          postImg.save(f'images/{secure_filename(postImg.filename)}')
-
+          imgList.append(postImg.filename)
+          postImg.save(f'static/images/{secure_filename(postImg.filename)}')
+      
+      resultdict['postImg'] = imgList
       print(resultdict)
       return resultdict
 
@@ -204,7 +214,7 @@ def postok():
 @app.route('/disc_resc')
 def disc_resc_list():
     resc = db.child('게시글/임시보호').get().val()
-    disc = db.child('게시글/목격').get().val()
+    disc = db.child('게시글/목격제보').get().val()
     if disc is not None and resc is not None:
         result = dict({**resc, **disc})
     elif disc is None and resc is not None:
@@ -212,12 +222,12 @@ def disc_resc_list():
     elif disc is not None and resc is None:
         result = (disc)
     if result is not None:
-        print("임시보호/목격:", result.keys())
-        print("임시보호/목격:", result)
+        print("임시보호/목격제보:", result.keys())
+        print("임시보호/목격제보:", result)
         return result
     else:
-        print("임시보호/목격 없음")
-        return "임시보호/목격 없음"
+        print("임시보호/목격제보 없음")
+        return "임시보호/목격제보 없음"
 
 
 # 실종신고 조회
@@ -233,19 +243,49 @@ def mis_list():
         print("실종신고 없음")
         return "실종신고 없음"
 
+
 # 게시글 상세 조회
 @app.route('/<postCode>/<postID>')
 def post_detail(postCode, postID):
     if postCode == 'mis':
         postType = '실종신고'
     elif postCode == 'disc':
-        postType = '목격'
+        postType = '목격제보'
     elif postCode == 'resc':
         postType = '임시보호'
-    path = '게시글/' + postType + "/" + postID
+    path = '게시글/' + postType + '/' + postID
     result = dict(db.child(path).get().val())
+
+    # 이미지 전달 위한 날짜 및 사용자 이름 가져오기
+    uid = result['uid']
+    postDate = result['postDate']
+    writer = result['writer']
+
+    # 이미지 가져오기
+    postId = postID[1:]
+    name = uid + "_" + postId + "_" + postDate
+    print(name)
+    condition = 'static/images/' + name + '*.*'
+    print(condition)
+    files = glob.glob(condition)
+    imgList = []
+    for file in files:
+        imgName = os.path.basename(file)
+        imgList.append(imgName)
+        print(imgName)
+
+    result['postImg'] = imgList
+
     print(result)
     return result
+
+
+# 로컬 이미지 서버 전달
+@app.route('/img/<imgName>')
+def show_img(imgName):
+    imgPath = 'images/' + imgName
+    return render_template('./img_test.html', image_file=imgPath)
+
 
 
 if __name__ == '__main__':
