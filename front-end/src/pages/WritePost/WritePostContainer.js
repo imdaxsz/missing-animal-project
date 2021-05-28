@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import WritePostPresenter from "./WritePostPresenter";
 import axios from "axios";
 import ip from "../../ipConfig.json";
+import {useRecoilValue} from 'recoil'
+import state from "../../store";
+
 function WritePostContainer() {
   // 게시글 변수
 
@@ -25,6 +28,10 @@ function WritePostContainer() {
   const [postContent, setPostContent] = useState(""); // 게시글 본문
   const [postImg, setPostImg] = useState(null); // 게시글 첨부 이미지
   const [writer, setWriter] = useState(""); // 게시글 작성자
+
+  
+
+  const userInfo = useRecoilValue(state["userState"]);
 
   function selectPostType(select) {
     setPostType(select);
@@ -51,13 +58,15 @@ function WritePostContainer() {
     );
     formdata.append("contact", contact);
     formdata.append("postContent", postContent);
-    formdata.append("writer", "전하영"); // 더미데이터
+    formdata.append("writer", userInfo.name);             
+
+    formdata.append("uid",userInfo.uid)
 
     if (postImg != null) {
       for (let i = 0; i < postImg.length; i++) {
         formdata.append("postImg[]", postImg[i]);
       }
-    }
+    }    
 
     var object = {};
     formdata.forEach(function (value, key) {

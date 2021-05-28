@@ -18,19 +18,21 @@ function HeaderContainer() {
       console.log("google auth 호출되었음");
       if (user) {
         console.log("로그인됨");
+        console.log(user)
         const userObj = {
           email: user.email,
           image: user.photoURL,
           name: user.displayName,
+          uid:user.uid
         };
         setUserInfo(userObj);
         setIsLogin("login");
       } else {
         console.log("로그인안됨");
         const initUserState = {
-          email: "test@test.com",
-          image: "tempURL",
-          name: "name",
+          email: "로그인하세요",
+          image: "https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png",
+          name: "로그인하세요",
         };
         setUserInfo(initUserState);
         setIsLogin("logout");
@@ -57,7 +59,7 @@ function HeaderContainer() {
       .auth()
       .signOut()
       .then(() => {
-        // Sign-out successful.\
+        // Sign-out successful.
       })
       .catch((error) => {
         // An error happened.
@@ -87,7 +89,7 @@ function HeaderContainer() {
         // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
         // ...
-        console.log(errorCode, "dsads", errorMessage);
+        console.log(errorCode, "errorMessage:", errorMessage);
       });
   }
 

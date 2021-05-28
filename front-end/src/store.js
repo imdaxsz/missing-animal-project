@@ -2,9 +2,10 @@
 import {atom} from 'recoil'
 
 const initUserState = {
-    email:"test@test.com",
-    image:"tempURL",
-    name:"name",
+    email:"loading...",
+    image:"https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png",
+    name:"loading...",
+    uid:""
 }
 
 const userState = atom({key:"userState",default:initUserState})
