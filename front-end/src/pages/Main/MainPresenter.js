@@ -1,12 +1,13 @@
 import { Card, Row, Col } from "react-bootstrap";
 import data from "../../data/data.json";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { BiMap } from "react-icons/bi";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import WriteButton from "../../components/WriteButton/WriteButtonContainer";
 import { Link } from "react-router-dom";
 
 function MainPresenter() {
+
   return (
     <div>
       <div className="wrapper">

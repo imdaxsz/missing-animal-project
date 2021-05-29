@@ -126,6 +126,7 @@ function WritePostContainer() {
   useEffect(()=>{
     getSidoList();
     getSigunguList(sidoCode);
+    console.log(sidoList,sigunguList)
   },[sidoCode])
   return (
     <>

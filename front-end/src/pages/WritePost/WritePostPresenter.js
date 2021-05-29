@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Row, Col } from "react-bootstrap";
 import {
@@ -18,6 +18,7 @@ const StyledTextInput = styled.input`
   border: 1px solid lightgrey;
   border-radius: 5px;
 `;
+
 const StyledButton = styled.button`
   width: 100%;
   height: 40px;
@@ -68,8 +69,13 @@ function WritePostPresenter({
   setContact,
   setPostContent,
   setPostImg,
-  setWriter
+  setWriter,
+  sidoList,
+  sigunguList,
 }) {
+  useEffect(()=>{
+    console.log(sidoList,sigunguList)
+  },[])
   return (
     <div>
       <div className="wrapper">
@@ -218,20 +224,16 @@ function WritePostPresenter({
                 <Col sm={2}>목격 지역</Col>
                 <Col sm={5}>
                   <select style={{ width: "100%" }} onChange={(e) => {setSidoCode(e.target.value);}}>
-                    <option>경상북도</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                    {sidoList.map((item,index)=>{
+                      return <option key={index}>{item}</option>;
+                    })}
                   </select>
                 </Col>
                 <Col sm={5}>
                   <select style={{ width: "100%" }} onChange={(e) => {setSigunguCode(e.target.value);}}>
-                    <option>구미시</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                  {sigunguList.map((item,index)=>{
+                      return <option key={index}>{item}</option>;
+                    })}
                   </select>
                 </Col>
               </Row>
@@ -259,20 +261,16 @@ function WritePostPresenter({
                 <Col sm={2}>실종 지역</Col>
                 <Col sm={5}>
                   <select style={{ width: "100%" }} onChange={(e) => {setSidoCode(e.target.value);}}>
-                    <option>경상북도</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                    {sidoList.map((item,index)=>{
+                      return <option key={index}>{item}</option>;
+                    })}
                   </select>
                 </Col>
                 <Col sm={5}>
                   <select style={{ width: "100%" }} onChange={(e) => {setSigunguCode(e.target.value);}}>
-                    <option>구미시</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                  {sigunguList.map((item,index)=>{
+                      return <option key={index}>{item}</option>;
+                    })}
                   </select>
                 </Col>
               </Row>
@@ -300,20 +298,16 @@ function WritePostPresenter({
                 <Col sm={2}>발견 지역</Col>
                 <Col sm={5}>
                   <select style={{ width: "100%" }} onChange={(e) => {setSidoCode(e.target.value);}}>
-                    <option>경상북도</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                    {sidoList.map((item,index)=>{
+                      return <option key={index}>{item}</option>;
+                    })}
                   </select>
                 </Col>
                 <Col sm={5}>
                   <select style={{ width: "100%" }} onChange={(e) => {setSigunguCode(e.target.value);}}>
-                    <option>구미시</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                  {sigunguList.map((item,index)=>{
+                      return <option key={index}>{item}</option>;
+                    })}
                   </select>
                 </Col>
               </Row>
