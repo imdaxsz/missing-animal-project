@@ -35,6 +35,7 @@ const GlobalStyle = createGlobalStyle`
     &.hover{
       text-decoration:none;
     }
+    
   }
 `;
 function App() {

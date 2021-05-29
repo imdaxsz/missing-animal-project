@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import WritePostPresenter from "./WritePostPresenter";
 import axios from "axios";
 import ip from "../../ipConfig.json";
-import {useRecoilValue} from 'recoil'
+import { useRecoilValue } from "recoil";
 import state from "../../store";
 
 function WritePostContainer() {
@@ -29,14 +29,47 @@ function WritePostContainer() {
   const [postImg, setPostImg] = useState(null); // 게시글 첨부 이미지
   const [writer, setWriter] = useState(""); // 게시글 작성자
 
-  
+  const [sidoList, setSidoList] = useState([]); // 시 도 리스트 저장
+  const [sigunguList,setSigunguList] = useState([]) // 시 군 구 리스트 저장
 
   const userInfo = useRecoilValue(state["userState"]);
 
   function selectPostType(select) {
     setPostType(select);
   }
-
+  function getSigunguList(sido) {
+    let tempRouter = "/get_sigungu_code";
+    if (sido !== "") {
+      tempRouter += "/" + sido;
+      axios
+        .get(ip["ip"] + tempRouter)
+        .then((res) => {
+          console.log(res.data);
+          let temp = Object.keys(res.data);
+          temp.unshift("시/군/구 전체");
+          setSigunguList(temp);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log("데이터 로드 실패");
+        });
+    } else {
+      setSigunguList(["시/군/구 전체"]);
+    }
+  }
+  function getSidoList() {
+    axios
+      .get(ip["ip"] + "/get_sido_code")
+      .then((res) => {
+        let temp = Object.keys(res.data);
+        temp.unshift("시/도 전체");
+        setSidoList(temp);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("데이터 로드 실패");
+      });
+  }
   function createPost() {
     const formdata = new FormData();
 
@@ -58,15 +91,15 @@ function WritePostContainer() {
     );
     formdata.append("contact", contact);
     formdata.append("postContent", postContent);
-    formdata.append("writer", userInfo.name);             
+    formdata.append("writer", userInfo.name);
 
-    formdata.append("uid",userInfo.uid)
+    formdata.append("uid", userInfo.uid);
 
     if (postImg != null) {
       for (let i = 0; i < postImg.length; i++) {
         formdata.append("postImg[]", postImg[i]);
       }
-    }    
+    }
 
     var object = {};
     formdata.forEach(function (value, key) {
@@ -90,7 +123,10 @@ function WritePostContainer() {
         console.log(error);
       });
   }
-
+  useEffect(()=>{
+    getSidoList();
+    getSigunguList(sidoCode);
+  },[sidoCode])
   return (
     <>
       <WritePostPresenter
@@ -112,6 +148,8 @@ function WritePostContainer() {
         setPostContent={setPostContent}
         setPostImg={setPostImg}
         setWriter={setWriter}
+        sidoList={sidoList}
+        sigunguList={sigunguList}
       ></WritePostPresenter>
     </>
   );

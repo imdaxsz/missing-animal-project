@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
 import {
@@ -62,6 +62,8 @@ const StyledSideBar = styled.div`
         background-color: #00a059;
         cursor: pointer;
         color: white;
+
+        text-decoration: none;
       }
     }
   }
@@ -77,7 +79,13 @@ const StyledSideBar = styled.div`
           right: -100%;
         `};
 `;
-function HeaderPresenter({ mode, switchMode, isLogin, googleLogin, googleLogout }) {
+function HeaderPresenter({
+  mode,
+  switchMode,
+  isLogin,
+  googleLogin,
+  googleLogout,
+}) {
   return (
     <div>
       <HeaderContainer>
@@ -138,7 +146,7 @@ function HeaderPresenter({ mode, switchMode, isLogin, googleLogin, googleLogout 
                 </IconContainer>
                 로그인
               </li>
-              <li >
+              <li>
                 <IconContainer>
                   <FiUser />
                 </IconContainer>

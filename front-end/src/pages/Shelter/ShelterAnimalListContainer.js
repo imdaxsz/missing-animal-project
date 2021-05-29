@@ -1,28 +1,43 @@
 import React, { useState, useEffect } from "react";
 import ShelterAnimalListPresenter from "./ShelterAnimalListPresenter";
 import axios from "axios";
-import ip from '../../ipConfig.json'
+import ip from "../../ipConfig.json";
 import firebase from "firebase";
 
 function ShelterAnimalListContainer() {
   const [ShelterAnimalData, setShelterAnimalData] = useState([]);
-  const URL = ip['ip']+"/shelter/animal";
-  const [sidoCode,setSidoCode] = useState("");
-  const [sigunguCode,setSigunguCode] = useState("");
-  const [sidoList,setSidoList] = useState([]);
+  const URL = ip["ip"] + "/shelter/animal";
+  const [sidoName, setSidoName] = useState("");
+  const [sigunguName, setSigunguName] = useState("");
+  const [sidoList, setSidoList] = useState([]);
+  const [sigunguList,setSigunguList] = useState([]);
 
-  function changeSidoCode(sidoName){
-    setSidoCode(sidoName);
-  }
   useEffect(()=>{
-    fetchData(sidoCode);
-  },[sidoCode])
+
+    fetchData(sidoName,sigunguName);
+    getSigunguList(sidoName)
+    console.log(sigunguList)
+
+  },[sidoName,sigunguName])
   
-  function fetchData(select) {
+
+  function fetchData(sidoSelect,sigunguSelect) {
     let tempURL = URL;
-    if (select !== "전체") {
-      tempURL += "/" + select;
+    if (sidoSelect === "시/도 전체" || sidoSelect===""){
+      if (sigunguSelect === "시/군/구 전체" || sigunguSelect==="") {
+        tempURL =URL
+      }
+      tempURL =URL
     }
+    else{
+      if(sidoSelect !== "시/도 전체" && sidoSelect !== ""){
+        tempURL +="/"+sidoSelect;
+        if(sigunguSelect !== "시/군/구 전체" && sigunguSelect !== ""){
+          tempURL +="/"+sigunguSelect
+        }
+      }
+    }
+
     console.log(tempURL);
     axios
       .get(tempURL)
@@ -35,43 +50,60 @@ function ShelterAnimalListContainer() {
         console.log("데이터 로드 실패");
       });
   }
-  function getSigunguList(sidoName){
-    firebase .database().ref("지역코드/").child('6110000').on("value", (e) => {
-      console.log(e.val())
-      const keys = Object.keys(e.val())
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i] // 각각의 키
-        const value = e.val()[key] // 각각의 키에 해당하는 각각의 값
-      
-        console.log(value)
-      }
-    });
+  function getSigunguList(sido) {
+
+    let tempRouter = "/get_sigungu_code"
+    if(sido !== ""){
+      tempRouter +="/"+sido
+      axios
+      .get(ip["ip"] + tempRouter)
+      .then((res) => {
+        console.log(res.data)
+        let temp = Object.keys(res.data);
+        temp.unshift("시/군/구 전체");
+        setSigunguList(temp)
+        
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("데이터 로드 실패");
+      });
+    }
+    else{
+      setSigunguList(["시/군/구 전체"])
+    }
+    
   }
-  function getSidoList(){
-    firebase .database().ref("지역코드/").on("value", (e) => {
-      const keys = Object.keys(e.val())
-      let temp = []
-      temp.push("전체")
-      for(let i=0;i<keys.length;i++){
-        const key = keys[i] // 각각의 키
-        const value = e.val()[key] // 각각의 키에 해당하는 각각의 값
-        temp.push(value[key])
-      }
-      setSidoList(temp)
-    });
+  function getSidoList() {
+    axios
+      .get(ip["ip"] + "/get_sido_code")
+      .then((res) => {
+        let temp = Object.keys(res.data);
+        temp.unshift("시/도 전체");
+        setSidoList(temp)
+        
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("데이터 로드 실패");
+      });
+    
   }
   useEffect(() => {
     getSidoList();
-    fetchData("전체");
-
+    getSigunguList("");
+    fetchData("시/도 전체","시/군/구 전체");
   }, []); // mounted 와 같은 효과
 
   return (
     <div>
       <ShelterAnimalListPresenter
         ShelterAnimalData={ShelterAnimalData}
-        changeSidoCode={changeSidoCode}
+        setSidoName={setSidoName}
+        setSigunguName={setSigunguName}
         sidoList={sidoList}
+        sigunguList={sigunguList}
+
       ></ShelterAnimalListPresenter>
     </div>
   );
