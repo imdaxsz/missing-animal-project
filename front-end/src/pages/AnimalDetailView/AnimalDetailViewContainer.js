@@ -4,7 +4,7 @@ import axios from "axios";
 import { BiDisc } from "react-icons/bi";
 import ip from "../../ipConfig.json";
 function AnimalDetailViewContainer() {
-  const [animalDetailData,setAnimalDetailData] = useState({})
+  const [animalDetailData,setAnimalDetailData] = useState({postImg:["https://blog.nscsports.org/wp-content/uploads/2014/10/default-img.gif"]})
   useEffect(() => {
     window.scrollTo(0, 0);
     let tmp = window.location.href.split("/");
@@ -26,14 +26,7 @@ function AnimalDetailViewContainer() {
       .get(URL)
       .then((res) => {
           let animal = res.data
-          if (typeof(animal.postImg.length) !== Array){
-              let temp = []
-              temp.push(animal['postImg'] )
-              animal['postImg']=temp
-
-          }
           setAnimalDetailData(animal)
-          
       })
       .catch((err) => {
         console.log(err);

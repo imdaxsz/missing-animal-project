@@ -32,7 +32,7 @@ function ShelterAnimalListContainer() {
     fetchData(sidoName, sigunguName);
   }, [count]);
 
-  function infiniteScroll() {
+  function infiniteScrollShelter() {
     let scrollHeight = Math.max(
       document.documentElement.scrollHeight,
       document.body.scrollHeight
@@ -50,7 +50,7 @@ function ShelterAnimalListContainer() {
     }
   }
   useEffect(() => {
-    window.addEventListener("scroll", infiniteScroll, true);
+    window.addEventListener("scroll", infiniteScrollShelter, true);
   }, []);
   function fetchData(sidoSelect, sigunguSelect) {
     let tempURL = URL;

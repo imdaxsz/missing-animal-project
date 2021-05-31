@@ -9,9 +9,31 @@ function MainContainer() {
   const URL = ip["ip"];
   useEffect(() => {
     window.scrollTo(0, 0);
+    window.addEventListener("scroll", infiniteScrollMain, true);
     setCount(1);
     fetchData();
   }, []);
+  useEffect(()=>{
+    fetchData();
+  },[count])
+  
+  let a = 0
+  function infiniteScrollMain() {
+    let scrollHeight = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight
+    );
+    let scrollTop = Math.max(
+      document.documentElement.scrollTop,
+      document.body.scrollTop
+    );
+    let clientHeight = document.documentElement.clientHeight;
+    if (scrollTop + clientHeight === scrollHeight) {
+      // 마지막에 도달하였을 경우?
+      setCount(count + 1)
+    }
+  }
+
 
   function fetchData() {
     let tempURL = URL + "/disc_resc/" + count;
@@ -25,7 +47,9 @@ function MainContainer() {
           postData["postID"] = postid;
           tempList.push(postData);
         }
-        setDiscRescAnimalData(tempList.reverse())
+        console.log(tempList)
+        
+        setDiscRescAnimalData(discRescAnimalData.concat(tempList.reverse()))
       })
       .catch((err) => {
         console.log(err);
