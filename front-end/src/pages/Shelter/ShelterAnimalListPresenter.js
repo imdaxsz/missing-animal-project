@@ -13,18 +13,7 @@ function ShelterAnimalListPresenter({
   setSigunguName,
 }) {
 
-  function infiniteScroll(){
-    let scrollHeight = Math.max(document.documentElement.scrollHeight,document.body.scrollHeight)
-    let scrollTop = Math.max(document.documentElement.scrollTop,document.body.scrollTop)
-    let clientHeight = document.documentElement.clientHeight
-    if (scrollTop + clientHeight === scrollHeight){
-      // 마지막에 도달하였을 경우?
-      console.log("스크롤 마지막!")
-    }
-  }
-  useEffect(()=>{
-    window.addEventListener('scroll',infiniteScroll,true)
-  },[])
+
   return (
     <div className="wrapper">
       <h3>보호소 보호 동물</h3>
