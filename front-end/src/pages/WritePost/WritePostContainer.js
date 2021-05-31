@@ -118,6 +118,7 @@ function WritePostContainer() {
       .post(ip["ip"] + "/postok", formdata, config)
       .then(function (response) {
         console.log(response);
+        alert("등록 성공!")
       })
       .catch(function (error) {
         console.log(error);

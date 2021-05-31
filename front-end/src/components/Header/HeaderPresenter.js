@@ -110,13 +110,6 @@ function HeaderPresenter({
                   사용자정보
                 </li>
               </Link>
-
-              <li>
-                <IconContainer>
-                  <FiMapPin />
-                </IconContainer>
-                내 동네 설정
-              </li>
               <Link to="/shelter_info">
                 <li>
                   <IconContainer>
@@ -125,12 +118,6 @@ function HeaderPresenter({
                   유기 동물 보호소 정보
                 </li>
               </Link>
-              <li>
-                <IconContainer>
-                  <FiSettings />
-                </IconContainer>
-                실시간 키워드 알림 설정
-              </li>
               <li onClick={googleLogout}>
                 <IconContainer>
                   <FiLogOut />

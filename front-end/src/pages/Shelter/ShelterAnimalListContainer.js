@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ShelterAnimalListPresenter from "./ShelterAnimalListPresenter";
 import axios from "axios";
 import ip from "../../ipConfig.json";
-import firebase from "firebase";
 
 function ShelterAnimalListContainer() {
   const [ShelterAnimalData, setShelterAnimalData] = useState([]);

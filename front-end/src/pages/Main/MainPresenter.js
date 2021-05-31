@@ -5,8 +5,8 @@ import { BiMap } from "react-icons/bi";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import WriteButton from "../../components/WriteButton/WriteButtonContainer";
 import { Link } from "react-router-dom";
-
-function MainPresenter() {
+import ip from "../../ipConfig.json";
+function MainPresenter({discRescAnimalData}) {
 
   return (
     <div>
@@ -14,10 +14,10 @@ function MainPresenter() {
         <h3>실종동물 찾기</h3>
         <SearchBar />
         <Row md={2} xs={2} xl={2} lg={2}>
-          {data.map(function (animal, index) {
+          {discRescAnimalData.map(function (animal, index) {
             return (
               <Col key={index}>
-                <Link to="/animal_detail">
+                <Link to={"/animal_detail/"+animal.postType+"/"+animal.postID} >
                   <AnimalCard animal={animal} index={index}></AnimalCard>
                 </Link>
               </Col>
@@ -37,23 +37,21 @@ function AnimalCard({ animal, index }) {
       <Card style={{ marginBottom: "10px" }}>
         <Card.Img
           variant="top"
-          src={require(`../../assets/images/animal${index + 1}.jpg`).default}
+          src={`${ip['ip']}/static/images/${animal.postImg}`}
         />
         <Card.Body>
           <Card.Title>
-            <strong>[{animal.type}]</strong>
-            {animal.species}
+            <strong>[{animal.postType}]</strong>
+            {animal.breed}
           </Card.Title>
           <Card.Text>
-            {animal.sex} | {animal.age}
-            {animal.age === "모름" ? null : "살"} | {animal.weight}
-            {animal.weight === "모름" ? null : "kg"}
+            {animal.sex} | {animal.age} | {animal.weight}
           </Card.Text>
-          <Card.Text>{animal.missingDate}</Card.Text>
+          <Card.Text>{animal.lostDate.substr(0,4)}-{animal.lostDate.substr(4,2)}-{animal.lostDate.substr(6,2)}</Card.Text>
 
           <Card.Text>
             <BiMap />
-            {animal.missingLocate}
+            {animal.detailPlace}
           </Card.Text>
         </Card.Body>
       </Card>
