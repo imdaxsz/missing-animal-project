@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, send_file
 from urllib.request import urlopen
 from urllib.parse import urlencode, unquote, quote_plus
 import urllib
@@ -11,6 +11,8 @@ from firebase_admin import db
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import glob
+import SheltersCrawl
+import time
 
 app = Flask(__name__)
 CORS(app, resources={r'*': {'origins': '*'}})
@@ -69,6 +71,16 @@ def find_sigungu_code(upr_cd, sigungu):
 def hello_world():
     return "hello"
 
+# 보호소 정보 크롤링
+@app.route('/crawl')
+def crawl():
+    result = SheltersCrawl.main()
+    temp = list(result.values())
+    db.child('보호소').remove()
+    for i in range(len(temp)):
+        postKey = db.child('보호소').push(temp[i])
+        #print(postKey)
+    return "crawl ok"
 
 # 시도코드 정보조회
 @app.route('/get_sido_code')
@@ -178,6 +190,8 @@ def postok():
       contact = request.form['contact']
       postContent = request.form['postContent']
 
+      temp = lostDate.split('-')
+      lostDate = temp[0] + temp[1] + temp[2]
 
       resultdict = {'title':title, 'postType':postType, 'writer':writer, 'uid':uid, 'breed':breed,
         'sex':sex, 'classification':classification, 'age':age, 'weight':weight, 'character':character,
@@ -236,6 +250,9 @@ def post_update(postID):
         contact = request.form['contact']
         postContent = request.form['postContent']
 
+        temp = lostDate.split('-')
+        lostDate = temp[0] + temp[1] + temp[2]
+
         resultdict = {'title': title, 'postType': postType, 'writer': writer, 'uid': uid, 'breed': breed,
                       'sex': sex, 'classification': classification, 'age': age, 'weight': weight,
                       'character': character,
@@ -270,15 +287,16 @@ def disc_resc_list(pageNo):
         print("임시보호/목격제보:", result)
         keylist = list(result)
         valuelist = list(result.values())
-
+        keylist.reverse()
+        valuelist.reverse()
         postdict = {}
-        idx = (int(pageNo)-1) * 10
-        for i in range(idx, idx+10):
+        idx = (int(pageNo)-1) * 20
+        for i in range(idx, idx+20):
             if i < len(keylist):
                 postdict[keylist[i]] = valuelist[i]
 
         if postdict != None:
-            print(postdict)
+            #print(postdict)
            # 이미지 가져오기
             for k in postdict.keys():
                 postId = k[1:]
@@ -291,7 +309,7 @@ def disc_resc_list(pageNo):
                 for file in files:
                     imgName = os.path.basename(file)
                     postdict[k]['postImg'] = imgName
-                    print(imgName)
+                    #print(imgName)
 
             return postdict
     else:
@@ -307,15 +325,15 @@ def mis_list(pageNo):
     if mis_data is not None:
         result = dict(mis_data)
         keylist = list(result)
-        #keylist.reverse()
+        keylist.reverse()
         #print(keylist)
         valuelist = list(result.values())
-        #valuelist.reverse()
+        valuelist.reverse()
         #print(valuelist)
 
         postdict = {}
-        idx = (int(pageNo)-1) * 10
-        for i in range(idx, idx+10):
+        idx = (int(pageNo)-1) * 20
+        for i in range(idx, idx+20):
             if i < len(keylist):
                 postdict[keylist[i]] = valuelist[i]
 
@@ -375,12 +393,12 @@ def post_detail(postType, postID):
     return result
 
 
-# 보호소 유기동물 상세 조회
+# 보호소 유기동물 글 상세 조회
 @app.route('/shelter/animal/detail/<pageNo>/<desertionNo>')
 def shelter_animal_detail(pageNo, desertionNo):
     url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?pageNo=' + pageNo + '&numOfRows=20'
     queryParams = '&' + urlencode({quote_plus(
-        'ServiceKey'): 'g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zㅔr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D'})
+        'ServiceKey'): 'g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D'})
 
     request = urllib.request.Request(url + unquote(queryParams))
     # print('Your Request:\n' + url + queryParams)
@@ -403,13 +421,16 @@ def shelter_animal_detail(pageNo, desertionNo):
 def shelter_info(pageNo):
     shelter_data = db.child('보호소').get().val()
     if shelter_data is not None:
-        result = shelter_data[1:]
-        print(result)
+        result = dict(shelter_data)
+        keylist = list(result)
+        valuelist = list(result.values())
+        shelterdict = {}
+        idx = (int(pageNo) - 1) * 20
+        for i in range(idx, idx + 20):
+            if i < len(keylist):
+                shelterdict[keylist[i]] = valuelist[i]
 
-        idx = (int(pageNo) - 1) * 10
-        sh = result[idx:idx+10]
-        info = {'data':sh}
-        return info
+        return shelterdict
     else:
         return "no shelter data"
 
