@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useCallback} from "react";
 import ShelterAnimalListPresenter from "./ShelterAnimalListPresenter";
 import axios from "axios";
 import ip from "../../ipConfig.json";
@@ -11,19 +11,18 @@ function ShelterAnimalListContainer() {
   const [sidoList, setSidoList] = useState([]);
   const [sigunguList, setSigunguList] = useState([]);
   const [count, setCount] = useState(1);
+  
   useEffect(() => {
     setShelterAnimalData([]);
     setCount(1);
     getSigunguList(sidoName);
     setSigunguName("시/군/구 전체")
     fetchData(sidoName, sigunguName);
-    console.log("시도변경")
   }, [sidoName]);
+
   useEffect(() => {
     setShelterAnimalData([]);
-    setCount(1);
     fetchData(sidoName, sigunguName);
-    console.log("시군구 변경")
   }, [sigunguName]);
   
 
@@ -32,7 +31,8 @@ function ShelterAnimalListContainer() {
     fetchData(sidoName, sigunguName);
   }, [count]);
 
-  function infiniteScrollShelter() {
+  const infiniteScrollShelter = useCallback(() => 
+  {
     let scrollHeight = Math.max(
       document.documentElement.scrollHeight,
       document.body.scrollHeight
@@ -44,14 +44,17 @@ function ShelterAnimalListContainer() {
     let clientHeight = document.documentElement.clientHeight;
     if (scrollTop + clientHeight === scrollHeight) {
       // 마지막에 도달하였을 경우?
-      setCount(count + 1);
-
-      console.log("스크롤 마지막!",count);
+      let tCount = count +1;
+      setCount(tCount);
+      console.log(tCount)
     }
-  }
+  },[count]);
   useEffect(() => {
-    window.addEventListener("scroll", infiniteScrollShelter, true);
-  }, []);
+    window.addEventListener('scroll', infiniteScrollShelter, true);
+    return () => window.removeEventListener('scroll', infiniteScrollShelter, true);
+  }, [infiniteScrollShelter]);
+
+
   function fetchData(sidoSelect, sigunguSelect) {
     let tempURL = URL;
     if (sidoSelect === "시/도 전체" || sidoSelect === "") {
@@ -116,7 +119,7 @@ function ShelterAnimalListContainer() {
   useEffect(() => {
     getSidoList();
     getSigunguList("");
-    fetchData("시/도 전체", "시/군/구 전체", count);
+    fetchData("시/도 전체", "시/군/구 전체");
   }, []); // mounted 와 같은 효과
 
   return (

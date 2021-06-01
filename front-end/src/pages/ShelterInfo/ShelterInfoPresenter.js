@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import MapContainer from "./MapContainer";
 import { AiFillPhone } from "react-icons/ai";
 import { MdSms } from "react-icons/md";
 import styled from "styled-components";
-import ShelterInfoData from "../../data/Shelters.json";
 
 const StyledTelLink = styled.a`
   color: white;
@@ -28,31 +27,13 @@ function ShelterInfoPresenter({
   shelterName,
   shelterAddress,
   shelterTel,
+  shelterInfo,
 }) {
-  const [shelterList, setShelterList] = useState([
-    {
-      Juris: "대구광역시 수성구",
-      name: "(사)대구수의사회",
-      num: "053-764-3708",
-      address: "대구광역시 북구 호국로 229 (서변동) 6층",
-    },
-    {
-      Juris: "부산광역시 사하구",
-      name: "(사)하얀비둘기",
-      num: "051-293-9779",
-      address: "부산광역시 강서구 제도로 726 (강동동)",
-    },
-    {
-      Juris: "경기도 부천시",
-      name: "24시아이동물메디컬",
-      num: "032-677-5262",
-      address: "경기도 부천시 오정구 원종동 229-8",
-    },
-  ]);
+  const mapRef = useRef();
   return (
     <div className="wrapper">
       <h3>유기동물 보호소 목록</h3>
-      <MapContainer changeShelterInfo={changeShelterInfo} />
+      <MapContainer ref={mapRef} changeShelterInfo={changeShelterInfo} />
       <hr />
       <h4>{shelterName}</h4>
       <p>{shelterAddress}</p>
@@ -69,14 +50,17 @@ function ShelterInfoPresenter({
       </span>
 
       <hr />
-      {shelterList.map((item, index) => {
+      <div style={{"overflow":"scroll","height":"500px"}}>
+      {shelterInfo.map((item, index) => {
         return (
-          <div key={index}>
+          <div key={index} onClick={()=>{changeShelterInfo(item)}} style={{"cursor":"pointer"}}>
             <p>{item.name}</p>
             <hr />
           </div>
         );
       })}
+      </div>
+
     </div>
   );
 }

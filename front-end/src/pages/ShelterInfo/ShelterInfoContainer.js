@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
 import ShelterInfoPresenter from "./ShelterInfoPresenter";
+import ShelterInfoData from "../../data/shelter_info_dummy.json";
 function ShelterInfoContainer() {
-  const [shelterName,setShelterName] = useState("조회하고자 하는 보호소의 마커를 클릭하세요");
-  const [shelterAddress,setshelterAddress] = useState("조회하고자 하는 보호소의 마커를 클릭하세요");
-  const [shelterTel,setShelterTel] = useState("조회하고자 하는 보호소의 마커를 클릭하세요");
+  const [shelterName,setShelterName] = useState("보호소 이름");
+  const [shelterAddress,setshelterAddress] = useState("보호소 주소");
+  const [shelterTel,setShelterTel] = useState("보호소 연락처");
+  const [shelterInfo,setShelterInfo] = useState([])
 
+  useEffect(()=>{
+    setShelterInfo(Object.values(ShelterInfoData))
+  },[])
   function changeShelterInfo(shelterInfoObj){
     setShelterName(shelterInfoObj.name)
     setshelterAddress(shelterInfoObj.address)
     setShelterTel(shelterInfoObj.num)
+    console.log(shelterInfoObj)
   }
   return (
     <>
-      <ShelterInfoPresenter changeShelterInfo={changeShelterInfo} shelterName={shelterName} shelterAddress={shelterAddress} shelterTel={shelterTel}/>
+      <ShelterInfoPresenter shelterInfo={shelterInfo} changeShelterInfo={changeShelterInfo} shelterName={shelterName} shelterAddress={shelterAddress} shelterTel={shelterTel}/>
     </>
   );
 }

@@ -58,7 +58,7 @@ function ShelterAnimalListPresenter({
       >
         {ShelterAnimalData.map(function (animal, index) {
           return (
-            <Link to="/animal_detail" key={index}>
+            <Link to={{pathname:"/shelter_animal_detail/"+animal.desertionNo,state:animal}} key={index}>
               <AnimalCard animal={animal} index={index}></AnimalCard>
             </Link>
           );
@@ -71,11 +71,12 @@ function ShelterAnimalListPresenter({
 function AnimalCard({ animal }) {
   return (
     <>
+    
       <Card style={{ marginBottom: "10px" }}>
         <Card.Img variant="top" src={animal.popfile} />
         <Card.Body>
           <Card.Title>
-            <strong>[공고]</strong>
+            <strong>[{animal.processState}]</strong>
             {animal.kindCd.split("]")[1]}
           </Card.Title>
           <Card.Text>

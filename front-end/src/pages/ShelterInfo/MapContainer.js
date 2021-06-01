@@ -1,12 +1,44 @@
 // MapContainer.js
-import React, { useEffect,useState } from "react";
-import ShelterInfoData from "../../data/Shelters.json";
-
+import React, { useEffect, useState } from "react";
+import ShelterInfoData from "../../data/shelter_info_dummy.json";
 const { kakao } = window;
 
-
-function MapContainer({changeShelterInfo}) {
+function MapContainer({ changeShelterInfo }) {
   let map = null;
+  function changeMaker(obj) {
+    var geocoder = new kakao.maps.services.Geocoder();
+    geocoder.addressSearch(obj.address, function (result, status) {
+      if (status === daum.maps.services.Status.OK) {
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+          map: map,
+          position: coords,
+          clickable: true,
+        });
+
+        // // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        map.setCenter(coords);
+
+        var iwContent = '<div style="padding:5px;">' + item.name + "</div>", // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+          iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+        // 인포윈도우를 생성합니다
+        var infowindow = new kakao.maps.InfoWindow({
+          content: iwContent,
+          removable: iwRemoveable,
+        });
+
+        // 마커에 클릭이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, "click", function () {
+          // 마커 위에 인포윈도우를 표시합니다
+          infowindow.open(map, marker);
+          changeShelterInfo(item);
+        });
+      }
+    });
+  }
   useEffect(() => {
     const container = document.getElementById("myMap");
     if (navigator.geolocation) {
@@ -37,35 +69,34 @@ function MapContainer({changeShelterInfo}) {
     shelterList.forEach(function (item, index) {
       geocoder.addressSearch(item.address, function (result, status) {
         if (status === daum.maps.services.Status.OK) {
-          
-            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-            // 결과값으로 받은 위치를 마커로 표시합니다
-            var marker = new kakao.maps.Marker({
-              map: map,
-              position: coords,
-              clickable: true,
-            });
+          // 결과값으로 받은 위치를 마커로 표시합니다
+          var marker = new kakao.maps.Marker({
+            map: map,
+            position: coords,
+            clickable: true,
+          });
 
-            // // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-            // map.setCenter(coords);
+          // // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+          // map.setCenter(coords);
 
-            var iwContent = '<div style="padding:5px;">'+item.name+'</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-              iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+          var iwContent = '<div style="padding:5px;">' + item.name + "</div>", // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
-            // 인포윈도우를 생성합니다
-            var infowindow = new kakao.maps.InfoWindow({
-              content: iwContent,
-              removable: iwRemoveable,
-            });
+          // 인포윈도우를 생성합니다
+          var infowindow = new kakao.maps.InfoWindow({
+            content: iwContent,
+            removable: iwRemoveable,
+          });
 
-            // 마커에 클릭이벤트를 등록합니다
-            kakao.maps.event.addListener(marker, "click", function () {
-              // 마커 위에 인포윈도우를 표시합니다
-              infowindow.open(map, marker);
-              changeShelterInfo(item);
-            });
-          }
+          // 마커에 클릭이벤트를 등록합니다
+          kakao.maps.event.addListener(marker, "click", function () {
+            // 마커 위에 인포윈도우를 표시합니다
+            infowindow.open(map, marker);
+            //changeShelterInfo(item);
+          });
+        }
       });
     });
   }, []);

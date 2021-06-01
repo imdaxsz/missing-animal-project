@@ -5,6 +5,7 @@ import Header from "./components/Header/HeaderContainer";
 import MainMenu from "./components/MainMenu/MainMenuContainer";
 import ShelterAnimalList from "./pages/Shelter/ShelterAnimalListContainer";
 import AnimalDetailView from "./pages/AnimalDetailView/AnimalDetailViewContainer";
+import ShelterAnimalDetailView from "./pages/ShelterAnimalDetailView/ShelterAnimalDetailViewContainer";
 import UserPage from "./pages/UserPage/UserPageContainer";
 import ShelterrInfo from "./pages/ShelterInfo/ShelterInfoContainer";
 import { createGlobalStyle } from "styled-components";
@@ -55,6 +56,9 @@ function App() {
       </Route>
       <Route path="/animal_detail">
         <AnimalDetailView />
+      </Route>
+      <Route path="/shelter_animal_detail">
+        <ShelterAnimalDetailView />
       </Route>
       <Route path="/user_page">
         <UserPage />

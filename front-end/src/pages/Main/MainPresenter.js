@@ -45,7 +45,7 @@ function AnimalCard({ animal, index }) {
             {animal.breed}
           </Card.Title>
           <Card.Text>
-            {animal.sex} | {animal.age} | {animal.weight}
+            {animal.sex} | {animal.age} | {animal.weight}{animal.weight === "모름" ? null : "kg"}
           </Card.Text>
           <Card.Text>{animal.lostDate.substr(0,4)}-{animal.lostDate.substr(4,2)}-{animal.lostDate.substr(6,2)}</Card.Text>
 

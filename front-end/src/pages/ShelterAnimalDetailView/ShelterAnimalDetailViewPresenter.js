@@ -22,42 +22,43 @@ const StyledButton = styled.button`
   margin-left: 5px;
   margin-right: 5px;
 `;
-function AnimalDetailViewPresenter() {
+function ShelterAnimalDetailViewPresenter({ shelterAnimalDetailData }) {
   return (
     <div className="wrapper">
       <ImageWrapper>
-        <Image
-          width="100%"
-          src={require(`../../assets/images/animal1.jpg`).default}
-          fluid
-        />
+        <Image width="100%" src={shelterAnimalDetailData.popfile} fluid />
       </ImageWrapper>
       <MainContent>
         <hr />
         <h4>
-          <strong>[임시보호]</strong>고양이를 임시보호 중입니다
+          <strong>[{shelterAnimalDetailData.processState}]</strong>
+          {shelterAnimalDetailData.kindCd}
         </h4>
         <hr />
-        <StyledButton>수정</StyledButton>
-        <StyledButton>삭제</StyledButton>
+        <p>품종 : {shelterAnimalDetailData.kindCd}</p>
+        <p>공고번호 : {shelterAnimalDetailData.noticeNo}</p>
+        <p>
+          공고기간 :{" "}
+          {shelterAnimalDetailData.noticeSdt}
+          ~
+          {shelterAnimalDetailData.noticeEdt}
+        </p>
+        <p>성별 : {shelterAnimalDetailData !== "M" ? "수컷" : "암컷"}</p>
+        <p>무게 : {shelterAnimalDetailData.weight}</p>
         <hr />
-        <p>품종 : 코리안숏헤어</p>
-        <p>나이 : 5살</p>
-        <p>몸무게 : 4kg</p>
-        <p>특징 : 체구가 작음</p>
-        <hr />
-        <p>목격일 : 2021-03-13</p>
-        <p>목격장소 : 구미시 거의동 금오공대 일대</p>
-        <p>연락처 : 010 - 1234 - 5678</p>
+        <p>목격일 : {shelterAnimalDetailData.happenDt}</p>
+        <p>목격장소 : {shelterAnimalDetailData.happenPlace}</p>
+        <p>
+          보호장소 : {shelterAnimalDetailData.careAddr}{" "}
+          {shelterAnimalDetailData.careNm}
+        </p>
+        <p>연락처 : {shelterAnimalDetailData.careTel}</p>
 
         <hr />
-        <p>
-          금오공대를 돌아다니고 있어요. 주인분 계시면 연락주세요. 임시보호
-          중입니다.
-        </p>
+        <p>{shelterAnimalDetailData.specialMark}</p>
       </MainContent>
     </div>
   );
 }
 
-export default AnimalDetailViewPresenter;
+export default ShelterAnimalDetailViewPresenter;

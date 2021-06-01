@@ -73,56 +73,110 @@ function WritePostContainer() {
   function createPost() {
     const formdata = new FormData();
 
-    formdata.append("title", title);
-    formdata.append("postType", postType);
-    formdata.append("breed", breed);
-    formdata.append("sex", sex);
-    formdata.append("classification", classification);
-    formdata.append("age", age);
-    formdata.append("weight", weight);
-    formdata.append("character", character);
-    formdata.append("lostDate", lostDate);
-    formdata.append("sidoCode", sidoCode);
-    formdata.append("sigunguCode", sigunguCode);
-    formdata.append("detailPlace", detailPlace);
-    formdata.append(
-      "postDate",
-      new Date().toISOString().substring(0, 10).replace(/-/g, "")
-    );
-    formdata.append("contact", contact);
-    formdata.append("postContent", postContent);
-    formdata.append("writer", userInfo.name);
+    let errorMsg=[]
 
-    formdata.append("uid", userInfo.uid);
-
-    if (postImg != null) {
-      for (let i = 0; i < postImg.length; i++) {
-        formdata.append("postImg[]", postImg[i]);
-      }
+    if (title === ""){
+      errorMsg.push("제목을 입력해주세요!\n");
+    }
+    if (postType === ""){
+      errorMsg.push("게시글 종류를 선택해주세요!\n");
+    }
+    if (sex === ""){
+      errorMsg.push("동물의 성별을 선택해주세요!\n");
+    }
+    if(classification === ""){
+      errorMsg.push("동물이 개인지 고양이인지 기타인지 선택해주세요!\n");
+    }
+    if(age === ""){
+      errorMsg.push("동물의 나이를 입력해주세요!\n")
+    }
+    if (weight === ""){
+      errorMsg.push("동물의 몸무게를 입력해주세요.\n")
+    }
+    if (character === ""){
+      errorMsg.push("동물의 눈에띄는 특징을 입력해주세요!\n");
+    }
+    if (sidoCode === ""){
+      errorMsg.push("동물을 발견한 또는 잃어버린 시/도를 선택해주세요!\n");
+    }
+    if (sigunguCode === ""){
+      errorMsg.push("동물을 발견한 또는 잃어버린 시/군/구를 선택해주세요!\n");
+    }
+    if (detailPlace === ""){
+      errorMsg.push("동물을 발견한 또는 잃어버린 자세한 장소를 입력해주세요!\n")
+    }
+    if (contact === ""){
+      errorMsg.push("연락받을 연락처를 입력해주세요!\n");
+    }
+    if(postContent === ""){
+      errorMsg.push("본문을 입력해주세요!\n")
+    }
+    if(postImg === null){
+      errorMsg.push("동물을 설명할 사진을 1장 이상 등록해주세요!\n");
     }
 
-    var object = {};
-    formdata.forEach(function (value, key) {
-      object[key] = value;
-    });
-    var json = JSON.stringify(object);
-    console.log(json);
-
-    var config = {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "multipart/form-data",
-      },
-    };
-    axios
-      .post(ip["ip"] + "/postok", formdata, config)
-      .then(function (response) {
-        console.log(response);
-        alert("등록 성공!")
-      })
-      .catch(function (error) {
-        console.log(error);
+    if(errorMsg.length !== 0){
+      let s = errorMsg.join('');
+      alert(s)
+    }
+    else{
+      formdata.append("title", title);
+      formdata.append("postType", postType);
+      formdata.append("breed", breed);
+      formdata.append("sex", sex);
+      formdata.append("classification", classification);
+      formdata.append("age", age);
+      formdata.append("weight", weight);
+      formdata.append("character", character);
+      formdata.append("lostDate", lostDate);
+      formdata.append("sidoCode", sidoCode);
+      formdata.append("sigunguCode", sigunguCode);
+      formdata.append("detailPlace", detailPlace);
+      formdata.append(
+        "postDate",
+        new Date().toISOString().substring(0, 10).replace(/-/g, "")
+      );
+      formdata.append("contact", contact);
+      formdata.append("postContent", postContent);
+      formdata.append("writer", userInfo.name);
+  
+      formdata.append("uid", userInfo.uid);
+  
+      if (postImg != null) {
+        for (let i = 0; i < postImg.length; i++) {
+          formdata.append("postImg[]", postImg[i]);
+        }
+      }
+  
+      var object = {};
+      formdata.forEach(function (value, key) {
+        object[key] = value;
       });
+      var json = JSON.stringify(object);
+      console.log(json)
+  
+  
+  
+      var config = {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      axios
+        .post(ip["ip"] + "/postok", formdata, config)
+        .then(function (response) {
+          console.log(response);
+          if(response.status === 200){
+            alert("등록 성공!")
+            // 화면 이동하기
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+    
   }
   useEffect(()=>{
     getSidoList();
