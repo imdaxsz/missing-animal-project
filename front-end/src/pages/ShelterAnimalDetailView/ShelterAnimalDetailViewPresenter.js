@@ -43,7 +43,7 @@ function ShelterAnimalDetailViewPresenter({ shelterAnimalDetailData }) {
           ~
           {shelterAnimalDetailData.noticeEdt}
         </p>
-        <p>성별 : {shelterAnimalDetailData !== "M" ? "수컷" : "암컷"}</p>
+        <p>성별 : {shelterAnimalDetailData.sexCd === "M" ? "수컷" : "암컷"}</p>
         <p>무게 : {shelterAnimalDetailData.weight}</p>
         <hr />
         <p>목격일 : {shelterAnimalDetailData.happenDt}</p>

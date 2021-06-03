@@ -18,11 +18,10 @@ const FloatingButton = styled.button`
   width:100%;
   
 `;
-function WriteButtonPresenter() {
+function WriteButtonPresenter({isLogin}) {
   return (
     <div>
-        <Link to="/writePost"><FloatingButton>글쓰기</FloatingButton></Link>
-
+        {isLogin==="login" ? <Link to="/writePost"><FloatingButton>글쓰기</FloatingButton></Link> : null}
     </div>
   );
 }

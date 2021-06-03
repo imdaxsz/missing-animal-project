@@ -3,6 +3,7 @@ import { Image } from "react-bootstrap";
 import styled from "styled-components";
 import ip from "../../ipConfig.json";
 import { Carousel } from "react-bootstrap";
+import { Link } from "react-router-dom";
 const ImageWrapper = styled.div`
   overflow: hidden;
   display: flex;
@@ -23,19 +24,27 @@ const StyledButton = styled.button`
   margin-left: 5px;
   margin-right: 5px;
 `;
-function AnimalDetailViewPresenter({ animalDetailData }) {
+function AnimalDetailViewPresenter({
+  animalDetailData,
+  isLogin,
+  userInfo,
+  postDelete,
+}) {
+
   return (
     <div className="wrapper">
       <ImageWrapper>
         <Carousel>
           {animalDetailData.postImg.map((item, index) => {
-            return (<Carousel.Item key={index}  alt={item}>
-              <Image
-                width="100%"
-                src={`${ip["ip"]}/static/images/${item}`}
-                fluid
-              />
-            </Carousel.Item>);
+            return (
+              <Carousel.Item key={index} alt={item}>
+                <Image
+                  width="100%"
+                  src={item===""?"https://blog.nscsports.org/wp-content/uploads/2014/10/default-img.gif":`${ip["ip"]}/static/images/${item}`}
+                  fluid
+                />
+              </Carousel.Item>
+            );
           })}
         </Carousel>
       </ImageWrapper>
@@ -47,8 +56,14 @@ function AnimalDetailViewPresenter({ animalDetailData }) {
           {animalDetailData.title}
         </h4>
         <hr />
-        <StyledButton>수정</StyledButton>
-        <StyledButton>삭제</StyledButton>
+        {isLogin === "login" && animalDetailData.uid === userInfo.uid ? (
+          <StyledButton>
+            <Link to={{pathname:"/updatePost/" + animalDetailData.postID,state:animalDetailData}}>수정</Link>
+          </StyledButton>
+        ) : null}
+        {isLogin === "login" && animalDetailData.uid === userInfo.uid ? (
+          <StyledButton onClick={postDelete}>삭제</StyledButton>
+        ) : null}
         <hr />
         <p>품종 : {animalDetailData.breed}</p>
         <p>나이 : {animalDetailData.age}</p>

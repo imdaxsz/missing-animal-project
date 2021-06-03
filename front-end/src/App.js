@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Main from "./pages/Main/MainContainer";
 import WritePost from "./pages/WritePost/WritePostContainer";
+import UpdatePost from "./pages/UpdatePost/UpdatePostContainer";
 import Header from "./components/Header/HeaderContainer";
 import MainMenu from "./components/MainMenu/MainMenuContainer";
 import ShelterAnimalList from "./pages/Shelter/ShelterAnimalListContainer";
@@ -65,6 +66,9 @@ function App() {
       </Route>
       <Route path="/shelter_info">
         <ShelterrInfo />
+      </Route>
+      <Route path="/updatePost">
+        <UpdatePost/>
       </Route>
     </>
   );
