@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import HeaderPresenter from "./HeaderPresenter";
 import firebase from "firebase";
 import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
-
+import axios from 'axios'
+import ip from "../../ipConfig.json";
 import state from "../../store";
 
 function HeaderContainer() {
@@ -11,6 +12,7 @@ function HeaderContainer() {
   const [userInfo, setUserInfo] = useRecoilState(state["userState"]);
   const [isLogin, setIsLogin] = useRecoilState(state["loginState"]);
   const [flag, setFlag] = useState(false);
+  const [admin , setAdmin] = useState(false);
   useEffect(() => {
     console.log();
     firebase.auth().onAuthStateChanged((user) => {
@@ -27,6 +29,12 @@ function HeaderContainer() {
         };
         setUserInfo(userObj);
         setIsLogin("login");
+        if(userObj.uid === "fdUjeM0aFTZ4ZbhknGekouICQOt1"){
+          setAdmin(true)
+        }
+        else{
+          setAdmin(false)
+        }
       } else {
         console.log("로그인안됨");
         const initUserState = {
@@ -65,6 +73,22 @@ function HeaderContainer() {
         // An error happened.
       });
   }
+  function crawl(){
+    axios
+    .get(ip['ip']+"/crawl")
+    .then((res) => {
+      console.log(res);
+      if (res.status === 200) {
+        alert("보호소 정보 크롤링 완료");
+        history.push("/");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log("데이터 로드 실패");
+    });
+
+  }
   function googleLogin() {
     var provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({
@@ -101,6 +125,8 @@ function HeaderContainer() {
         isLogin={isLogin}
         googleLogin={googleLogin}
         googleLogout={googleLogout}
+        admin={admin}
+        crawl={crawl}
       ></HeaderPresenter>
     </div>
   );

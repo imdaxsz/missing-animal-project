@@ -4,6 +4,7 @@ import axios from "axios";
 import ip from "../../ipConfig.json";
 import { useRecoilValue } from "recoil";
 import state from "../../store";
+import {useHistory} from 'react-router-dom'
 
 function WritePostContainer() {
   // 게시글 변수
@@ -170,6 +171,7 @@ function WritePostContainer() {
           if(response.status === 200){
             alert("등록 성공!")
             // 화면 이동하기
+            history.push("/");
           }
         })
         .catch(function (error) {

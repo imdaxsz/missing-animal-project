@@ -17,12 +17,14 @@ function ShelterInfoContainer() {
       .get(ip["ip"] + "/shelter_info/"+i)
       .then((res) => {
         tempList = tempList.concat(Object.values(res.data));
+        setShelterInfo(tempList);
       })
       .catch((err) => {
         console.log(err);
         console.log("데이터 로드 실패");
       });
     }
+    console.log(tempList)
   },[])
   function changeShelterInfo(shelterInfoObj){
     window.scrollTo(0, 0);

@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import React, { useEffect } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { RiAdminLine } from "react-icons/ri";
 import { MdClose } from "react-icons/md";
 import {
   FiLogOut,
@@ -85,6 +86,8 @@ function HeaderPresenter({
   isLogin,
   googleLogin,
   googleLogout,
+  admin,
+  crawl,
 }) {
   return (
     <div>
@@ -118,6 +121,15 @@ function HeaderPresenter({
                   유기 동물 보호소 정보
                 </li>
               </Link>
+              {admin === true ? (
+                <li onClick={crawl}>
+                  <IconContainer>
+                    <RiAdminLine />
+                  </IconContainer>
+                  (관리자) 보호소 정보 크롤링
+                </li>
+              ) : null}
+
               <li onClick={googleLogout}>
                 <IconContainer>
                   <FiLogOut />

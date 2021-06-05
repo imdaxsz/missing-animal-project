@@ -67,6 +67,7 @@ function AnimalDetailViewPresenter({
         <hr />
         <p>품종 : {animalDetailData.breed}</p>
         <p>나이 : {animalDetailData.age}</p>
+        <p>성별 : {animalDetailData.sex}</p>
         <p>몸무게 : {animalDetailData.weight}</p>
         <p>특징 : {animalDetailData.character}</p>
         <hr />

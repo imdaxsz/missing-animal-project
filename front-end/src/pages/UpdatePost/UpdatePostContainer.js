@@ -4,7 +4,7 @@ import axios from "axios";
 import ip from "../../ipConfig.json";
 import { useRecoilValue } from "recoil";
 import state from "../../store";
-import {useLocation} from 'react-router-dom'
+import {useLocation,useHistory} from 'react-router-dom'
 
 function UpdatePostContainer() {
   // 게시글 변수
@@ -176,6 +176,7 @@ function UpdatePostContainer() {
           if(response.status === 200){
             alert("수정 성공!")
             // 화면 이동하기
+            history.push("/");
           }
         })
         .catch(function (error) {
