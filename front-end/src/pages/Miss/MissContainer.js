@@ -1,8 +1,8 @@
 import react, { useState, useEffect } from "react";
-import MainPresenter from "./MainPresenter";
+import MissPresenter from "./MissPresenter";
 import ip from "../../ipConfig.json";
 import axios from "axios";
-function MainContainer() {
+function MissContainer() {
   // 화면 로드 시 스크롤을 맨 위로
   const [discRescAnimalData, setDiscRescAnimalData] = useState([]);
   const [count, setCount] = useState(1);
@@ -42,7 +42,7 @@ function MainContainer() {
   }
   useEffect(()=>{
     console.log(keyword)
-    let tempURL = URL + "/disc_resc/all";
+    let tempURL = URL + "/mis/all";
     axios
       .get(tempURL)
       .then((res) => {
@@ -60,7 +60,7 @@ function MainContainer() {
   },[keyword])
 
   function fetchData() {
-    let tempURL = URL + "/disc_resc/" + count;
+    let tempURL = URL + "/mis/" + count;
     axios
       .get(tempURL)
       .then((res) => {
@@ -84,8 +84,8 @@ function MainContainer() {
 
   return (
     <div>
-      <MainPresenter discRescAnimalData={discRescAnimalData} searchResult={searchResult}></MainPresenter>
+      <MissPresenter discRescAnimalData={discRescAnimalData} searchResult={searchResult}></MissPresenter>
     </div>
   );
 }
-export default MainContainer;
+export default MissContainer;

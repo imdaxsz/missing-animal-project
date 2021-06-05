@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { Image } from "react-bootstrap";
 import styled from "styled-components";
 import ip from "../../ipConfig.json";

@@ -50,7 +50,6 @@ function ShelterAnimalListPresenter({
           </Col>
         </Row>
       </Form.Group>
-      <SearchBar />
       <Masonry
         breakpointCols={2}
         className="my-masonry-grid"

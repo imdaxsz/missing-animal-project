@@ -31,9 +31,11 @@ function AnimalDetailViewContainer() {
       postCode = "mis";
     }
 
+
     let URL = ip["ip"] + "/post_delete/" + postCode +"/"+postID;
-    
-    axios
+
+    if (confirm("정말 삭제하시겠습니까??") === true){
+      axios
       .delete(URL)
       .then((res) => {
         console.log(res);
@@ -46,10 +48,10 @@ function AnimalDetailViewContainer() {
         console.log(err);
         console.log("데이터 로드 실패");
       });
+    }
   }
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(userInfo, isLogin);
     let tmp = window.location.href.split("/");
 
     let postID = tmp[5];
@@ -70,6 +72,7 @@ function AnimalDetailViewContainer() {
         let animal = res.data;
         animal['postID']=postID
         setAnimalDetailData(animal);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);

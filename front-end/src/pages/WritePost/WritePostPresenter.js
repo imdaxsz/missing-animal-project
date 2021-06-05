@@ -191,11 +191,11 @@ function WritePostPresenter({
               <StyledLabel >나이</StyledLabel>
             </Col>
             <Col sm={4}>
-              <StyledTextInput type="number" placeholder="동물의 나이" onChange={(e) => {setAge(e.target.value);}}/>
+              <StyledTextInput type="text" placeholder="동물의 나이" onChange={(e) => {setAge(e.target.value);}}/>
             </Col>
             <Col sm={2}>몸무게</Col>
             <Col sm={4}>
-              <StyledTextInput type="number" placeholder="동물의 몸무게" onChange={(e) => {setWeight(e.target.value);}}/>
+              <StyledTextInput type="text" placeholder="동물의 몸무게" onChange={(e) => {setWeight(e.target.value);}}/>
             </Col>
           </Row>
 

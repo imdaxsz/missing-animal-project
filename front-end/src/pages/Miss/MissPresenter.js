@@ -6,12 +6,12 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import WriteButton from "../../components/WriteButton/WriteButtonContainer";
 import { Link } from "react-router-dom";
 import ip from "../../ipConfig.json";
-function MainPresenter({discRescAnimalData,searchResult}) {
+function MissPresenter({discRescAnimalData,searchResult}) {
 
   return (
     <div>
       <div className="wrapper">
-        <h3>실종동물 찾기</h3>
+        <h3>실종동물 신고🚨</h3>
         <SearchBar searchResult={searchResult}/>
         <Row md={2} xs={2} xl={2} lg={2}>
           {discRescAnimalData.map(function (animal, index) {
@@ -59,4 +59,4 @@ function AnimalCard({ animal, index }) {
   );
 }
 
-export default MainPresenter;
+export default MissPresenter;

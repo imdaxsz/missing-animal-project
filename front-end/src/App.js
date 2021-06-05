@@ -3,6 +3,7 @@ import Main from "./pages/Main/MainContainer";
 import WritePost from "./pages/WritePost/WritePostContainer";
 import UpdatePost from "./pages/UpdatePost/UpdatePostContainer";
 import Header from "./components/Header/HeaderContainer";
+import MissAnimal from './pages/Miss/MissContainer'
 import MainMenu from "./components/MainMenu/MainMenuContainer";
 import ShelterAnimalList from "./pages/Shelter/ShelterAnimalListContainer";
 import AnimalDetailView from "./pages/AnimalDetailView/AnimalDetailViewContainer";
@@ -69,6 +70,9 @@ function App() {
       </Route>
       <Route path="/updatePost">
         <UpdatePost/>
+      </Route>
+      <Route path="/miss_animal">
+        <MissAnimal/>
       </Route>
     </>
   );
