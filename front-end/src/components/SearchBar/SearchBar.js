@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState}from "react";
 import styled from "styled-components";
 import { Col, Row } from "react-bootstrap";
 import { BiSearch } from "react-icons/bi";
@@ -25,11 +25,18 @@ const StyledInput = styled.input`
   padding-left:10px;
 
 `;
-function SearchBar() {
+function SearchBar({searchResult}) {
+
+  const [searchKeyWord , setSearchKeyWord] = useState("")
+  const onKeyPress = (e) =>{
+    if (e.key == 'Enter'){
+      searchResult(searchKeyWord)
+    }
+  }
   return (
     <>
       <SearchBarContainer>
-        <StyledInput type="text" placeholder="검색어를 입력하세요" />
+        <StyledInput type="text" placeholder="검색어를 입력하세요" onChange={(e)=>{setSearchKeyWord(e.target.value)}} onKeyPress={onKeyPress}/>
         <IconContainer><BiSearch size="24" /></IconContainer>
       </SearchBarContainer>
     </>

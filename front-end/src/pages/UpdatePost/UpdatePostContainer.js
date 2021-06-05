@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import WritePostPresenter from "./WritePostPresenter";
+import WritePostPresenter from "./UpdatePostPresenter";
 import axios from "axios";
 import ip from "../../ipConfig.json";
 import { useRecoilValue } from "recoil";
 import state from "../../store";
-import {useHistory} from 'react-router-dom'
+import {useLocation,useHistory} from 'react-router-dom'
 
-function WritePostContainer() {
+function UpdatePostContainer() {
   // 게시글 변수
 
   const [title, setTitle] = useState(""); // 게시글 제목
@@ -30,10 +30,14 @@ function WritePostContainer() {
   const [postImg, setPostImg] = useState(null); // 게시글 첨부 이미지
   const [writer, setWriter] = useState(""); // 게시글 작성자
 
+  const [initData,setInitData]= useState({});
+
   const [sidoList, setSidoList] = useState([]); // 시 도 리스트 저장
   const [sigunguList,setSigunguList] = useState([]) // 시 군 구 리스트 저장
 
   const userInfo = useRecoilValue(state["userState"]);
+
+  let data = useLocation();
 
   function selectPostType(select) {
     setPostType(select);
@@ -122,7 +126,8 @@ function WritePostContainer() {
     }
     else{
       formdata.append("title", title);
-      formdata.append("postType", postType);
+      formdata.append("newPostType", postType);
+      formdata.append("oldPostType", initData.postType);
       formdata.append("breed", breed);
       formdata.append("sex", sex);
       formdata.append("classification", classification);
@@ -165,11 +170,11 @@ function WritePostContainer() {
         },
       };
       axios
-        .post(ip["ip"] + "/postok", formdata, config)
+        .put(ip["ip"] + "/post_update/"+initData.postID, formdata, config)
         .then(function (response) {
           console.log(response);
           if(response.status === 200){
-            alert("등록 성공!")
+            alert("수정 성공!")
             // 화면 이동하기
             history.push("/");
           }
@@ -185,6 +190,12 @@ function WritePostContainer() {
     getSigunguList(sidoCode);
     console.log(sidoList,sigunguList)
   },[sidoCode])
+
+  useEffect(()=>{
+    let initAnimalData = data.state;
+    setInitData(initAnimalData);
+
+  },[])
   return (
     <>
       <WritePostPresenter
@@ -208,9 +219,10 @@ function WritePostContainer() {
         setWriter={setWriter}
         sidoList={sidoList}
         sigunguList={sigunguList}
+        initData={initData}
       ></WritePostPresenter>
     </>
   );
 }
 
-export default WritePostContainer;
+export default UpdatePostContainer;

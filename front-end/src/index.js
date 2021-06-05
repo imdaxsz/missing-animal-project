@@ -7,7 +7,13 @@ import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter } from "react-router-dom";
 import firebase from "firebase";
 import { Provider } from "react-redux";
-import ReduxStore from "./store.js"
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
 
 var firebaseConfig = {
   apiKey: "AIzaSyCu2WRIIfu_o3-aHCoNWv6SJ1qnlbsS-Ic",
@@ -25,11 +31,11 @@ firebase.analytics();
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={ReduxStore}> 
+    <RecoilRoot>
+      <BrowserRouter>
         <App />
-      </Provider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -50,7 +50,7 @@ const PostWriteButton = styled.button`
   width: 100%;
 `;
 
-function WritePostPresenter({
+function UpdatePostPresenter({
   createPost,
   selectPostType,
   postType,
@@ -72,6 +72,7 @@ function WritePostPresenter({
   setWriter,
   sidoList,
   sigunguList,
+  initData
 }) {
   useEffect(()=>{
     console.log(sidoList,sigunguList)
@@ -89,10 +90,10 @@ function WritePostPresenter({
             <Col sm={10}>
               <StyledTextInput
                 type="email"
-                placeholder="게시글 제목을 입력하세요"
                 onChange={(e) => {
                   setTitle(e.target.value);
                 }}
+                placeholder={initData.title}
               ></StyledTextInput>
             </Col>
           </Row>
@@ -137,7 +138,7 @@ function WritePostPresenter({
               <StyledLabel>품종</StyledLabel>
             </Col>
             <Col sm={10}>
-              <StyledTextInput onChange={(e) => {setBreed(e.target.value)}} placeholder="ex. 코리안숏헤어, 닥스훈트, 모란앵무.."></StyledTextInput>
+              <StyledTextInput onChange={(e) => {setBreed(e.target.value)}} placeholder={initData.breed}></StyledTextInput>
             </Col>
           </Row>
           <Row className="mb-3" style={{ alignItems: "center" }}>
@@ -190,11 +191,11 @@ function WritePostPresenter({
               <StyledLabel >나이</StyledLabel>
             </Col>
             <Col sm={4}>
-              <StyledTextInput type="text" placeholder="동물의 나이" onChange={(e) => {setAge(e.target.value);}}/>
+              <StyledTextInput type="text" placeholder={initData.age} onChange={(e) => {setAge(e.target.value);}}/>
             </Col>
             <Col sm={2}>몸무게</Col>
             <Col sm={4}>
-              <StyledTextInput type="text" placeholder="동물의 몸무게" onChange={(e) => {setWeight(e.target.value);}}/>
+              <StyledTextInput type="text" placeholder={initData.weight} onChange={(e) => {setWeight(e.target.value);}}/>
             </Col>
           </Row>
 
@@ -205,8 +206,8 @@ function WritePostPresenter({
             <Col sm={10}>
               <StyledTextInput
                 type="text"
-                placeholder="눈에띄는 동물의 특징을 입력하세요"
                 onChange={(e) => {setCharacter(e.target.value);}}
+                placeholder={initData.character}
               />
             </Col>
           </Row>
@@ -240,8 +241,8 @@ function WritePostPresenter({
                 <Col sm={2}>상세 장소</Col>
                 <Col sm={10}>
                   <StyledTextInput
-                    type="text"
-                    placeholder="목격하신 장소의 상세 위치를 적어주세요"
+                    type="text"                    
+                    placeholder={initData.detailPlace}
                     onChange={(e) => {setDetailPlace(e.target.value);}}
                   />
                 </Col>
@@ -278,7 +279,7 @@ function WritePostPresenter({
                 <Col sm={10}>
                   <StyledTextInput
                     type="text"
-                    placeholder="실종된 장소의 상세 위치를 적어주세요"
+                    placeholder={initData.detailPlace}
                     onChange={(e) => {setDetailPlace(e.target.value);}}
                   />
                 </Col>
@@ -315,7 +316,7 @@ function WritePostPresenter({
                 <Col sm={10}>
                   <StyledTextInput
                     type="text"
-                    placeholder="발견된 장소의 상세 위치를 적어주세요"
+                    placeholder={initData.detailPlace}
                     onChange={(e) => {setDetailPlace(e.target.value);}}
                   />
                 </Col>
@@ -328,7 +329,7 @@ function WritePostPresenter({
               <StyledLabel>연락처</StyledLabel>
             </Col>
             <Col sm={10}>
-              <StyledTextInput type="text" placeholder="ex. 010012345678" onChange={(e) => {setContact(e.target.value);}}/>
+              <StyledTextInput type="text" placeholder={initData.contact} onChange={(e) => {setContact(e.target.value);}}/>
             </Col>
           </Row>
           <Row className="mb-3" style={{ alignItems: "center" }}>
@@ -339,7 +340,7 @@ function WritePostPresenter({
               <textarea
                 as="textarea"
                 rows={3}
-                placeholder="덧붙일 본문을 적어주세요."
+                placeholder={initData.postContent}
                 style={{ width: "100%" }}
                 onChange={(e) => {setPostContent(e.target.value);}}
               />
@@ -355,9 +356,9 @@ function WritePostPresenter({
           </Row>
         </div>
       </div>
-      <PostWriteButton onClick={createPost}>작성완료</PostWriteButton>
+      <PostWriteButton onClick={createPost}>수정완료</PostWriteButton>
     </div>
   );
 }
 
-export default WritePostPresenter;
+export default UpdatePostPresenter;

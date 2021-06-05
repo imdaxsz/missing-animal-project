@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
-import React from "react";
+import React, { useEffect } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { RiAdminLine } from "react-icons/ri";
 import { MdClose } from "react-icons/md";
 import {
   FiLogOut,
@@ -62,6 +63,8 @@ const StyledSideBar = styled.div`
         background-color: #00a059;
         cursor: pointer;
         color: white;
+
+        text-decoration: none;
       }
     }
   }
@@ -77,7 +80,15 @@ const StyledSideBar = styled.div`
           right: -100%;
         `};
 `;
-function HeaderPresenter({ mode, switchMode, isLogin, googleLogin, googleLogout }) {
+function HeaderPresenter({
+  mode,
+  switchMode,
+  isLogin,
+  googleLogin,
+  googleLogout,
+  admin,
+  crawl,
+}) {
   return (
     <div>
       <HeaderContainer>
@@ -102,13 +113,6 @@ function HeaderPresenter({ mode, switchMode, isLogin, googleLogin, googleLogout 
                   사용자정보
                 </li>
               </Link>
-
-              <li>
-                <IconContainer>
-                  <FiMapPin />
-                </IconContainer>
-                내 동네 설정
-              </li>
               <Link to="/shelter_info">
                 <li>
                   <IconContainer>
@@ -117,12 +121,15 @@ function HeaderPresenter({ mode, switchMode, isLogin, googleLogin, googleLogout 
                   유기 동물 보호소 정보
                 </li>
               </Link>
-              <li>
-                <IconContainer>
-                  <FiSettings />
-                </IconContainer>
-                실시간 키워드 알림 설정
-              </li>
+              {admin === true ? (
+                <li onClick={crawl}>
+                  <IconContainer>
+                    <RiAdminLine />
+                  </IconContainer>
+                  (관리자) 보호소 정보 크롤링
+                </li>
+              ) : null}
+
               <li onClick={googleLogout}>
                 <IconContainer>
                   <FiLogOut />
