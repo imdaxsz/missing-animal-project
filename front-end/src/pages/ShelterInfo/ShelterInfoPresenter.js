@@ -29,11 +29,14 @@ function ShelterInfoPresenter({
   shelterTel,
   shelterInfo,
 }) {
-  const mapRef = useRef();
+  const mapRef = useRef(null);
+
+
+
   return (
     <div className="wrapper">
       <h3>유기동물 보호소 목록</h3>
-      <MapContainer ref={mapRef} changeShelterInfo={changeShelterInfo} />
+      <MapContainer ref={mapRef}/>
       <hr />
       <h4>{shelterName}</h4>
       <p>{shelterAddress}</p>
@@ -48,12 +51,11 @@ function ShelterInfoPresenter({
           문자 보내기
         </StyledTelLink>
       </span>
-
       <hr />
       <div style={{"overflow":"scroll","height":"500px"}}>
       {shelterInfo.map((item, index) => {
         return (
-          <div key={index} onClick={()=>{changeShelterInfo(item)}} style={{"cursor":"pointer"}}>
+          <div key={index} onClick={()=>{changeShelterInfo(item);mapRef.current.changeMaker(item)}} style={{"cursor":"pointer"}}>
             <p>{item.name}</p>
             <hr />
           </div>
@@ -64,4 +66,6 @@ function ShelterInfoPresenter({
     </div>
   );
 }
+
+
 export default ShelterInfoPresenter;

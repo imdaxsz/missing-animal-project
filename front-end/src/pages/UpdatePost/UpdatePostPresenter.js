@@ -135,11 +135,10 @@ function UpdatePostPresenter({
           <hr />
           <Row className="mb-3" style={{ alignItems: "center" }}>
             <Col sm={2}>
-              <StyledLabel                 
-              onChange={(e) => {setBreed(e.target.value);}}>품종</StyledLabel>
+              <StyledLabel>품종</StyledLabel>
             </Col>
             <Col sm={10}>
-              <StyledTextInput placeholder={initData.breed}></StyledTextInput>
+              <StyledTextInput onChange={(e) => {setBreed(e.target.value)}} placeholder={initData.breed}></StyledTextInput>
             </Col>
           </Row>
           <Row className="mb-3" style={{ alignItems: "center" }}>

@@ -134,11 +134,10 @@ function WritePostPresenter({
           <hr />
           <Row className="mb-3" style={{ alignItems: "center" }}>
             <Col sm={2}>
-              <StyledLabel                 
-              onChange={(e) => {setBreed(e.target.value)}}>품종</StyledLabel>
+              <StyledLabel>품종</StyledLabel>
             </Col>
             <Col sm={10}>
-              <StyledTextInput placeholder="ex. 코리안숏헤어, 닥스훈트, 모란앵무.."></StyledTextInput>
+              <StyledTextInput onChange={(e) => {setBreed(e.target.value)}} placeholder="ex. 코리안숏헤어, 닥스훈트, 모란앵무.."></StyledTextInput>
             </Col>
           </Row>
           <Row className="mb-3" style={{ alignItems: "center" }}>

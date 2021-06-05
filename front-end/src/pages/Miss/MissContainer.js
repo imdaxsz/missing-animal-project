@@ -52,7 +52,7 @@ function MissContainer() {
           postData["postID"] = postid;
           tempList.push(postData);
         }
-        setDiscRescAnimalData(tempList.filter(it => it.title.includes(keyword)||it.breed.includes(keyword) || it.postContent.includes(keyword)||it.classification.includes(keyword)))
+        setDiscRescAnimalData(tempList.filter(it => it.title.includes(keyword)||it.breed.includes(keyword) || it.postContent.includes(keyword)||it.classification.includes(keyword)||it.detailPlace.includes(keyword)).reverse())
 
       })
       .catch((err) => {
