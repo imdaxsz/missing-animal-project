@@ -13,21 +13,25 @@ function ShelterAnimalListContainer() {
   const [count, setCount] = useState(1);
   
   useEffect(() => {
-    setShelterAnimalData([]);
+    ShelterAnimalData.length = 0
     setCount(1);
     getSigunguList(sidoName);
     setSigunguName("시/군/구 전체")
+    console.log("시도 바뀜")
+    console.log("teset",ShelterAnimalData)
     fetchData(sidoName, sigunguName);
   }, [sidoName]);
 
   useEffect(() => {
-    setShelterAnimalData([]);
+    setShelterAnimalData([]); // 어째서 안되는가 ? 
+    ShelterAnimalData.length = 0 // 야매 ... 
+    console.log("시군구 바뀜")
+    console.log("teset",ShelterAnimalData)
     fetchData(sidoName, sigunguName);
   }, [sigunguName]);
   
 
   useEffect(() => {
-    console.log(count);
     fetchData(sidoName, sigunguName);
   }, [count]);
 
@@ -46,7 +50,6 @@ function ShelterAnimalListContainer() {
       // 마지막에 도달하였을 경우?
       let tCount = count +1;
       setCount(tCount);
-      console.log(tCount)
     }
   },[count]);
   useEffect(() => {
@@ -71,7 +74,6 @@ function ShelterAnimalListContainer() {
       }
     }
 
-    console.log(tempURL);
     axios
       .get(tempURL)
       .then((res) => {
@@ -90,7 +92,6 @@ function ShelterAnimalListContainer() {
       axios
         .get(ip["ip"] + tempRouter)
         .then((res) => {
-          console.log(res.data);
           let temp = Object.keys(res.data);
           temp.unshift("시/군/구 전체");
           setSigunguList(temp);

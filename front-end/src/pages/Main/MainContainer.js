@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from "react";
+import react, { useState, useEffect,useCallback } from "react";
 import MainPresenter from "./MainPresenter";
 import ip from "../../ipConfig.json";
 import axios from "axios";
@@ -15,12 +15,13 @@ function MainContainer() {
     setCount(1);
     fetchData();
   }, []);
+
   useEffect(()=>{
     fetchData();
   },[count])
   
-  let a = 0
-  function infiniteScrollMain() {
+  const infiniteScrollMain = useCallback(() => 
+  {
     let scrollHeight = Math.max(
       document.documentElement.scrollHeight,
       document.body.scrollHeight
@@ -32,9 +33,15 @@ function MainContainer() {
     let clientHeight = document.documentElement.clientHeight;
     if (scrollTop + clientHeight === scrollHeight) {
       // 마지막에 도달하였을 경우?
-      setCount(count + 1)
+      let tCount = count +1;
+      setCount(tCount);
     }
-  }
+  },[count]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', infiniteScrollMain, true);
+    return () => window.removeEventListener('scroll', infiniteScrollMain, true);
+  }, [infiniteScrollMain]);
 
   function searchResult(word){
     setKeyword(word)
