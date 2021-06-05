@@ -1,4 +1,4 @@
-import react, { useState, useEffect,useCallback } from "react";
+import react, { useState, useEffect, useCallback } from "react";
 import MainPresenter from "./MainPresenter";
 import ip from "../../ipConfig.json";
 import axios from "axios";
@@ -6,8 +6,8 @@ function MainContainer() {
   // 화면 로드 시 스크롤을 맨 위로
   const [discRescAnimalData, setDiscRescAnimalData] = useState([]);
   const [count, setCount] = useState(1);
-  const [keyword,setKeyword] = useState("")
-  const [searchResultList,setSearchResultList] = useState([])
+  const [keyword, setKeyword] = useState("");
+  const [searchResultList, setSearchResultList] = useState([]);
   const URL = ip["ip"];
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -16,12 +16,11 @@ function MainContainer() {
     fetchData();
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[count])
-  
-  const infiniteScrollMain = useCallback(() => 
-  {
+  }, [count]);
+
+  const infiniteScrollMain = useCallback(() => {
     let scrollHeight = Math.max(
       document.documentElement.scrollHeight,
       document.body.scrollHeight
@@ -33,22 +32,21 @@ function MainContainer() {
     let clientHeight = document.documentElement.clientHeight;
     if (scrollTop + clientHeight === scrollHeight) {
       // 마지막에 도달하였을 경우?
-      let tCount = count +1;
+      let tCount = count + 1;
       setCount(tCount);
     }
-  },[count]);
+  }, [count]);
 
   useEffect(() => {
-    window.addEventListener('scroll', infiniteScrollMain, true);
-    return () => window.removeEventListener('scroll', infiniteScrollMain, true);
+    window.addEventListener("scroll", infiniteScrollMain, true);
+    return () => window.removeEventListener("scroll", infiniteScrollMain, true);
   }, [infiniteScrollMain]);
 
-  function searchResult(word){
-    setKeyword(word)
-    
+  function searchResult(word) {
+    setKeyword(word);
   }
-  useEffect(()=>{
-    console.log(keyword)
+  useEffect(() => {
+    console.log(keyword);
     let tempURL = URL + "/disc_resc/all";
     axios
       .get(tempURL)
@@ -59,12 +57,21 @@ function MainContainer() {
           postData["postID"] = postid;
           tempList.push(postData);
         }
-        setDiscRescAnimalData(tempList.filter(it => it.title.includes(keyword)||it.breed.includes(keyword) || it.postContent.includes(keyword)||it.classification.includes(keyword)||it.detailPlace.includes(keyword)).reverse())
-
+        setDiscRescAnimalData(
+          tempList
+            .filter(
+              (it) =>
+                it.title.includes(keyword) ||
+                it.breed.includes(keyword) ||
+                it.postContent.includes(keyword) ||
+                it.classification.includes(keyword) ||
+                it.detailPlace.includes(keyword)
+            )
+            .reverse()
+        );
       })
-      .catch((err) => {
-      });
-  },[keyword])
+      .catch((err) => {});
+  }, [keyword]);
 
   function fetchData() {
     let tempURL = URL + "/disc_resc/" + count;
@@ -72,15 +79,15 @@ function MainContainer() {
       .get(tempURL)
       .then((res) => {
         let tempList = [];
-        console.log(res.data)
+        console.log(res.data);
         for (let postid in res.data) {
           let postData = res.data[postid];
           postData["postID"] = postid;
           tempList.push(postData);
         }
-        console.log(tempList)
-        
-        setDiscRescAnimalData(discRescAnimalData.concat(tempList.reverse()))
+        console.log(tempList);
+
+        setDiscRescAnimalData(discRescAnimalData.concat(tempList.reverse()));
       })
       .catch((err) => {
         console.log(err);
@@ -88,10 +95,12 @@ function MainContainer() {
       });
   }
 
-
   return (
     <div>
-      <MainPresenter discRescAnimalData={discRescAnimalData} searchResult={searchResult}></MainPresenter>
+      <MainPresenter
+        discRescAnimalData={discRescAnimalData}
+        searchResult={searchResult}
+      ></MainPresenter>
     </div>
   );
 }
