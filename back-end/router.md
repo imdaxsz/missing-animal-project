@@ -42,15 +42,15 @@
   
 
 - 게시글 작성  
-> @app.route('/postok', methods=['POST'])
+	@app.route('/postok', methods=['POST'])
 
 - 게시글 삭제  
-> @app.route('/post_delete/<postType>/<postID>', methods=['DELETE'])
+	@app.route('/post_delete/<postType>/<postID>', methods=['DELETE'])
 
 - 게시글 수정  
-> @app.route('/post_update/<postID>', methods=['PUT'])
+	@app.route('/post_update/<postID>', methods=['PUT'])
 
   
   
 - 로컬 이미지 서버 전달  
-> @app.route('/img/<imgName>')
+	@app.route('/img/<imgName>')
