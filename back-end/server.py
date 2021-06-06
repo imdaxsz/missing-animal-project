@@ -12,7 +12,7 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import glob
 import SheltersCrawl
-import time
+import datetime
 
 app = Flask(__name__)
 CORS(app, resources={r'*': {'origins': '*'}})
@@ -79,8 +79,29 @@ def crawl():
     db.child('보호소').remove()
     for i in range(len(temp)):
         postKey = db.child('보호소').push(temp[i])
-        #print(postKey)
+
     return "crawl ok"
+
+
+# 보호소 정보 조회
+@app.route('/shelter_info/<pageNo>')
+def shelter_info(pageNo):
+    shelter_data = db.child('보호소').get().val()
+    if shelter_data is not None:
+        result = dict(shelter_data)
+        keylist = list(result)
+        valuelist = list(result.values())
+        shelterdict = {}
+        idx = (int(pageNo) - 1) * 20
+        for i in range(idx, idx + 20):
+            if i < len(keylist):
+                shelterdict[keylist[i]] = valuelist[i]
+
+        return shelterdict
+    else:
+        return "no shelter data"
+
+
 
 # 시도코드 정보조회
 @app.route('/get_sido_code')
@@ -101,6 +122,9 @@ def get_sigungu_code(sido):
     temp = sido_code[sidoCode]
     codelist = {v:k for k, v in temp.items()}
     return codelist
+
+
+# --------------------- 게시글 조회 ---------------------#
 
 # 유기동물 정보조회
 @app.route('/shelter/animal/<pageNo>')
@@ -125,9 +149,7 @@ def shelter_animal(pageNo):
 @app.route('/shelter/animal/<sido>/<pageNo>')
 def shelter_sido(sido, pageNo):
     code = find_sido_code(sido)
-    print("code:", code)
     path = '지역코드/' + code + "/" + code
-    print("db 결과:", db.child(path).get().val())
     url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?upr_cd=' + code + \
           '&pageNo=' + pageNo + '&numOfRows=20'
     queryParams = '&' + urlencode({quote_plus(
@@ -149,9 +171,7 @@ def shelter_sido(sido, pageNo):
 def shelter_sigungu(sido, sigungu, pageNo):
     upr_cd = find_sido_code(sido)
     org_cd = find_sigungu_code(upr_cd, sigungu)
-    print(upr_cd, org_cd)
     path = '지역코드/' + upr_cd + "/" + org_cd
-    print("db 결과:", db.child(path).get().val())
     url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?upr_cd=' + upr_cd +\
           '&org_cd=' + org_cd + '&pageNo=' + pageNo + '&numOfRows=20'
     queryParams = '&' + urlencode({quote_plus(
@@ -168,106 +188,41 @@ def shelter_sigungu(sido, sigungu, pageNo):
     return dict
 
 
-# 게시글 작성
-@app.route('/postok', methods=['POST'])
-def postok():
-   if request.method == 'POST':
-      title = request.form['title']
-      writer = request.form['writer']
-      uid = request.form['uid']
-      postType = request.form['postType']
-      breed = request.form['breed']
-      sex = request.form['sex']
-      classification = request.form['classification']
-      age = request.form['age']
-      weight = request.form['weight']
-      character = request.form['character']
-      lostDate = request.form['lostDate']
-      sidoCode = request.form['sidoCode']
-      sigunguCode = request.form['sigunguCode']
-      detailPlace = request.form['detailPlace']
-      postDate = request.form['postDate']
-      contact = request.form['contact']
-      postContent = request.form['postContent']
-
-      temp = lostDate.split('-')
-      lostDate = temp[0] + temp[1] + temp[2]
-
-      resultdict = {'title':title, 'postType':postType, 'writer':writer, 'uid':uid, 'breed':breed,
-        'sex':sex, 'classification':classification, 'age':age, 'weight':weight, 'character':character,
-        'lostDate':lostDate, 'sidoCode':sidoCode, 'sigunguCode':sigunguCode, 'detailPlace':detailPlace,
-        'postDate':postDate, 'contact':contact, 'postContent':postContent}
-
-      postKey = db.child('게시글/' + postType).push(resultdict)
-      postkey = postKey['name'][1:]
-      print(postkey)
-        
-      postImgs = request.files.getlist("postImg[]")
-      imgList = []
-      i = 0
-      for postImg in postImgs:
-          name, ext = os.path.splitext(postImg.filename)
-          i += 1
-          filename = uid + "_" + postkey + "_" + postDate + "_" + str(i)
-          postImg.filename = filename + ext
-          imgList.append(postImg.filename)
-          postImg.save(f'static/images/{secure_filename(postImg.filename)}')
-      
-      resultdict['postImg'] = imgList
-      print(resultdict)
-      return resultdict
-
-
-# 게시글 삭제
-@app.route('/post_delete/<postID>', methods=['DELETE'])
-def post_delete(postID):
-    if request.method == 'DELETE':
-        postType = request.form['postType']
-        path = '게시글/' + postType + '/' + postID
-        db.child(path).remove()
-        return "post has been deleted"
-
-
-# 게시글 수정
-@app.route('/post_update/<postID>', methods=['PUT'])
-def post_update(postID):
-    if request.method == 'PUT':
-        title = request.form['title']
-        writer = request.form['writer']
-        uid = request.form['uid']
-        postType = request.form['postType']
-        breed = request.form['breed']
-        sex = request.form['sex']
-        classification = request.form['classification']
-        age = request.form['age']
-        weight = request.form['weight']
-        character = request.form['character']
-        lostDate = request.form['lostDate']
-        sidoCode = request.form['sidoCode']
-        sigunguCode = request.form['sigunguCode']
-        detailPlace = request.form['detailPlace']
-        postDate = request.form['postDate']
-        contact = request.form['contact']
-        postContent = request.form['postContent']
-
-        temp = lostDate.split('-')
-        lostDate = temp[0] + temp[1] + temp[2]
-
-        resultdict = {'title': title, 'postType': postType, 'writer': writer, 'uid': uid, 'breed': breed,
-                      'sex': sex, 'classification': classification, 'age': age, 'weight': weight,
-                      'character': character,
-                      'lostDate': lostDate, 'sidoCode': sidoCode, 'sigunguCode': sigunguCode,
-                      'detailPlace': detailPlace,
-                      'postDate': postDate, 'contact': contact, 'postContent': postContent}
-
-        postType = request.form['postType']
-        path = '게시글/' + postType + '/' + postID
-        db.child(path).update(resultdict)
-        return "post has been updated"
-
-
 
 # 실종동물 찾기 (임시보호/목격 제보 조회)
+@app.route('/disc_resc/all')
+def disc_resc_all():
+    resc = db.child('게시글/임시보호').get().val()
+    disc = db.child('게시글/목격제보').get().val()
+
+    result = None
+    if disc is not None and resc is not None:
+        result = dict({**resc, **disc})
+    elif disc is None and resc is not None:
+        result = dict(resc)
+
+    elif disc is not None and resc is None:
+        result = dict(disc)
+
+    if result is not None:
+        for k in result.keys():
+            postId = k[1:]
+            uid = result[k]['uid']
+            postDate = result[k]['postDate']
+            name = uid + "_" + postId + "_" + postDate
+            condition = 'static/images/' + name + '*_1.*'
+
+            files = glob.glob(condition)
+            for file in files:
+                imgName = os.path.basename(file)
+                result[k]['postImg'] = imgName
+                # print(imgName)
+
+        return result
+    else:
+        print("임시보호/목격제보 없음")
+        return "임시보호/목격제보 없음"
+
 @app.route('/disc_resc/<pageNo>')
 def disc_resc_list(pageNo):
     resc = db.child('게시글/임시보호').get().val()
@@ -283,8 +238,6 @@ def disc_resc_list(pageNo):
         result = dict(disc)
 
     if result is not None:
-        print("임시보호/목격제보:", result.keys())
-        print("임시보호/목격제보:", result)
         keylist = list(result)
         valuelist = list(result.values())
         keylist.reverse()
@@ -296,14 +249,13 @@ def disc_resc_list(pageNo):
                 postdict[keylist[i]] = valuelist[i]
 
         if postdict != None:
-            #print(postdict)
            # 이미지 가져오기
             for k in postdict.keys():
                 postId = k[1:]
                 uid = postdict[k]['uid']
                 postDate = postdict[k]['postDate']
-                name = uid + "_" + postId + "_" + postDate + "_" + str(1)
-                condition = 'static/images/' + name + '*.*'
+                name = uid + "_" + postId + "_" + postDate
+                condition = 'static/images/' + name + '*_1.*'
 
                 files = glob.glob(condition)
                 for file in files:
@@ -317,19 +269,42 @@ def disc_resc_list(pageNo):
         return "임시보호/목격제보 없음"
 
 
+
 # 실종신고 조회
+@app.route('/mis/all')
+def mis_all():
+    mis_data = db.child('게시글/실종신고').get().val()
+    if mis_data is not None:
+        result = dict(mis_data)
+
+        # 이미지 가져오기
+        for k in result.keys():
+            postId = k[1:]
+            uid = result[k]['uid']
+            postDate = result[k]['postDate']
+            name = uid + "_" + postId + "_" + postDate
+            condition = 'static/images/' + name + '*_1.*'
+
+            files = glob.glob(condition)
+            for file in files:
+                imgName = os.path.basename(file)
+                result[k]['postImg'] = imgName
+                #print(imgName)
+
+        return result
+    else:
+        print("실종신고 없음")
+        return "실종신고 없음"
+
 @app.route('/mis/<pageNo>')
 def mis_list(pageNo):
-    print(pageNo)
     mis_data = db.child('게시글/실종신고').get().val()
     if mis_data is not None:
         result = dict(mis_data)
         keylist = list(result)
         keylist.reverse()
-        #print(keylist)
         valuelist = list(result.values())
         valuelist.reverse()
-        #print(valuelist)
 
         postdict = {}
         idx = (int(pageNo)-1) * 20
@@ -338,25 +313,25 @@ def mis_list(pageNo):
                 postdict[keylist[i]] = valuelist[i]
 
         if postdict != None:
-            print(postdict)
             # 이미지 가져오기
             for k in postdict.keys():
                 postId = k[1:]
                 uid = postdict[k]['uid']
                 postDate = postdict[k]['postDate']
-                name = uid + "_" + postId + "_" + postDate + "_" + str(1)
-                condition = 'static/images/' + name + '*.*'
+                name = uid + "_" + postId + "_" + postDate
+                condition = 'static/images/' + name + '*_1.*'
 
                 files = glob.glob(condition)
                 for file in files:
                     imgName = os.path.basename(file)
                     postdict[k]['postImg'] = imgName
-                    print(imgName)
+                    #print(imgName)
 
             return postdict
     else:
         print("실종신고 없음")
         return "실종신고 없음"
+
 
 
 # 게시글 상세 조회
@@ -389,57 +364,191 @@ def post_detail(postType, postID):
 
     result['postImg'] = imgList
 
-    print(result)
     return result
 
 
-# 보호소 유기동물 글 상세 조회
-@app.route('/shelter/animal/detail/<pageNo>/<desertionNo>')
-def shelter_animal_detail(pageNo, desertionNo):
-    url = 'http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?pageNo=' + pageNo + '&numOfRows=20'
-    queryParams = '&' + urlencode({quote_plus(
-        'ServiceKey'): 'g4fjxGQYBDsO7DJoSVH4qbE9pCV7knL71oKLyPbukZeY5tbq%2BY2GoDr6EqXF1DaQ7Zr%2F4mJvB6Lia9cf%2B1DbGQ%3D%3D'})
 
-    request = urllib.request.Request(url + unquote(queryParams))
-    # print('Your Request:\n' + url + queryParams)
-    request.get_method = lambda: 'GET'
-    response_body = urlopen(request).read()
+# --------------------- 게시글 관리 ---------------------#
 
-    result = xmltodict.parse(response_body)
-    dict = json.loads(json.dumps(result))
-    dict['header'] = 1
-    temp = dict['response']['body']['items']
-    postlist = temp['item']  # type = list
+# 게시글 작성
+@app.route('/postok', methods=['POST'])
+def postok():
+    if request.method == 'POST':
+        title = request.form['title']
+        writer = request.form['writer']
+        uid = request.form['uid']
+        postType = request.form['postType']
+        breed = request.form['breed']
+        sex = request.form['sex']
+        classification = request.form['classification']
+        age = request.form['age']
+        weight = request.form['weight']
+        character = request.form['character']
+        lostDate = request.form['lostDate']
+        sidoCode = request.form['sidoCode']
+        sigunguCode = request.form['sigunguCode']
+        detailPlace = request.form['detailPlace']
+        postDate = request.form['postDate']
+        contact = request.form['contact']
+        postContent = request.form['postContent']
 
-    for i in range(20):
-        if postlist[i]['desertionNo'] == desertionNo:
-            return postlist[i]
+        temp = lostDate.split('-')
+        lostDate = temp[0] + temp[1] + temp[2]
+
+        resultdict = {'title': title, 'postType': postType, 'writer': writer, 'uid': uid, 'breed': breed,
+                      'sex': sex, 'classification': classification, 'age': age, 'weight': weight,
+                      'character': character,
+                      'lostDate': lostDate, 'sidoCode': sidoCode, 'sigunguCode': sigunguCode,
+                      'detailPlace': detailPlace,
+                      'postDate': postDate, 'contact': contact, 'postContent': postContent}
+
+        postKey = db.child('게시글/' + postType).push(resultdict)
+        postkey = postKey['name'][1:]
+        print(postkey)
+
+        today = datetime.datetime.today()
+        hr = today.hour
+        min = today.minute
+        sec = today.second
+
+        hr = '0' + str(hr) if hr < 10 else str(hr)
+        min = '0' + str(min) if min < 10 else str(min)
+        sec = '0' + str(sec) if sec < 10 else str(sec)
+
+        postImgs = request.files.getlist("postImg[]")
+        imgList = []
+        i = 0
+        for postImg in postImgs:
+            name, ext = os.path.splitext(postImg.filename)
+            i += 1
+            filename = uid + "_" + postkey + "_" + postDate + "_" + hr + min + sec + "_" + str(i)
+            postImg.filename = filename + ext
+            imgList.append(postImg.filename)
+            postImg.save(f'static/images/{secure_filename(postImg.filename)}')
+
+        resultdict['postImg'] = imgList
+
+        print(resultdict)
+        return resultdict
 
 
-# 보호소 정보 조회
-@app.route('/shelter_info/<pageNo>')
-def shelter_info(pageNo):
-    shelter_data = db.child('보호소').get().val()
-    if shelter_data is not None:
-        result = dict(shelter_data)
-        keylist = list(result)
-        valuelist = list(result.values())
-        shelterdict = {}
-        idx = (int(pageNo) - 1) * 20
-        for i in range(idx, idx + 20):
-            if i < len(keylist):
-                shelterdict[keylist[i]] = valuelist[i]
+# 게시글 삭제
+@app.route('/post_delete/<postType>/<postID>', methods=['DELETE'])
+def post_delete(postType, postID):
+    if request.method == 'DELETE':
+        if postType == 'mis':
+            postType = '실종신고'
+        elif postType == 'disc':
+            postType = '목격제보'
+        elif postType == 'resc':
+            postType = '임시보호'
 
-        return shelterdict
-    else:
-        return "no shelter data"
+        path = '게시글/' + postType + '/' + postID
+        db.child(path).remove()
+        return "post has been deleted"
 
+
+# 게시글 수정
+@app.route('/post_update/<postID>', methods=['PUT'])
+def post_update(postID):
+    if request.method == 'PUT':
+        oldPostType = request.form['oldPostType']
+        title = request.form['title']
+        writer = request.form['writer']
+        uid = request.form['uid']
+        newPostType = request.form['newPostType']
+        breed = request.form['breed']
+        sex = request.form['sex']
+        classification = request.form['classification']
+        age = request.form['age']
+        weight = request.form['weight']
+        character = request.form['character']
+        lostDate = request.form['lostDate']
+        sidoCode = request.form['sidoCode']
+        sigunguCode = request.form['sigunguCode']
+        detailPlace = request.form['detailPlace']
+        postDate = request.form['postDate']
+        contact = request.form['contact']
+        postContent = request.form['postContent']
+
+        temp = lostDate.split('-')
+        lostDate = temp[0] + temp[1] + temp[2]
+
+        resultdict = {'title': title, 'postType': newPostType, 'writer': writer, 'uid': uid, 'breed': breed,
+                      'sex': sex, 'classification': classification, 'age': age, 'weight': weight,
+                      'character': character,
+                      'lostDate': lostDate, 'sidoCode': sidoCode, 'sigunguCode': sigunguCode,
+                      'detailPlace': detailPlace,
+                      'postDate': postDate, 'contact': contact, 'postContent': postContent}
+
+        if (oldPostType != newPostType):
+            load_path = '게시글/' + oldPostType + '/' + postID
+            print(load_path)
+            db.child(load_path).remove()
+            save_path = '게시글/' + newPostType
+            print("save:", save_path)
+            newPostId = db.child(save_path).push(resultdict)
+            print(newPostId)
+            newId = newPostId['name']
+            # print("new id:", newPostId['name'])
+            print(newId[1:])
+            delete_img(uid, postID[1:])
+            update_img(uid, newId[1:], postDate, resultdict)
+
+        else:
+            save_path = '게시글/' + newPostType + '/' + postID
+            print(save_path)
+            db.child(save_path).update(resultdict)
+            delete_img(uid, postID[1:])
+            update_img(uid, postID[1:], postDate, resultdict)
+
+        print(resultdict)
+        return resultdict
+
+
+
+# --------------------- 이미지 관리 ---------------------#
+
+# 로컬 이미지 갱신
+def update_img(uid, postkey, postDate, resultdict):
+    postImgs = request.files.getlist("postImg[]")
+    imgList = []
+    i = 0
+    today = datetime.datetime.today()
+    hr = today.hour
+    min = today.minute
+    sec = today.second
+
+    hr = '0' + str(hr) if hr < 10 else str(hr)
+    min = '0' + str(min) if min < 10 else str(min)
+    sec = '0' + str(sec) if sec < 10 else str(sec)
+
+    for postImg in postImgs:
+        name, ext = os.path.splitext(postImg.filename)
+        i += 1
+        filename = uid + "_" + postkey + "_" + postDate + "_" + hr + min + sec + "_" + str(i)
+        postImg.filename = filename + ext
+        imgList.append(postImg.filename)
+        postImg.save(f'static/images/{secure_filename(postImg.filename)}')
+    resultdict['postImg'] = imgList
+
+# 로컬 이미지 삭제
+def delete_img(uid, postId):
+    condition = 'static/images/' + uid + "_" + postId + '*.*'
+    print("condition:", condition)
+    imgPath = 'static/images/'
+    for file in glob.glob(condition):
+        imgName = os.path.basename(file)
+        print("img:", imgName)
+        os.remove(imgPath + imgName)
 
 # 로컬 이미지 서버 전달
 @app.route('/img/<imgName>')
 def show_img(imgName):
     imgPath = 'images/' + imgName
     return render_template('./img_test.html', image_file=imgPath)
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
