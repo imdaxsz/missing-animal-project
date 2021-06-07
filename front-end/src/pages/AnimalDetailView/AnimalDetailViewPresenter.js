@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import { Image } from "react-bootstrap";
 import styled from "styled-components";
-
+import ip from "../../ipConfig.json";
+import { Carousel } from "react-bootstrap";
+import { Link } from "react-router-dom";
 const ImageWrapper = styled.div`
   overflow: hidden;
   display: flex;
@@ -22,39 +24,59 @@ const StyledButton = styled.button`
   margin-left: 5px;
   margin-right: 5px;
 `;
-function AnimalDetailViewPresenter() {
+function AnimalDetailViewPresenter({
+  animalDetailData,
+  isLogin,
+  userInfo,
+  postDelete,
+}) {
+
   return (
     <div className="wrapper">
       <ImageWrapper>
-        <Image
-          width="100%"
-          src={require(`../../assets/images/animal1.jpg`).default}
-          fluid
-        />
+        <Carousel>
+          {animalDetailData.postImg.map((item, index) => {
+            return (
+              <Carousel.Item key={index} alt={item}>
+                <Image
+                  width="100%"
+                  src={item===""?"https://blog.nscsports.org/wp-content/uploads/2014/10/default-img.gif":`${ip["ip"]}/static/images/${item}`}
+                  fluid
+                />
+              </Carousel.Item>
+            );
+          })}
+        </Carousel>
       </ImageWrapper>
+
       <MainContent>
         <hr />
         <h4>
-          <strong>[임시보호]</strong>고양이를 임시보호 중입니다
+          <strong>[{animalDetailData.postType}]</strong>
+          {animalDetailData.title}
         </h4>
         <hr />
-        <StyledButton>수정</StyledButton>
-        <StyledButton>삭제</StyledButton>
+        {isLogin === "login" && animalDetailData.uid === userInfo.uid ? (
+          <StyledButton>
+            <Link to={{pathname:"/updatePost/" + animalDetailData.postID,state:animalDetailData}}>수정</Link>
+          </StyledButton>
+        ) : null}
+        {isLogin === "login" && animalDetailData.uid === userInfo.uid ? (
+          <StyledButton onClick={postDelete}>삭제</StyledButton>
+        ) : null}
         <hr />
-        <p>품종 : 코리안숏헤어</p>
-        <p>나이 : 5살</p>
-        <p>몸무게 : 4kg</p>
-        <p>특징 : 체구가 작음</p>
+        <p>품종 : {animalDetailData.breed}</p>
+        <p>나이 : {animalDetailData.age}</p>
+        <p>성별 : {animalDetailData.sex}</p>
+        <p>몸무게 : {animalDetailData.weight}</p>
+        <p>특징 : {animalDetailData.character}</p>
         <hr />
-        <p>목격일 : 2021-03-13</p>
-        <p>목격장소 : 구미시 거의동 금오공대 일대</p>
-        <p>연락처 : 010 - 1234 - 5678</p>
+        <p>목격일 : {animalDetailData.lostDate}</p>
+        <p>목격장소 : {animalDetailData.detailPlace}</p>
+        <p>연락처 : {animalDetailData.contact}</p>
 
         <hr />
-        <p>
-          금오공대를 돌아다니고 있어요. 주인분 계시면 연락주세요. 임시보호
-          중입니다.
-        </p>
+        <p>{animalDetailData.postContent}</p>
       </MainContent>
     </div>
   );

@@ -40,7 +40,9 @@ function MainMenuPresenter() {
         <Link to="/">
           <StyledButton>실종동물 찾기</StyledButton>
         </Link>
-        <StyledButton>실종신고 목록</StyledButton>
+        <Link to="/miss_animal">
+          <StyledButton>실종신고 목록</StyledButton>
+        </Link>
         <Link to="/shelter">
           <StyledButton>보호소</StyledButton>
         </Link>

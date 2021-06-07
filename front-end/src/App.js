@@ -1,12 +1,15 @@
 import styled from "styled-components";
 import Main from "./pages/Main/MainContainer";
 import WritePost from "./pages/WritePost/WritePostContainer";
+import UpdatePost from "./pages/UpdatePost/UpdatePostContainer";
 import Header from "./components/Header/HeaderContainer";
+import MissAnimal from './pages/Miss/MissContainer'
 import MainMenu from "./components/MainMenu/MainMenuContainer";
 import ShelterAnimalList from "./pages/Shelter/ShelterAnimalListContainer";
 import AnimalDetailView from "./pages/AnimalDetailView/AnimalDetailViewContainer";
+import ShelterAnimalDetailView from "./pages/ShelterAnimalDetailView/ShelterAnimalDetailViewContainer";
 import UserPage from "./pages/UserPage/UserPageContainer";
-import ShelterrInfo from "./pages/ShelterInfo/ShelterInfoContainer"
+import ShelterrInfo from "./pages/ShelterInfo/ShelterInfoContainer";
 import { createGlobalStyle } from "styled-components";
 import { Link, Route, Switch } from "react-router-dom";
 import { useEffect } from "react";
@@ -32,19 +35,18 @@ const GlobalStyle = createGlobalStyle`
   a{
     color:inherit;
     text-decoration:none;
+    &.hover{
+      text-decoration:none;
+    }
+    
   }
 `;
 function App() {
-  const exclusionArray = [
-    '/user_page',
-    '/another-path',
-  ]
-  
   return (
     <>
       <GlobalStyle />
       <Header></Header>
-      <MainMenu/>
+      <MainMenu />
       <Route exact path="/">
         <Main />
       </Route>
@@ -57,14 +59,22 @@ function App() {
       <Route path="/animal_detail">
         <AnimalDetailView />
       </Route>
+      <Route path="/shelter_animal_detail">
+        <ShelterAnimalDetailView />
+      </Route>
       <Route path="/user_page">
         <UserPage />
       </Route>
       <Route path="/shelter_info">
-        <ShelterrInfo/>
+        <ShelterrInfo />
+      </Route>
+      <Route path="/updatePost">
+        <UpdatePost/>
+      </Route>
+      <Route path="/miss_animal">
+        <MissAnimal/>
       </Route>
     </>
   );
 }
-
 export default App;
