@@ -12,7 +12,7 @@
 ##### 개발언어
 - 프론트엔드 : React
 - 백엔드 : Python Flask
-- 크롤링 : 
+- 크롤링 : Python
 - DB : Firebase Realtime Database NoSQL 
 
 ##### 실종동물 및 유기동물 찾기 서비스 *동물의숲*
